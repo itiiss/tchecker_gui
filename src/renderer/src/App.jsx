@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import {
-  Box,
-} from '@mui/material';
-import Menubar from './components/menubar';
-import EditorView from './components/EditorView';
-import SimulatorView from './components/SimulatorView';
-import VerifierView from './components/VerifierView';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react'
+import { Box } from '@mui/material'
+import Menubar from './layout/Menubar'
+import EditorView from './layout/EditorView'
+import SimulatorView from './layout/SimulatorView'
+import VerifierView from './layout/VerifierView'
 
 const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <div
@@ -19,17 +18,13 @@ const TabPanel = (props) => {
       {...other}
       style={{ height: '100%' }}
     >
-      {value === index && (
-        <Box sx={{ p: 0, height: '100%' }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 0, height: '100%' }}>{children}</Box>}
     </div>
-  );
+  )
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState('editor');
+  const [activeTab, setActiveTab] = useState('editor')
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -51,7 +46,7 @@ function App() {
         </Box>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default App;
+export default App

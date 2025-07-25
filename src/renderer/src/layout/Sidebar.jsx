@@ -1,12 +1,5 @@
-import React from 'react';
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-  Box,
-} from '@mui/material';
+import React from 'react'
+import { Box, Drawer, Typography, List, ListItem, ListItemText } from '@mui/material'
 
 const Sidebar = () => {
   return (
@@ -15,7 +8,7 @@ const Sidebar = () => {
       sx={{
         width: 240,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box', position: 'relative' },
+        [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box', position: 'relative' }
       }}
     >
       <Box sx={{ p: 2 }}>
@@ -35,7 +28,7 @@ const Sidebar = () => {
         </List>
       </Box>
     </Drawer>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

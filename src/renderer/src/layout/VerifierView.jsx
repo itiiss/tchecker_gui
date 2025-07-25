@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import VerifierPanel from './verifyPanel';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import VerifierPanel from './VerifyPanel'
 
 const VerifierView = () => {
   return (
@@ -13,7 +13,7 @@ const VerifierView = () => {
         <VerifierPanel />
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default VerifierView;
+export default VerifierView

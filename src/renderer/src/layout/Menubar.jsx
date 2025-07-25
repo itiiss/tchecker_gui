@@ -1,17 +1,12 @@
-import React from 'react';
-import {
-  AppBar,
-  Toolbar as MuiToolbar,
-  Tabs,
-  Tab,
-  Box,
-} from '@mui/material';
-import Toolbar from './Toolbar';
+/* eslint-disable react/prop-types */
+import React from 'react'
+import { AppBar, Toolbar as MuiToolbar, Box, Tabs, Tab } from '@mui/material'
+import Toolbar from './Toolbar'
 
 const Menubar = ({ onTabChange, activeTab }) => {
   const handleChange = (event, newValue) => {
-    onTabChange(newValue);
-  };
+    onTabChange(newValue)
+  }
 
   return (
     <AppBar position="static" color="default">
@@ -26,7 +21,7 @@ const Menubar = ({ onTabChange, activeTab }) => {
         </Tabs>
       </MuiToolbar>
     </AppBar>
-  );
-};
+  )
+}
 
-export default Menubar;
+export default Menubar

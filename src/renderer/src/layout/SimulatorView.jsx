@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import SimulatorPanel from './simulatePanel';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import SimulatorPanel from './SimulatePanel'
 
 const SimulatorView = () => {
   return (
@@ -13,7 +13,7 @@ const SimulatorView = () => {
         <SimulatorPanel />
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default SimulatorView;
+export default SimulatorView
