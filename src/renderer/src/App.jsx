@@ -3,10 +3,9 @@ import {
   Box,
 } from '@mui/material';
 import Menubar from './components/menubar';
-import Sidebar from './components/sidebar';
-import EditorCanvas from './components/editorCanva';
-import SimulatorPanel from './components/simulatePanel';
-import VerifierPanel from './components/verifyPanel';
+import EditorView from './components/EditorView';
+import SimulatorView from './components/SimulatorView';
+import VerifierView from './components/VerifierView';
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -21,7 +20,7 @@ const TabPanel = (props) => {
       style={{ height: '100%' }}
     >
       {value === index && (
-        <Box sx={{ p: 3, height: '100%' }}>
+        <Box sx={{ p: 0, height: '100%' }}>
           {children}
         </Box>
       )}
@@ -36,19 +35,18 @@ function App() {
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <Menubar onTabChange={setActiveTab} activeTab={activeTab} />
       <Box sx={{ display: 'flex', flexGrow: 1, overflow: 'hidden' }}>
-        <Sidebar />
         <Box component="main" sx={{ flexGrow: 1, overflow: 'auto' }}>
           <TabPanel value={activeTab} index="editor">
-            <EditorCanvas />
+            <EditorView />
           </TabPanel>
           <TabPanel value={activeTab} index="simulator">
-            <SimulatorPanel />
+            <SimulatorView />
           </TabPanel>
           <TabPanel value={activeTab} index="simulator2">
-            <SimulatorPanel />
+            <SimulatorView />
           </TabPanel>
           <TabPanel value={activeTab} index="verifier">
-            <VerifierPanel />
+            <VerifierView />
           </TabPanel>
         </Box>
       </Box>

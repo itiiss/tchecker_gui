@@ -16,7 +16,7 @@ const Menubar = ({ onTabChange, activeTab }) => {
   return (
     <AppBar position="static" color="default">
       <MuiToolbar>
-        <Toolbar />
+        <Toolbar activeTab={activeTab} />
         <Box sx={{ flexGrow: 1 }} />
         <Tabs value={activeTab} onChange={handleChange}>
           <Tab label="编辑器" value="editor" />
