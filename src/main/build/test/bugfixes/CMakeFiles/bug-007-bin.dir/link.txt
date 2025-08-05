@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -Wextra -Wconversion -O3 -DNDEBUG -DNDEBUG -O2 -flto -fstrict-vtable-pointers -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names "CMakeFiles/bug-007-bin.dir/bug-007.cc.o" -o bug-007-bin  ../testutils/libtestutils.a ../../src/libtchecker.a

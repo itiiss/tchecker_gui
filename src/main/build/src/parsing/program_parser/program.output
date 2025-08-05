@@ -1,0 +1,1396 @@
+Grammar
+
+    0 $accept: program "end of file"
+
+    1 program: sequence_statement
+    2        | conjunctive_formula
+
+    3 opt_semicolon: ";"
+    4              | ε
+
+    5 sequence_statement: statement opt_semicolon
+    6                   | statement ";" sequence_statement
+
+    7 statement: simple_statement
+    8          | if_statement
+    9          | loop_statement
+
+   10 if_statement: "if" conjunctive_formula "then" sequence_statement "end"
+   11             | "if" conjunctive_formula "then" sequence_statement "else" sequence_statement "end"
+
+   12 loop_statement: "while" conjunctive_formula "do" sequence_statement "end"
+
+   13 local_statement: "local" variable_term
+   14                | "local" variable_term "=" term
+   15                | "local" variable_term "[" term "]"
+
+   16 simple_statement: assignment
+   17                 | "nop"
+   18                 | local_statement
+
+   19 assignment: lvalue_term "=" term
+
+   20 conjunctive_formula: atomic_formula
+   21                    | non_atomic_conjunctive_formula
+
+   22 non_atomic_conjunctive_formula: "(" non_atomic_conjunctive_formula ")"
+   23                               | atomic_formula "&&" conjunctive_formula
+
+   24 atomic_formula: term
+   25               | predicate_formula
+   26               | "!" atomic_formula
+
+   27 predicate_formula: "(" predicate_formula ")"
+   28                  | binary_formula predicate_operator term
+   29                  | binary_formula
+
+   30 binary_formula: term predicate_operator term
+
+   31 predicate_operator: "=="
+   32                   | "!="
+   33                   | "<"
+   34                   | "<="
+   35                   | ">="
+   36                   | ">"
+
+   37 term: integer
+   38     | lvalue_term
+   39     | "(" term ")"
+   40     | "-" term
+   41     | term "+" term
+   42     | term "-" term
+   43     | term "*" term
+   44     | term "/" term
+   45     | term "%" term
+   46     | "(" "if" conjunctive_formula "then" term "else" term ")"
+
+   47 lvalue_term: variable_term
+   48            | variable_term "[" term "]"
+
+   49 variable_term: "identifier"
+
+   50 integer: "integer"
+
+
+Terminals, with rules where they appear
+
+    "end of file" (0) 0
+    error (256)
+    "=" (258) 14 19
+    "(" (259) 22 27 39 46
+    ")" (260) 22 27 39 46
+    "[" (261) 15 48
+    "]" (262) 15 48
+    ";" (263) 3 6
+    "+" (264) 41
+    "-" (265) 40 42
+    "*" (266) 43
+    "/" (267) 44
+    "%" (268) 45
+    "&&" (269) 23
+    "!" (270) 26
+    "==" (271) 31
+    "!=" (272) 32
+    "<=" (273) 34
+    ">=" (274) 35
+    "<" (275) 33
+    ">" (276) 36
+    "if" (277) 10 11 46
+    "end" (278) 10 11 12
+    "then" (279) 10 11 46
+    "else" (280) 11 46
+    "while" (281) 12
+    "do" (282) 12
+    "nop" (283) 17
+    "local" (284) 13 14 15
+    "identifier" <std::string> (285) 49
+    "integer" <std::string> (286) 50
+    UMINUS (287)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (33)
+        on left: 0
+    program (34)
+        on left: 1 2
+        on right: 0
+    opt_semicolon (35)
+        on left: 3 4
+        on right: 5
+    sequence_statement <std::shared_ptr<tchecker::statement_t>> (36)
+        on left: 5 6
+        on right: 1 6 10 11 12
+    statement <std::shared_ptr<tchecker::statement_t>> (37)
+        on left: 7 8 9
+        on right: 5 6
+    if_statement <std::shared_ptr<tchecker::statement_t>> (38)
+        on left: 10 11
+        on right: 8
+    loop_statement <std::shared_ptr<tchecker::statement_t>> (39)
+        on left: 12
+        on right: 9
+    local_statement <std::shared_ptr<tchecker::statement_t>> (40)
+        on left: 13 14 15
+        on right: 18
+    simple_statement <std::shared_ptr<tchecker::statement_t>> (41)
+        on left: 16 17 18
+        on right: 7
+    assignment <std::shared_ptr<tchecker::statement_t>> (42)
+        on left: 19
+        on right: 16
+    conjunctive_formula <std::shared_ptr<tchecker::expression_t>> (43)
+        on left: 20 21
+        on right: 2 10 11 12 23 46
+    non_atomic_conjunctive_formula <std::shared_ptr<tchecker::expression_t>> (44)
+        on left: 22 23
+        on right: 21 22
+    atomic_formula <std::shared_ptr<tchecker::expression_t>> (45)
+        on left: 24 25 26
+        on right: 20 23 26
+    predicate_formula <std::shared_ptr<tchecker::expression_t>> (46)
+        on left: 27 28 29
+        on right: 25 27
+    binary_formula <std::shared_ptr<tchecker::expression_t>> (47)
+        on left: 30
+        on right: 28 29
+    predicate_operator <enum tchecker::binary_operator_t> (48)
+        on left: 31 32 33 34 35 36
+        on right: 28 30
+    term <std::shared_ptr<tchecker::expression_t>> (49)
+        on left: 37 38 39 40 41 42 43 44 45 46
+        on right: 14 15 19 24 28 30 39 40 41 42 43 44 45 46 48
+    lvalue_term <std::shared_ptr<tchecker::lvalue_expression_t>> (50)
+        on left: 47 48
+        on right: 19 38
+    variable_term <std::shared_ptr<tchecker::var_expression_t>> (51)
+        on left: 49
+        on right: 13 14 15 47 48
+    integer <tchecker::integer_t> (52)
+        on left: 50
+        on right: 37
+
+
+State 0
+
+    0 $accept: • program "end of file"
+
+    "("           shift, and go to state 1
+    "-"           shift, and go to state 2
+    "!"           shift, and go to state 3
+    "if"          shift, and go to state 4
+    "while"       shift, and go to state 5
+    "nop"         shift, and go to state 6
+    "local"       shift, and go to state 7
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    program                         go to state 10
+    sequence_statement              go to state 11
+    statement                       go to state 12
+    if_statement                    go to state 13
+    loop_statement                  go to state 14
+    local_statement                 go to state 15
+    simple_statement                go to state 16
+    assignment                      go to state 17
+    conjunctive_formula             go to state 18
+    non_atomic_conjunctive_formula  go to state 19
+    atomic_formula                  go to state 20
+    predicate_formula               go to state 21
+    binary_formula                  go to state 22
+    term                            go to state 23
+    lvalue_term                     go to state 24
+    variable_term                   go to state 25
+    integer                         go to state 26
+
+
+State 1
+
+   22 non_atomic_conjunctive_formula: "(" • non_atomic_conjunctive_formula ")"
+   27 predicate_formula: "(" • predicate_formula ")"
+   39 term: "(" • term ")"
+   46     | "(" • "if" conjunctive_formula "then" term "else" term ")"
+
+    "("           shift, and go to state 1
+    "-"           shift, and go to state 2
+    "!"           shift, and go to state 3
+    "if"          shift, and go to state 27
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    non_atomic_conjunctive_formula  go to state 28
+    atomic_formula                  go to state 29
+    predicate_formula               go to state 30
+    binary_formula                  go to state 22
+    term                            go to state 31
+    lvalue_term                     go to state 32
+    variable_term                   go to state 25
+    integer                         go to state 26
+
+
+State 2
+
+   40 term: "-" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 34
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 3
+
+   26 atomic_formula: "!" • atomic_formula
+
+    "("           shift, and go to state 35
+    "-"           shift, and go to state 2
+    "!"           shift, and go to state 3
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    atomic_formula     go to state 36
+    predicate_formula  go to state 21
+    binary_formula     go to state 22
+    term               go to state 23
+    lvalue_term        go to state 32
+    variable_term      go to state 25
+    integer            go to state 26
+
+
+State 4
+
+   10 if_statement: "if" • conjunctive_formula "then" sequence_statement "end"
+   11             | "if" • conjunctive_formula "then" sequence_statement "else" sequence_statement "end"
+
+    "("           shift, and go to state 1
+    "-"           shift, and go to state 2
+    "!"           shift, and go to state 3
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    conjunctive_formula             go to state 37
+    non_atomic_conjunctive_formula  go to state 19
+    atomic_formula                  go to state 20
+    predicate_formula               go to state 21
+    binary_formula                  go to state 22
+    term                            go to state 23
+    lvalue_term                     go to state 32
+    variable_term                   go to state 25
+    integer                         go to state 26
+
+
+State 5
+
+   12 loop_statement: "while" • conjunctive_formula "do" sequence_statement "end"
+
+    "("           shift, and go to state 1
+    "-"           shift, and go to state 2
+    "!"           shift, and go to state 3
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    conjunctive_formula             go to state 38
+    non_atomic_conjunctive_formula  go to state 19
+    atomic_formula                  go to state 20
+    predicate_formula               go to state 21
+    binary_formula                  go to state 22
+    term                            go to state 23
+    lvalue_term                     go to state 32
+    variable_term                   go to state 25
+    integer                         go to state 26
+
+
+State 6
+
+   17 simple_statement: "nop" •
+
+    $default  reduce using rule 17 (simple_statement)
+
+
+State 7
+
+   13 local_statement: "local" • variable_term
+   14                | "local" • variable_term "=" term
+   15                | "local" • variable_term "[" term "]"
+
+    "identifier"  shift, and go to state 8
+
+    variable_term  go to state 39
+
+
+State 8
+
+   49 variable_term: "identifier" •
+
+    $default  reduce using rule 49 (variable_term)
+
+
+State 9
+
+   50 integer: "integer" •
+
+    $default  reduce using rule 50 (integer)
+
+
+State 10
+
+    0 $accept: program • "end of file"
+
+    "end of file"  shift, and go to state 40
+
+
+State 11
+
+    1 program: sequence_statement •
+
+    $default  reduce using rule 1 (program)
+
+
+State 12
+
+    5 sequence_statement: statement • opt_semicolon
+    6                   | statement • ";" sequence_statement
+
+    ";"  shift, and go to state 41
+
+    $default  reduce using rule 4 (opt_semicolon)
+
+    opt_semicolon  go to state 42
+
+
+State 13
+
+    8 statement: if_statement •
+
+    $default  reduce using rule 8 (statement)
+
+
+State 14
+
+    9 statement: loop_statement •
+
+    $default  reduce using rule 9 (statement)
+
+
+State 15
+
+   18 simple_statement: local_statement •
+
+    $default  reduce using rule 18 (simple_statement)
+
+
+State 16
+
+    7 statement: simple_statement •
+
+    $default  reduce using rule 7 (statement)
+
+
+State 17
+
+   16 simple_statement: assignment •
+
+    $default  reduce using rule 16 (simple_statement)
+
+
+State 18
+
+    2 program: conjunctive_formula •
+
+    $default  reduce using rule 2 (program)
+
+
+State 19
+
+   21 conjunctive_formula: non_atomic_conjunctive_formula •
+
+    $default  reduce using rule 21 (conjunctive_formula)
+
+
+State 20
+
+   20 conjunctive_formula: atomic_formula •
+   23 non_atomic_conjunctive_formula: atomic_formula • "&&" conjunctive_formula
+
+    "&&"  shift, and go to state 43
+
+    $default  reduce using rule 20 (conjunctive_formula)
+
+
+State 21
+
+   25 atomic_formula: predicate_formula •
+
+    $default  reduce using rule 25 (atomic_formula)
+
+
+State 22
+
+   28 predicate_formula: binary_formula • predicate_operator term
+   29                  | binary_formula •
+
+    "=="  shift, and go to state 44
+    "!="  shift, and go to state 45
+    "<="  shift, and go to state 46
+    ">="  shift, and go to state 47
+    "<"   shift, and go to state 48
+    ">"   shift, and go to state 49
+
+    $default  reduce using rule 29 (predicate_formula)
+
+    predicate_operator  go to state 50
+
+
+State 23
+
+   24 atomic_formula: term •
+   30 binary_formula: term • predicate_operator term
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "+"   shift, and go to state 51
+    "-"   shift, and go to state 52
+    "*"   shift, and go to state 53
+    "/"   shift, and go to state 54
+    "%"   shift, and go to state 55
+    "=="  shift, and go to state 44
+    "!="  shift, and go to state 45
+    "<="  shift, and go to state 46
+    ">="  shift, and go to state 47
+    "<"   shift, and go to state 48
+    ">"   shift, and go to state 49
+
+    $default  reduce using rule 24 (atomic_formula)
+
+    predicate_operator  go to state 56
+
+
+State 24
+
+   19 assignment: lvalue_term • "=" term
+   38 term: lvalue_term •
+
+    "="  shift, and go to state 57
+
+    $default  reduce using rule 38 (term)
+
+
+State 25
+
+   47 lvalue_term: variable_term •
+   48            | variable_term • "[" term "]"
+
+    "["  shift, and go to state 58
+
+    $default  reduce using rule 47 (lvalue_term)
+
+
+State 26
+
+   37 term: integer •
+
+    $default  reduce using rule 37 (term)
+
+
+State 27
+
+   46 term: "(" "if" • conjunctive_formula "then" term "else" term ")"
+
+    "("           shift, and go to state 1
+    "-"           shift, and go to state 2
+    "!"           shift, and go to state 3
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    conjunctive_formula             go to state 59
+    non_atomic_conjunctive_formula  go to state 19
+    atomic_formula                  go to state 20
+    predicate_formula               go to state 21
+    binary_formula                  go to state 22
+    term                            go to state 23
+    lvalue_term                     go to state 32
+    variable_term                   go to state 25
+    integer                         go to state 26
+
+
+State 28
+
+   22 non_atomic_conjunctive_formula: "(" non_atomic_conjunctive_formula • ")"
+
+    ")"  shift, and go to state 60
+
+
+State 29
+
+   23 non_atomic_conjunctive_formula: atomic_formula • "&&" conjunctive_formula
+
+    "&&"  shift, and go to state 43
+
+
+State 30
+
+   25 atomic_formula: predicate_formula •
+   27 predicate_formula: "(" predicate_formula • ")"
+
+    ")"  shift, and go to state 61
+
+    $default  reduce using rule 25 (atomic_formula)
+
+
+State 31
+
+   24 atomic_formula: term •
+   30 binary_formula: term • predicate_operator term
+   39 term: "(" term • ")"
+   41     | term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    ")"   shift, and go to state 62
+    "+"   shift, and go to state 51
+    "-"   shift, and go to state 52
+    "*"   shift, and go to state 53
+    "/"   shift, and go to state 54
+    "%"   shift, and go to state 55
+    "=="  shift, and go to state 44
+    "!="  shift, and go to state 45
+    "<="  shift, and go to state 46
+    ">="  shift, and go to state 47
+    "<"   shift, and go to state 48
+    ">"   shift, and go to state 49
+
+    $default  reduce using rule 24 (atomic_formula)
+
+    predicate_operator  go to state 56
+
+
+State 32
+
+   38 term: lvalue_term •
+
+    $default  reduce using rule 38 (term)
+
+
+State 33
+
+   39 term: "(" • term ")"
+   46     | "(" • "if" conjunctive_formula "then" term "else" term ")"
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "if"          shift, and go to state 27
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 63
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 34
+
+   40 term: "-" term •
+   41     | term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    $default  reduce using rule 40 (term)
+
+
+State 35
+
+   27 predicate_formula: "(" • predicate_formula ")"
+   39 term: "(" • term ")"
+   46     | "(" • "if" conjunctive_formula "then" term "else" term ")"
+
+    "("           shift, and go to state 35
+    "-"           shift, and go to state 2
+    "if"          shift, and go to state 27
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    predicate_formula  go to state 64
+    binary_formula     go to state 22
+    term               go to state 65
+    lvalue_term        go to state 32
+    variable_term      go to state 25
+    integer            go to state 26
+
+
+State 36
+
+   26 atomic_formula: "!" atomic_formula •
+
+    $default  reduce using rule 26 (atomic_formula)
+
+
+State 37
+
+   10 if_statement: "if" conjunctive_formula • "then" sequence_statement "end"
+   11             | "if" conjunctive_formula • "then" sequence_statement "else" sequence_statement "end"
+
+    "then"  shift, and go to state 66
+
+
+State 38
+
+   12 loop_statement: "while" conjunctive_formula • "do" sequence_statement "end"
+
+    "do"  shift, and go to state 67
+
+
+State 39
+
+   13 local_statement: "local" variable_term •
+   14                | "local" variable_term • "=" term
+   15                | "local" variable_term • "[" term "]"
+
+    "="  shift, and go to state 68
+    "["  shift, and go to state 69
+
+    $default  reduce using rule 13 (local_statement)
+
+
+State 40
+
+    0 $accept: program "end of file" •
+
+    $default  accept
+
+
+State 41
+
+    3 opt_semicolon: ";" •
+    6 sequence_statement: statement ";" • sequence_statement
+
+    "if"          shift, and go to state 4
+    "while"       shift, and go to state 5
+    "nop"         shift, and go to state 6
+    "local"       shift, and go to state 7
+    "identifier"  shift, and go to state 8
+
+    $default  reduce using rule 3 (opt_semicolon)
+
+    sequence_statement  go to state 70
+    statement           go to state 12
+    if_statement        go to state 13
+    loop_statement      go to state 14
+    local_statement     go to state 15
+    simple_statement    go to state 16
+    assignment          go to state 17
+    lvalue_term         go to state 71
+    variable_term       go to state 25
+
+
+State 42
+
+    5 sequence_statement: statement opt_semicolon •
+
+    $default  reduce using rule 5 (sequence_statement)
+
+
+State 43
+
+   23 non_atomic_conjunctive_formula: atomic_formula "&&" • conjunctive_formula
+
+    "("           shift, and go to state 1
+    "-"           shift, and go to state 2
+    "!"           shift, and go to state 3
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    conjunctive_formula             go to state 72
+    non_atomic_conjunctive_formula  go to state 19
+    atomic_formula                  go to state 20
+    predicate_formula               go to state 21
+    binary_formula                  go to state 22
+    term                            go to state 23
+    lvalue_term                     go to state 32
+    variable_term                   go to state 25
+    integer                         go to state 26
+
+
+State 44
+
+   31 predicate_operator: "==" •
+
+    $default  reduce using rule 31 (predicate_operator)
+
+
+State 45
+
+   32 predicate_operator: "!=" •
+
+    $default  reduce using rule 32 (predicate_operator)
+
+
+State 46
+
+   34 predicate_operator: "<=" •
+
+    $default  reduce using rule 34 (predicate_operator)
+
+
+State 47
+
+   35 predicate_operator: ">=" •
+
+    $default  reduce using rule 35 (predicate_operator)
+
+
+State 48
+
+   33 predicate_operator: "<" •
+
+    $default  reduce using rule 33 (predicate_operator)
+
+
+State 49
+
+   36 predicate_operator: ">" •
+
+    $default  reduce using rule 36 (predicate_operator)
+
+
+State 50
+
+   28 predicate_formula: binary_formula predicate_operator • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 73
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 51
+
+   41 term: term "+" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 74
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 52
+
+   42 term: term "-" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 75
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 53
+
+   43 term: term "*" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 76
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 54
+
+   44 term: term "/" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 77
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 55
+
+   45 term: term "%" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 78
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 56
+
+   30 binary_formula: term predicate_operator • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 79
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 57
+
+   19 assignment: lvalue_term "=" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 80
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 58
+
+   48 lvalue_term: variable_term "[" • term "]"
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 81
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 59
+
+   46 term: "(" "if" conjunctive_formula • "then" term "else" term ")"
+
+    "then"  shift, and go to state 82
+
+
+State 60
+
+   22 non_atomic_conjunctive_formula: "(" non_atomic_conjunctive_formula ")" •
+
+    $default  reduce using rule 22 (non_atomic_conjunctive_formula)
+
+
+State 61
+
+   27 predicate_formula: "(" predicate_formula ")" •
+
+    $default  reduce using rule 27 (predicate_formula)
+
+
+State 62
+
+   39 term: "(" term ")" •
+
+    $default  reduce using rule 39 (term)
+
+
+State 63
+
+   39 term: "(" term • ")"
+   41     | term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    ")"  shift, and go to state 62
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+
+State 64
+
+   27 predicate_formula: "(" predicate_formula • ")"
+
+    ")"  shift, and go to state 61
+
+
+State 65
+
+   30 binary_formula: term • predicate_operator term
+   39 term: "(" term • ")"
+   41     | term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    ")"   shift, and go to state 62
+    "+"   shift, and go to state 51
+    "-"   shift, and go to state 52
+    "*"   shift, and go to state 53
+    "/"   shift, and go to state 54
+    "%"   shift, and go to state 55
+    "=="  shift, and go to state 44
+    "!="  shift, and go to state 45
+    "<="  shift, and go to state 46
+    ">="  shift, and go to state 47
+    "<"   shift, and go to state 48
+    ">"   shift, and go to state 49
+
+    predicate_operator  go to state 56
+
+
+State 66
+
+   10 if_statement: "if" conjunctive_formula "then" • sequence_statement "end"
+   11             | "if" conjunctive_formula "then" • sequence_statement "else" sequence_statement "end"
+
+    "if"          shift, and go to state 4
+    "while"       shift, and go to state 5
+    "nop"         shift, and go to state 6
+    "local"       shift, and go to state 7
+    "identifier"  shift, and go to state 8
+
+    sequence_statement  go to state 83
+    statement           go to state 12
+    if_statement        go to state 13
+    loop_statement      go to state 14
+    local_statement     go to state 15
+    simple_statement    go to state 16
+    assignment          go to state 17
+    lvalue_term         go to state 71
+    variable_term       go to state 25
+
+
+State 67
+
+   12 loop_statement: "while" conjunctive_formula "do" • sequence_statement "end"
+
+    "if"          shift, and go to state 4
+    "while"       shift, and go to state 5
+    "nop"         shift, and go to state 6
+    "local"       shift, and go to state 7
+    "identifier"  shift, and go to state 8
+
+    sequence_statement  go to state 84
+    statement           go to state 12
+    if_statement        go to state 13
+    loop_statement      go to state 14
+    local_statement     go to state 15
+    simple_statement    go to state 16
+    assignment          go to state 17
+    lvalue_term         go to state 71
+    variable_term       go to state 25
+
+
+State 68
+
+   14 local_statement: "local" variable_term "=" • term
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 85
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 69
+
+   15 local_statement: "local" variable_term "[" • term "]"
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 86
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 70
+
+    6 sequence_statement: statement ";" sequence_statement •
+
+    $default  reduce using rule 6 (sequence_statement)
+
+
+State 71
+
+   19 assignment: lvalue_term • "=" term
+
+    "="  shift, and go to state 57
+
+
+State 72
+
+   23 non_atomic_conjunctive_formula: atomic_formula "&&" conjunctive_formula •
+
+    $default  reduce using rule 23 (non_atomic_conjunctive_formula)
+
+
+State 73
+
+   28 predicate_formula: binary_formula predicate_operator term •
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+    $default  reduce using rule 28 (predicate_formula)
+
+
+State 74
+
+   41 term: term • "+" term
+   41     | term "+" term •
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+    $default  reduce using rule 41 (term)
+
+
+State 75
+
+   41 term: term • "+" term
+   42     | term • "-" term
+   42     | term "-" term •
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+    $default  reduce using rule 42 (term)
+
+
+State 76
+
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   43     | term "*" term •
+   44     | term • "/" term
+   45     | term • "%" term
+
+    $default  reduce using rule 43 (term)
+
+
+State 77
+
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   44     | term "/" term •
+   45     | term • "%" term
+
+    $default  reduce using rule 44 (term)
+
+
+State 78
+
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+   45     | term "%" term •
+
+    $default  reduce using rule 45 (term)
+
+
+State 79
+
+   30 binary_formula: term predicate_operator term •
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+    $default  reduce using rule 30 (binary_formula)
+
+
+State 80
+
+   19 assignment: lvalue_term "=" term •
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+    $default  reduce using rule 19 (assignment)
+
+
+State 81
+
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+   48 lvalue_term: variable_term "[" term • "]"
+
+    "]"  shift, and go to state 87
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+
+State 82
+
+   46 term: "(" "if" conjunctive_formula "then" • term "else" term ")"
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 88
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 83
+
+   10 if_statement: "if" conjunctive_formula "then" sequence_statement • "end"
+   11             | "if" conjunctive_formula "then" sequence_statement • "else" sequence_statement "end"
+
+    "end"   shift, and go to state 89
+    "else"  shift, and go to state 90
+
+
+State 84
+
+   12 loop_statement: "while" conjunctive_formula "do" sequence_statement • "end"
+
+    "end"  shift, and go to state 91
+
+
+State 85
+
+   14 local_statement: "local" variable_term "=" term •
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+    $default  reduce using rule 14 (local_statement)
+
+
+State 86
+
+   15 local_statement: "local" variable_term "[" term • "]"
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+
+    "]"  shift, and go to state 92
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+
+State 87
+
+   48 lvalue_term: variable_term "[" term "]" •
+
+    $default  reduce using rule 48 (lvalue_term)
+
+
+State 88
+
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+   46     | "(" "if" conjunctive_formula "then" term • "else" term ")"
+
+    "+"     shift, and go to state 51
+    "-"     shift, and go to state 52
+    "*"     shift, and go to state 53
+    "/"     shift, and go to state 54
+    "%"     shift, and go to state 55
+    "else"  shift, and go to state 93
+
+
+State 89
+
+   10 if_statement: "if" conjunctive_formula "then" sequence_statement "end" •
+
+    $default  reduce using rule 10 (if_statement)
+
+
+State 90
+
+   11 if_statement: "if" conjunctive_formula "then" sequence_statement "else" • sequence_statement "end"
+
+    "if"          shift, and go to state 4
+    "while"       shift, and go to state 5
+    "nop"         shift, and go to state 6
+    "local"       shift, and go to state 7
+    "identifier"  shift, and go to state 8
+
+    sequence_statement  go to state 94
+    statement           go to state 12
+    if_statement        go to state 13
+    loop_statement      go to state 14
+    local_statement     go to state 15
+    simple_statement    go to state 16
+    assignment          go to state 17
+    lvalue_term         go to state 71
+    variable_term       go to state 25
+
+
+State 91
+
+   12 loop_statement: "while" conjunctive_formula "do" sequence_statement "end" •
+
+    $default  reduce using rule 12 (loop_statement)
+
+
+State 92
+
+   15 local_statement: "local" variable_term "[" term "]" •
+
+    $default  reduce using rule 15 (local_statement)
+
+
+State 93
+
+   46 term: "(" "if" conjunctive_formula "then" term "else" • term ")"
+
+    "("           shift, and go to state 33
+    "-"           shift, and go to state 2
+    "identifier"  shift, and go to state 8
+    "integer"     shift, and go to state 9
+
+    term           go to state 95
+    lvalue_term    go to state 32
+    variable_term  go to state 25
+    integer        go to state 26
+
+
+State 94
+
+   11 if_statement: "if" conjunctive_formula "then" sequence_statement "else" sequence_statement • "end"
+
+    "end"  shift, and go to state 96
+
+
+State 95
+
+   41 term: term • "+" term
+   42     | term • "-" term
+   43     | term • "*" term
+   44     | term • "/" term
+   45     | term • "%" term
+   46     | "(" "if" conjunctive_formula "then" term "else" term • ")"
+
+    ")"  shift, and go to state 97
+    "+"  shift, and go to state 51
+    "-"  shift, and go to state 52
+    "*"  shift, and go to state 53
+    "/"  shift, and go to state 54
+    "%"  shift, and go to state 55
+
+
+State 96
+
+   11 if_statement: "if" conjunctive_formula "then" sequence_statement "else" sequence_statement "end" •
+
+    $default  reduce using rule 11 (if_statement)
+
+
+State 97
+
+   46 term: "(" "if" conjunctive_formula "then" term "else" term ")" •
+
+    $default  reduce using rule 46 (term)
