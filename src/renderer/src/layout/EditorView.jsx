@@ -77,20 +77,39 @@ const EditorContent = () => {
       {/* Toolbar ... (No changes here) */}
       <Box sx={{ p: 1, borderBottom: '1px solid #e0e0e0', display: 'flex', alignItems: 'center' }}>
         <Tooltip title="Add Node">
-            <IconButton onClick={() => setMode('add-node')} color={mode === 'add-node' ? 'primary' : 'default'}><AddCircleOutlineIcon /></IconButton>
+          <IconButton
+            onClick={() => setMode('add-node')}
+            color={mode === 'add-node' ? 'primary' : 'default'}
+          >
+            <AddCircleOutlineIcon />
+          </IconButton>
         </Tooltip>
         <Tooltip title="Add Edge">
-            <IconButton onClick={() => setMode('add-edge')} color={mode === 'add-edge' ? 'primary' : 'default'}><TimelineIcon /></IconButton>
+          <IconButton
+            onClick={() => setMode('add-edge')}
+            color={mode === 'add-edge' ? 'primary' : 'default'}
+          >
+            <TimelineIcon />
+          </IconButton>
         </Tooltip>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
         <Tooltip title="Zoom In">
-            <IconButton onClick={() => zoomIn()}><ZoomInIcon /></IconButton>
+          <IconButton onClick={() => zoomIn()}>
+            <ZoomInIcon />
+          </IconButton>
         </Tooltip>
         <Tooltip title="Zoom Out">
-            <IconButton onClick={() => zoomOut()}><ZoomOutIcon /></IconButton>
+          <IconButton onClick={() => zoomOut()}>
+            <ZoomOutIcon />
+          </IconButton>
         </Tooltip>
         <Tooltip title="Pan/Select Mode">
-            <IconButton onClick={() => setMode('select')} color={mode === 'select' ? 'primary' : 'default'}><PanToolIcon /></IconButton>
+          <IconButton
+            onClick={() => setMode('select')}
+            color={mode === 'select' ? 'primary' : 'default'}
+          >
+            <PanToolIcon />
+          </IconButton>
         </Tooltip>
       </Box>
 

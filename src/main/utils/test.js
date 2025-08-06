@@ -1,53 +1,34 @@
 const { runSimulation } = require('./simulation-manager')
 
-const trainGateModel = {
-  systemName: 'train_gate_system_generated',
+// 一个最简化的测试模型，用于验证端到端流程
+const simpleModel = {
+  systemName: 'simple_test_system',
   clocks: [{ name: 'x', size: 1 }],
-  events: ['approach', 'enter', 'exit'],
+  events: ['a', 'b'],
   processes: {
-    train: {
+    p1: {
       locations: {
-        far: { isInitial: true },
-        near: {},
-        in_gate: { labels: ['unsafe', 'critical'] },
-        gone: {}
+        l0: { isInitial: true },
+        l1: { invariant: 'x <= 2' },
+        l2: {}
       },
       edges: [
-        { source: 'far', target: 'near', event: 'approach', action: 'x=0' },
-        { source: 'near', target: 'in_gate', event: 'enter', guard: 'x>=2' },
-        { source: 'in_gate', target: 'gone', event: 'exit' }
-      ]
-    },
-    gate: {
-      locations: {
-        up: { isInitial: true },
-        // 这是一个紧急状态，时间不能在此流逝
-        going_down: { invariant: 'x<=5', isUrgent: true },
-        down: {},
-        going_up: {}
-      },
-      edges: [
-        { source: 'up', target: 'going_down', event: 'approach' },
-        { source: 'going_down', target: 'down', event: 'enter', guard: 'x>=1' },
-        { source: 'down', target: 'going_up', event: 'exit' },
-        { source: 'going_up', target: 'up', event: 'exit' }
+        { source: 'l0', target: 'l1', event: 'a', action: 'x = 0' },
+        { source: 'l1', target: 'l2', event: 'b', guard: 'x >= 1' }
       ]
     }
-  },
-  synchronizations: [
-    { constraints: ['train@approach', 'gate@approach'] },
-    { constraints: ['train@enter', 'gate@enter'] },
-    // 这是一个弱同步的例子
-    { constraints: ['train@exit?', 'gate@exit?'] }
-  ]
+  }
+  // 没有同步，因为只有一个进程
 }
 
 if (require.main === module) {
-  runSimulation(trainGateModel)
+  runSimulation(simpleModel)
     .then((result) => {
-      console.log('Simulation Result:', result)
+      console.log('Simulation Result:', JSON.stringify(result, null, 2))
+      process.exit(0) // 成功时退出
     })
     .catch((error) => {
       console.error('Simulation Error:', error)
+      process.exit(1) // 失败时退出
     })
 }

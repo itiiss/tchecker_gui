@@ -1,0 +1,7 @@
+digraph simple_test_system {
+  0 [initial="true", intval="", labels="", vloc="<l0>", zone="(x==0)"]
+  1 [intval="", labels="", vloc="<l1>", zone="(x==0)"]
+  2 [intval="", labels="", vloc="<l2>", zone="(1<=x<=2)"]
+  0 -> 1 [vedge="<p1@a>"]
+  1 -> 2 [vedge="<p1@b>"]
+}
