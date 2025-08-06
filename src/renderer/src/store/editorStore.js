@@ -1,106 +1,166 @@
-import { create } from 'zustand'
-import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
-
-// 这是一个更符合您最终模型的初始状态示例
-const initialState = {
-  nodes: [
-    {
-      id: 'train.far',
-      type: 'timedAutomatonNode',
-      position: { x: 100, y: 150 },
-      data: {
-        processName: 'train',
-        locationName: 'far',
-        isInitial: true,
-        invariant: '',
-        labels: [],
-        isCommitted: false,
-        isUrgent: false
-      }
-    },
-    {
-      id: 'train.near',
-      type: 'timedAutomatonNode',
-      position: { x: 400, y: 150 },
-      data: {
-        processName: 'train',
-        locationName: 'near',
-        isInitial: false,
-        invariant: 'x <= 10',
-        labels: ['safe'],
-        isCommitted: false,
-        isUrgent: false
-      }
-    }
-  ],
-  edges: [
-    {
-      id: 'e_train_1',
-      source: 'train.far',
-      target: 'train.near',
-      type: 'timedAutomatonEdge',
-      data: {
-        processName: 'train',
-        event: 'approach',
-        guard: 'x >= 5',
-        action: 'x = 0'
-      }
-    }
-  ]
-}
+import { create } from 'zustand';
+import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 
 const useEditorStore = create((set, get) => ({
-  nodes: initialState.nodes,
-  edges: initialState.edges,
+  systemName: 'MySystem',
+  clocks: [{ name: 'x', size: 1 }],
+  intVars: [],
+  events: [],
+  synchronizations: [],
+  processes: {
+    train: {
+      nodes: [
+        {
+          id: 'train.far',
+          type: 'timedAutomatonNode',
+          position: { x: 100, y: 150 },
+          data: {
+            processName: 'train',
+            locationName: 'far',
+            isInitial: true,
+            invariant: '',
+            labels: [],
+            isCommitted: false,
+            isUrgent: false
+          }
+        },
+        {
+          id: 'train.near',
+          type: 'timedAutomatonNode',
+          position: { x: 400, y: 150 },
+          data: {
+            processName: 'train',
+            locationName: 'near',
+            isInitial: false,
+            invariant: 'x <= 10',
+            labels: ['safe'],
+            isCommitted: false,
+            isUrgent: false
+          }
+        }
+      ],
+      edges: [
+        {
+          id: 'e_train_1',
+          source: 'train.far',
+          target: 'train.near',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'train',
+            event: 'approach',
+            guard: 'x >= 5',
+            action: 'x = 0'
+          }
+        }
+      ]
+    }
+  },
+  activeProcess: 'train',
   mode: 'select',
 
-  // 通用的节点数据更新函数
-  updateNodeData: (nodeId, dataUpdate) => {
-    set({
-      nodes: get().nodes.map((node) =>
-        node.id === nodeId ? { ...node, data: { ...node.data, ...dataUpdate } } : node
-      )
-    })
+  setSystemName: (name) => set({ systemName: name }),
+  setClocks: (clocks) => set({ clocks }),
+  setIntVars: (intVars) => set({ intVars }),
+  setEvents: (events) => set({ events }),
+  setSynchronizations: (synchronizations) => set({ synchronizations }),
+
+  setActiveProcess: (processName) => set({ activeProcess: processName }),
+
+  addProcess: (processName) => {
+    set((state) => ({
+      processes: {
+        ...state.processes,
+        [processName]: {
+          nodes: [],
+          edges: []
+        }
+      }
+    }));
   },
 
-  // 通用的边数据更新函数
+  updateNodeData: (nodeId, dataUpdate) => {
+    const activeProcess = get().activeProcess;
+    set((state) => ({
+      processes: {
+        ...state.processes,
+        [activeProcess]: {
+          ...state.processes[activeProcess],
+          nodes: state.processes[activeProcess].nodes.map((node) =>
+            node.id === nodeId ? { ...node, data: { ...node.data, ...dataUpdate } } : node
+          )
+        }
+      }
+    }));
+  },
+
   updateEdgeData: (edgeId, dataUpdate) => {
-    set({
-      edges: get().edges.map((edge) =>
-        edge.id === edgeId ? { ...edge, data: { ...edge.data, ...dataUpdate } } : edge
-      )
-    })
+    const activeProcess = get().activeProcess;
+    set((state) => ({
+      processes: {
+        ...state.processes,
+        [activeProcess]: {
+          ...state.processes[activeProcess],
+          edges: state.processes[activeProcess].edges.map((edge) =>
+            edge.id === edgeId ? { ...edge, data: { ...edge.data, ...dataUpdate } } : edge
+          )
+        }
+      }
+    }));
   },
 
   setNodes: (updater) => {
-    if (typeof updater === 'function') {
-      set({ nodes: updater(get().nodes) })
-    } else {
-      set({ nodes: updater })
-    }
+    const activeProcess = get().activeProcess;
+    set((state) => ({
+      processes: {
+        ...state.processes,
+        [activeProcess]: {
+          ...state.processes[activeProcess],
+          nodes: typeof updater === 'function' ? updater(state.processes[activeProcess].nodes) : updater
+        }
+      }
+    }));
   },
 
   setEdges: (updater) => {
-    if (typeof updater === 'function') {
-      set({ edges: updater(get().edges) })
-    } else {
-      set({ edges: updater })
-    }
+    const activeProcess = get().activeProcess;
+    set((state) => ({
+      processes: {
+        ...state.processes,
+        [activeProcess]: {
+          ...state.processes[activeProcess],
+          edges: typeof updater === 'function' ? updater(state.processes[activeProcess].edges) : updater
+        }
+      }
+    }));
   },
 
   setMode: (newMode) => set({ mode: newMode }),
 
   onNodesChange: (changes) => {
-    set({
-      nodes: applyNodeChanges(changes, get().nodes)
-    })
+    const activeProcess = get().activeProcess;
+    set((state) => ({
+      processes: {
+        ...state.processes,
+        [activeProcess]: {
+          ...state.processes[activeProcess],
+          nodes: applyNodeChanges(changes, state.processes[activeProcess].nodes)
+        }
+      }
+    }));
   },
 
   onEdgesChange: (changes) => {
-    set({
-      edges: applyEdgeChanges(changes, get().edges)
-    })
+    const activeProcess = get().activeProcess;
+    set((state) => ({
+      processes: {
+        ...state.processes,
+        [activeProcess]: {
+          ...state.processes[activeProcess],
+          edges: applyEdgeChanges(changes, state.processes[activeProcess].edges)
+        }
+      }
+    }));
   }
-}))
+}));
 
-export default useEditorStore
+export default useEditorStore;
