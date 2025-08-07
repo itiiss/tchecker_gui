@@ -11,12 +11,23 @@ function TimedAutomatonNode({ id, data }) {
   const handleContextMenu = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    setIsEditing(true)
+    // Only allow editing if not in simulator mode (check if isCurrentLocation exists)
+    if (data.isCurrentLocation === undefined) {
+      setIsEditing(true)
+    }
+  }
+
+  // Dynamic styles based on current state
+  const dynamicNodeStyle = {
+    ...nodeStyle,
+    background: data.isCurrentLocation ? '#ffebee' : '#eceff1',
+    border: data.isCurrentLocation ? '3px solid #f44336' : '2px solid #546e7a',
+    boxShadow: data.isCurrentLocation ? '0 0 10px rgba(244, 67, 54, 0.5)' : 'none'
   }
 
   return (
     <>
-      <div style={nodeStyle} onContextMenu={handleContextMenu}>
+      <div style={dynamicNodeStyle} onContextMenu={handleContextMenu}>
         <Handle type="target" position={Position.Top} />
 
         {/* Initial 状态的同心内圆 */}
@@ -30,9 +41,24 @@ function TimedAutomatonNode({ id, data }) {
 
         {/* 确保文本在最上层 */}
         <div style={{ zIndex: 1 }}>
-          <div style={{ fontWeight: 'bold' }}>{data.locationName}</div>
-          <div style={{ fontSize: '10px', color: '#607d8b' }}>{data.invariant}</div>
-          <div style={{ fontSize: '10px', color: '#607d8b' }}>{data.labels?.join(',') || ''}</div>
+          <div style={{ 
+            fontWeight: 'bold',
+            color: data.isCurrentLocation ? '#c62828' : '#333'
+          }}>
+            {data.locationName}
+          </div>
+          <div style={{ 
+            fontSize: '10px', 
+            color: data.isCurrentLocation ? '#c62828' : '#607d8b'
+          }}>
+            {data.invariant}
+          </div>
+          <div style={{ 
+            fontSize: '10px', 
+            color: data.isCurrentLocation ? '#c62828' : '#607d8b'
+          }}>
+            {data.labels?.join(',') || ''}
+          </div>
         </div>
 
         <Handle type="source" position={Position.Bottom} />

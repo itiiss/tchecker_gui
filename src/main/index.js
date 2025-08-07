@@ -13,7 +13,9 @@ function createWindow() {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: false,
+      contextIsolation: false,
+      nodeIntegration: true
     }
   })
 
@@ -51,6 +53,25 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+
+  // IPC handler for running simulation
+  ipcMain.handle('run-simulation', async (event, modelData) => {
+    try {
+      console.log('Received simulation request:', modelData)
+      // Use absolute path from app root
+      const appPath = app.getAppPath()
+      const simulationManagerPath = join(appPath, 'src/main/utils/simulation-manager.js')
+      console.log('Trying to require:', simulationManagerPath)
+      const { runSimulation } = require(simulationManagerPath)
+      const result = await runSimulation(modelData)
+      return result
+    } catch (error) {
+      console.error('Simulation error:', error)
+      console.error('App path:', app.getAppPath())
+      console.error('__dirname:', __dirname)
+      throw error
+    }
+  })
 
   createWindow()
 
