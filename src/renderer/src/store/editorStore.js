@@ -4,29 +4,29 @@ import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
 const useEditorStore = create((set, get) => ({
   systemName: 'ProductionLineSystem',
   clocks: [
-    { name: 'workerTime', size: 1 },    // 工人操作时间
-    { name: 'machineTime', size: 1 },   // 机器处理时间
-    { name: 'qcTime', size: 1 },        // 质检时间
-    { name: 'globalTime', size: 1 }     // 全局时间
+    { name: 'workerTime', size: 1 }, // 工人操作时间
+    { name: 'machineTime', size: 1 }, // 机器处理时间
+    { name: 'qcTime', size: 1 }, // 质检时间
+    { name: 'globalTime', size: 1 } // 全局时间
   ],
   intVars: [
-    { name: 'rawMaterials', size: 1, min: 0, max: 5, initial: 3 },     // 原材料库存
-    { name: 'workerQueue', size: 1, min: 0, max: 3, initial: 0 },      // 工人队列中的任务
-    { name: 'machineQueue', size: 1, min: 0, max: 2, initial: 0 },     // 机器队列中的任务
+    { name: 'rawMaterials', size: 1, min: 0, max: 5, initial: 3 }, // 原材料库存
+    { name: 'workerQueue', size: 1, min: 0, max: 3, initial: 0 }, // 工人队列中的任务
+    { name: 'machineQueue', size: 1, min: 0, max: 2, initial: 0 }, // 机器队列中的任务
     { name: 'finishedProducts', size: 1, min: 0, max: 10, initial: 0 }, // 完成品
-    { name: 'defectiveProducts', size: 1, min: 0, max: 5, initial: 0 }  // 次品
+    { name: 'defectiveProducts', size: 1, min: 0, max: 5, initial: 0 } // 次品
   ],
   events: [
-    { name: 'startWork' },        // 开始工作
-    { name: 'finishPrep' },       // 完成准备
-    { name: 'machineProcess' },   // 机器处理
-    { name: 'finishMachine' },    // 机器完成
-    { name: 'qualityCheck' },     // 质检
-    { name: 'passQC' },          // 质检通过
-    { name: 'failQC' },          // 质检失败
-    { name: 'restockMaterial' },  // 补充原材料
-    { name: 'urgentOrder' },      // 紧急订单
-    { name: 'maintenanceBreak' }  // 维护休息
+    { name: 'startWork' }, // 开始工作
+    { name: 'finishPrep' }, // 完成准备
+    { name: 'machineProcess' }, // 机器处理
+    { name: 'finishMachine' }, // 机器完成
+    { name: 'qualityCheck' }, // 质检
+    { name: 'passQC' }, // 质检通过
+    { name: 'failQC' }, // 质检失败
+    { name: 'restockMaterial' }, // 补充原材料
+    { name: 'urgentOrder' }, // 紧急订单
+    { name: 'maintenanceBreak' } // 维护休息
   ],
   synchronizations: [],
   processes: {
@@ -442,7 +442,7 @@ const useEditorStore = create((set, get) => ({
     }
 
     // Deep copy the process data and update IDs
-    const copiedNodes = processToCopy.nodes.map(node => ({
+    const copiedNodes = processToCopy.nodes.map((node) => ({
       ...node,
       id: node.id.replace(processName, newProcessName),
       data: {
@@ -451,7 +451,7 @@ const useEditorStore = create((set, get) => ({
       }
     }))
 
-    const copiedEdges = processToCopy.edges.map(edge => ({
+    const copiedEdges = processToCopy.edges.map((edge) => ({
       ...edge,
       id: edge.id.replace(processName, newProcessName),
       source: edge.source.replace(processName, newProcessName),
@@ -565,85 +565,6 @@ const useEditorStore = create((set, get) => ({
   setSimulationLoading: (loading) => set({ simulationLoading: loading }),
   setSimulationError: (error) => set({ simulationError: error }),
 
-  runSimulation: async () => {
-    const state = get()
-    set({ simulationLoading: true, simulationError: null })
-
-    try {
-      // Convert ReactFlow format to TCK generator format
-      const convertedProcesses = {}
-      const allEvents = new Set()
-
-      for (const [procName, procData] of Object.entries(state.processes)) {
-        const locations = {}
-        const edges = []
-
-        // Convert nodes array to locations object
-        if (procData.nodes) {
-          procData.nodes.forEach((node) => {
-            const locationName = node.data.locationName || node.id.split('.').pop()
-            locations[locationName] = {
-              isInitial: node.data.isInitial || false,
-              invariant: node.data.invariant || '',
-              labels: node.data.labels || [],
-              isCommitted: node.data.isCommitted || false,
-              isUrgent: node.data.isUrgent || false
-            }
-          })
-        }
-
-        // Convert edges array and collect events
-        if (procData.edges) {
-          procData.edges.forEach((edge) => {
-            const sourceLocation = edge.source.split('.').pop()
-            const targetLocation = edge.target.split('.').pop()
-            const eventName = edge.data.event || ''
-
-            // Collect non-empty event names
-            if (eventName && eventName.trim()) {
-              allEvents.add(eventName.trim())
-            }
-
-            edges.push({
-              source: sourceLocation,
-              target: targetLocation,
-              event: eventName,
-              guard: edge.data.guard || '',
-              action: edge.data.action || ''
-            })
-          })
-        }
-
-        convertedProcesses[procName] = {
-          locations,
-          edges
-        }
-      }
-
-      // Combine manually defined events with auto-discovered events
-      const combinedEvents = [
-        ...new Set([...state.events.map((e) => e.name || e).filter(Boolean), ...allEvents])
-      ]
-
-      const modelData = {
-        systemName: state.systemName,
-        clocks: state.clocks,
-        intVars: state.intVars,
-        events: combinedEvents,
-        synchronizations: state.synchronizations,
-        processes: convertedProcesses
-      }
-
-      // Direct IPC call since preload is not working
-      const { ipcRenderer } = window.require('electron')
-      const result = await ipcRenderer.invoke('run-simulation', modelData)
-      set({ simulationResult: result, simulationLoading: false })
-      return result
-    } catch (error) {
-      set({ simulationError: error.message, simulationLoading: false })
-      throw error
-    }
-  },
 
   // Simulator control functions
   initializeSimulator: async () => {
@@ -666,14 +587,14 @@ const useEditorStore = create((set, get) => ({
         // Parse the result from tck-simulate
         const initialStateData = result.initialState
         const availableTransitions = result.availableTransitions
-        
+
         console.log('Initial state data from backend:', initialStateData)
         console.log('Available transitions from backend:', availableTransitions)
 
         // Convert backend state format to frontend format
         const currentState = get().parseBackendState(initialStateData)
         const enabledTransitions = get().parseBackendTransitions(availableTransitions)
-        
+
         console.log('Parsed current state:', currentState)
         console.log('Parsed enabled transitions:', enabledTransitions)
 
@@ -681,16 +602,18 @@ const useEditorStore = create((set, get) => ({
           simulatorInitialized: true,
           currentState,
           enabledTransitions,
-          simulationTrace: [{ 
-            state: currentState, 
-            transition: null, 
-            backendState: initialStateData,
-            enabledTransitions: enabledTransitions // 缓存来自tck-simulate的转换
-          }],
+          simulationTrace: [
+            {
+              state: currentState,
+              transition: null,
+              backendState: initialStateData,
+              enabledTransitions: enabledTransitions // 缓存来自tck-simulate的转换
+            }
+          ],
           tracePosition: 0,
           simulationLoading: false
         })
-        
+
         console.log('Simulator initialized successfully!')
       } else {
         console.error('Backend returned error:', result.error)
@@ -698,10 +621,10 @@ const useEditorStore = create((set, get) => ({
       }
     } catch (error) {
       console.error('Initialize simulator error:', error)
-      set({ 
-        simulationError: error.message, 
+      set({
+        simulationError: error.message,
         simulationLoading: false,
-        simulatorInitialized: false 
+        simulatorInitialized: false
       })
     }
   },
@@ -723,7 +646,12 @@ const useEditorStore = create((set, get) => ({
 
       // Call backend to execute transition
       const { ipcRenderer } = window.require('electron')
-      const result = await ipcRenderer.invoke('execute-transition', modelData, transitionId, currentBackendState)
+      const result = await ipcRenderer.invoke(
+        'execute-transition',
+        modelData,
+        transitionId,
+        currentBackendState
+      )
 
       if (result.success) {
         // Parse the new state and transitions
@@ -751,9 +679,9 @@ const useEditorStore = create((set, get) => ({
         throw new Error(result.error)
       }
     } catch (error) {
-      set({ 
-        simulationError: error.message, 
-        simulationLoading: false 
+      set({
+        simulationError: error.message,
+        simulationLoading: false
       })
       console.error('Execute transition error:', error)
     }
@@ -768,7 +696,7 @@ const useEditorStore = create((set, get) => ({
     if (state.tracePosition > 0) {
       const newPosition = state.tracePosition - 1
       const traceEntry = state.simulationTrace[newPosition]
-      
+
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
         currentState: traceEntry.state,
@@ -784,7 +712,7 @@ const useEditorStore = create((set, get) => ({
     if (state.tracePosition < state.simulationTrace.length - 1) {
       const newPosition = state.tracePosition + 1
       const traceEntry = state.simulationTrace[newPosition]
-      
+
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
         currentState: traceEntry.state,
@@ -808,7 +736,7 @@ const useEditorStore = create((set, get) => ({
     const state = get()
     if (position >= 0 && position < state.simulationTrace.length) {
       const traceEntry = state.simulationTrace[position]
-      
+
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
         currentState: traceEntry.state,
@@ -917,11 +845,11 @@ const useEditorStore = create((set, get) => ({
   parseBackendState: (backendState) => {
     // Parse the backend state format to extract process locations
     console.log('Parsing backend state:', backendState)
-    
+
     if (!backendState) return {}
-    
+
     const currentState = {}
-    
+
     // tck-simulate DOT格式：attributes.vloc="<location1,location2,location3>"
     if (backendState.attributes && backendState.attributes.vloc) {
       const vloc = backendState.attributes.vloc
@@ -929,7 +857,7 @@ const useEditorStore = create((set, get) => ({
       const locations = cleanVloc.split(',')
       const state = get()
       const processNames = Object.keys(state.processes)
-      
+
       locations.forEach((location, index) => {
         if (index < processNames.length && location.trim()) {
           currentState[processNames[index]] = location.trim()
@@ -939,14 +867,14 @@ const useEditorStore = create((set, get) => ({
     // 如果直接是字符串格式
     else if (typeof backendState === 'string') {
       const locationPairs = backendState.split(',')
-      locationPairs.forEach(pair => {
+      locationPairs.forEach((pair) => {
         const [process, location] = pair.split('.')
         if (process && location) {
           currentState[process] = location
         }
       })
     }
-    
+
     console.log('Parsed current state:', currentState)
     return currentState
   },
@@ -954,27 +882,27 @@ const useEditorStore = create((set, get) => ({
   parseBackendTransitions: (backendTransitions) => {
     // Parse DOT transition format to frontend format
     console.log('Parsing backend transitions:', backendTransitions)
-    
+
     if (!Array.isArray(backendTransitions)) return []
-    
+
     return backendTransitions.map((edge, index) => {
       // DOT格式：{id, source, target, attributes: {vedge: "<process@event>"}}
       const vedge = edge.attributes?.vedge || ''
-      
+
       let processName = 'unknown'
       let event = ''
-      
+
       if (vedge) {
         // 移除< >括号
         const cleanVedge = vedge.replace(/[<>]/g, '')
         if (cleanVedge.includes('@')) {
-          [processName, event] = cleanVedge.split('@')
+          ;[processName, event] = cleanVedge.split('@')
         } else if (cleanVedge) {
           // 如果没有@符号，可能整个就是事件名
           event = cleanVedge
         }
       }
-      
+
       const parsedTransition = {
         id: edge.id || `${edge.source}_to_${edge.target}_${index}`,
         processName: processName.trim(),
@@ -985,7 +913,7 @@ const useEditorStore = create((set, get) => ({
         action: '', // DOT格式不直接提供action信息
         edgeData: edge
       }
-      
+
       console.log('Parsed transition:', parsedTransition)
       return parsedTransition
     })

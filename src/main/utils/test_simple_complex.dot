@@ -1,5 +1,0 @@
-digraph ProducerConsumerSystem {
-  0 [initial="true", intval="buffer=0", labels="", vloc="<Idle,Empty>", zone="(pt==0 && ct==0 && pt==ct)"]
-  1 [intval="buffer=1", labels="", vloc="<Idle,Partial>", zone="(0<=pt<=5 && 0<=ct<=5 && pt==ct)"]
-  0 -> 1 [vedge="<buffer@produce>"]
-}

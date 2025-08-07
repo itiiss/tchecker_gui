@@ -1,5 +1,0 @@
-digraph TestSystem {
-  0 [initial="true", intval="counter=0", labels="waiting", vloc="<Idle,Zero>", zone="(x==0)"]
-  1 [intval="counter=0", labels="active", vloc="<Running,Zero>", zone="(x==0)"]
-  0 -> 1 [vedge="<timer@start>"]
-}

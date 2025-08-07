@@ -1,28 +1,28 @@
-import React, { useCallback } from 'react';
-import { Box, Tooltip, IconButton, Divider } from '@mui/material';
+import React, { useCallback } from 'react'
+import { Box, Tooltip, IconButton, Divider } from '@mui/material'
 import {
   AddCircleOutline as AddCircleOutlineIcon,
   Timeline as TimelineIcon,
   ZoomIn as ZoomInIcon,
   ZoomOut as ZoomOutIcon,
   PanTool as PanToolIcon
-} from '@mui/icons-material';
-import { ReactFlow, useReactFlow, ReactFlowProvider } from '@xyflow/react';
-import useEditorStore from '../store/editorStore';
-import TimedAutomatonEdge from '../components/edge';
-import TimedAutomatonNode from '../components/node';
-import { nanoid } from 'nanoid';
-import '@xyflow/react/dist/style.css';
+} from '@mui/icons-material'
+import { ReactFlow, useReactFlow, ReactFlowProvider } from '@xyflow/react'
+import useEditorStore from '../store/editorStore'
+import TimedAutomatonEdge from '../components/edge'
+import TimedAutomatonNode from '../components/node'
+import { nanoid } from 'nanoid'
+import '@xyflow/react/dist/style.css'
 
 const nodeTypes = {
   timedAutomatonNode: TimedAutomatonNode
-};
+}
 const edgeTypes = {
   timedAutomatonEdge: TimedAutomatonEdge
-};
+}
 
-let id = 2;
-const getId = () => `${id++}`;
+let id = 2
+const getId = () => `${id++}`
 
 const EditorContent = () => {
   const {
@@ -34,10 +34,10 @@ const EditorContent = () => {
     setNodes,
     setEdges,
     setMode
-  } = useEditorStore();
-  const { zoomIn, zoomOut, screenToFlowPosition } = useReactFlow();
+  } = useEditorStore()
+  const { zoomIn, zoomOut, screenToFlowPosition } = useReactFlow()
 
-  const { nodes, edges } = processes[activeProcess] || { nodes: [], edges: [] };
+  const { nodes, edges } = processes[activeProcess] || { nodes: [], edges: [] }
 
   const onConnect = useCallback(
     (params) => {
@@ -50,11 +50,11 @@ const EditorContent = () => {
           guard: 'true',
           update: ''
         }
-      };
-      setEdges((eds) => [...eds, newEdge]);
+      }
+      setEdges((eds) => [...eds, newEdge])
     },
     [setEdges]
-  );
+  )
 
   const onPaneClick = useCallback(
     (event) => {
@@ -62,19 +62,19 @@ const EditorContent = () => {
         const position = screenToFlowPosition({
           x: event.clientX,
           y: event.clientY
-        });
-        const newId = getId();
+        })
+        const newId = getId()
         const newNode = {
           id: newId,
           type: 'timedAutomatonNode',
           position,
           data: { label: `Node ${newId}`, invariant: 'true' }
-        };
-        setNodes((nds) => nds.concat(newNode));
+        }
+        setNodes((nds) => nds.concat(newNode))
       }
     },
     [mode, screenToFlowPosition, setNodes]
-  );
+  )
 
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -136,8 +136,8 @@ const EditorContent = () => {
         />
       </div>
     </Box>
-  );
-};
+  )
+}
 
 const EditorView = () => {
   return (
@@ -146,7 +146,7 @@ const EditorView = () => {
         <EditorContent />
       </ReactFlowProvider>
     </Box>
-  );
-};
+  )
+}
 
-export default EditorView;
+export default EditorView

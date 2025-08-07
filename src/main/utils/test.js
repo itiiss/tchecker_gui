@@ -1,4 +1,4 @@
-const { runSimulation } = require('./simulation-manager')
+const { initializeSimulator } = require('./simulation-manager')
 
 // 一个最简化的测试模型，用于验证端到端流程
 const simpleModel = {
@@ -22,13 +22,13 @@ const simpleModel = {
 }
 
 if (require.main === module) {
-  runSimulation(simpleModel)
+  initializeSimulator(simpleModel)
     .then((result) => {
-      console.log('Simulation Result:', JSON.stringify(result, null, 2))
+      console.log('Initialize Simulator Result:', JSON.stringify(result, null, 2))
       process.exit(0) // 成功时退出
     })
     .catch((error) => {
-      console.error('Simulation Error:', error)
+      console.error('Initialize Simulator Error:', error)
       process.exit(1) // 失败时退出
     })
 }

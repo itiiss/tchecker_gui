@@ -9,13 +9,13 @@ import {
 import useEditorStore from '../store/editorStore'
 
 const Toolbar = ({ onTabChange }) => {
-  const { runSimulation, simulationLoading } = useEditorStore()
+  const { initializeSimulator, simulationLoading } = useEditorStore()
 
   const handleRunSimulation = async () => {
     try {
       console.log('window.api:', window.api)
       console.log('window.api.runSimulation:', window.api?.runSimulation)
-      await runSimulation()
+      await initializeSimulator()
       // Switch to simulator tab after running simulation
       if (onTabChange) {
         onTabChange('simulator')
@@ -43,16 +43,8 @@ const Toolbar = ({ onTabChange }) => {
         </IconButton>
       </Tooltip>
       <Tooltip title="Run Simulation">
-        <IconButton 
-          onClick={handleRunSimulation} 
-          disabled={simulationLoading}
-          color="primary"
-        >
-          {simulationLoading ? (
-            <CircularProgress size={24} />
-          ) : (
-            <PlayArrowIcon />
-          )}
+        <IconButton onClick={handleRunSimulation} disabled={simulationLoading} color="primary">
+          {simulationLoading ? <CircularProgress size={24} /> : <PlayArrowIcon />}
         </IconButton>
       </Tooltip>
     </div>

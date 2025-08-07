@@ -41,22 +41,28 @@ function TimedAutomatonNode({ id, data }) {
 
         {/* 确保文本在最上层 */}
         <div style={{ zIndex: 1 }}>
-          <div style={{ 
-            fontWeight: 'bold',
-            color: data.isCurrentLocation ? '#c62828' : '#333'
-          }}>
+          <div
+            style={{
+              fontWeight: 'bold',
+              color: data.isCurrentLocation ? '#c62828' : '#333'
+            }}
+          >
             {data.locationName}
           </div>
-          <div style={{ 
-            fontSize: '10px', 
-            color: data.isCurrentLocation ? '#c62828' : '#607d8b'
-          }}>
+          <div
+            style={{
+              fontSize: '10px',
+              color: data.isCurrentLocation ? '#c62828' : '#607d8b'
+            }}
+          >
             {data.invariant}
           </div>
-          <div style={{ 
-            fontSize: '10px', 
-            color: data.isCurrentLocation ? '#c62828' : '#607d8b'
-          }}>
+          <div
+            style={{
+              fontSize: '10px',
+              color: data.isCurrentLocation ? '#c62828' : '#607d8b'
+            }}
+          >
             {data.labels?.join(',') || ''}
           </div>
         </div>

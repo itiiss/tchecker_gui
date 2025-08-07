@@ -1,67 +1,65 @@
-import React from 'react';
-import { Box, Typography, TextField, Button, List, ListItem, ListItemText, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import useEditorStore from '../store/editorStore';
+import React from 'react'
+import { Box, Typography, TextField, Button, List, ListItem, IconButton } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import useEditorStore from '../store/editorStore'
 
 const DeclarationsView = () => {
   const {
     systemName,
     clocks,
     intVars,
-    events,
     synchronizations,
     setSystemName,
     setClocks,
     setIntVars,
-    setEvents,
     setSynchronizations
-  } = useEditorStore();
+  } = useEditorStore()
 
   const handleAddClock = () => {
-    setClocks([...clocks, { name: '', size: 1 }]);
-  };
+    setClocks([...clocks, { name: '', size: 1 }])
+  }
 
   const handleClockChange = (index, field, value) => {
-    const newClocks = [...clocks];
-    newClocks[index][field] = value;
-    setClocks(newClocks);
-  };
+    const newClocks = [...clocks]
+    newClocks[index][field] = value
+    setClocks(newClocks)
+  }
 
   const handleRemoveClock = (index) => {
-    const newClocks = clocks.filter((_, i) => i !== index);
-    setClocks(newClocks);
-  };
+    const newClocks = clocks.filter((_, i) => i !== index)
+    setClocks(newClocks)
+  }
 
   const handleAddIntVar = () => {
-    setIntVars([...intVars, { name: '', size: 1, min: 0, max: 1, initial: 0 }]);
-  };
+    setIntVars([...intVars, { name: '', size: 1, min: 0, max: 1, initial: 0 }])
+  }
 
   const handleIntVarChange = (index, field, value) => {
-    const newIntVars = [...intVars];
-    newIntVars[index][field] = value;
-    setIntVars(newIntVars);
-  };
+    const newIntVars = [...intVars]
+    newIntVars[index][field] = value
+    setIntVars(newIntVars)
+  }
 
   const handleRemoveIntVar = (index) => {
-    const newIntVars = intVars.filter((_, i) => i !== index);
-    setIntVars(newIntVars);
-  };
+    const newIntVars = intVars.filter((_, i) => i !== index)
+    setIntVars(newIntVars)
+  }
 
   const handleAddSynchronization = () => {
-    setSynchronizations([...synchronizations, { constraints: [] }]);
-  };
+    setSynchronizations([...synchronizations, { constraints: [] }])
+  }
 
   const handleSynchronizationChange = (index, value) => {
-    const newSynchronizations = [...synchronizations];
-    newSynchronizations[index].constraints = value.split(',').map(s => s.trim());
-    setSynchronizations(newSynchronizations);
-  };
+    const newSynchronizations = [...synchronizations]
+    newSynchronizations[index].constraints = value.split(',').map((s) => s.trim())
+    setSynchronizations(newSynchronizations)
+  }
 
   const handleRemoveSynchronization = (index) => {
-    const newSynchronizations = synchronizations.filter((_, i) => i !== index);
-    setSynchronizations(newSynchronizations);
-  };
+    const newSynchronizations = synchronizations.filter((_, i) => i !== index)
+    setSynchronizations(newSynchronizations)
+  }
 
   // Similar handlers for intVars, events, and synchronizations can be added here
 
@@ -105,7 +103,9 @@ const DeclarationsView = () => {
         Add Clock
       </Button>
 
-      <Typography variant="h6" sx={{ mt: 3 }}>Integer Variables</Typography>
+      <Typography variant="h6" sx={{ mt: 3 }}>
+        Integer Variables
+      </Typography>
       <List>
         {intVars.map((intVar, index) => (
           <ListItem key={index}>
@@ -153,7 +153,9 @@ const DeclarationsView = () => {
         Add Integer Variable
       </Button>
 
-      <Typography variant="h6" sx={{ mt: 3 }}>Synchronizations</Typography>
+      <Typography variant="h6" sx={{ mt: 3 }}>
+        Synchronizations
+      </Typography>
       <List>
         {synchronizations.map((sync, index) => (
           <ListItem key={index}>
@@ -174,7 +176,7 @@ const DeclarationsView = () => {
         Add Synchronization
       </Button>
     </Box>
-  );
-};
+  )
+}
 
-export default DeclarationsView;
+export default DeclarationsView

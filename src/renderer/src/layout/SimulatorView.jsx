@@ -1,27 +1,25 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import { 
-  Box, 
-  Typography, 
-  Paper, 
-  List, 
-  ListItem, 
-  ListItemText, 
+import { useEffect, useState, useMemo } from 'react'
+import {
+  Box,
+  Typography,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
   ListItemButton,
   Button,
   Slider,
-  Stack,
-  Chip
+  Stack
 } from '@mui/material'
-import { 
+import {
   PlayArrow as NextIcon,
   Refresh as ResetIcon,
   NavigateBefore as PrevIcon,
-  NavigateNext as ForwardIcon,
   Shuffle as RandomIcon,
   PlayArrow as AutoPlayIcon,
   Pause as PauseIcon
 } from '@mui/icons-material'
-import { ReactFlow, ReactFlowProvider, Background, Controls } from '@xyflow/react'
+import { ReactFlow, ReactFlowProvider, Background } from '@xyflow/react'
 import TimedAutomatonNode from '../components/node'
 import TimedAutomatonEdge from '../components/edge'
 import useEditorStore from '../store/editorStore'
@@ -50,7 +48,6 @@ const SimulatorView = () => {
     executeTransition,
     resetSimulation,
     stepBackward,
-    stepForward,
     randomStep,
     jumpToTracePosition
   } = useEditorStore()
@@ -61,7 +58,7 @@ const SimulatorView = () => {
 
   useEffect(() => {
     if (!simulatorInitialized) {
-      initializeSimulator().catch(error => {
+      initializeSimulator().catch((error) => {
         console.error('Failed to initialize simulator:', error)
       })
     }
@@ -72,7 +69,7 @@ const SimulatorView = () => {
     let interval
     if (autoPlay && enabledTransitions.length > 0) {
       interval = setInterval(async () => {
-        await randomStep().catch(error => {
+        await randomStep().catch((error) => {
           console.error('Auto play error:', error)
           setAutoPlay(false)
         })
@@ -83,25 +80,28 @@ const SimulatorView = () => {
 
   // Prepare visualization data for all processes
   const visualizationData = useMemo(() => {
-    return Object.entries(processes).map(([processName, processData]) => {
-      if (!processData.nodes) return null
-      
-      // Create nodes with current state highlighting
-      const nodes = processData.nodes.map(node => ({
-        ...node,
-        data: {
-          ...node.data,
-          // Highlight current location in red
-          isCurrentLocation: currentState?.[processName] === (node.data.locationName || node.id.split('.').pop())
+    return Object.entries(processes)
+      .map(([processName, processData]) => {
+        if (!processData.nodes) return null
+
+        // Create nodes with current state highlighting
+        const nodes = processData.nodes.map((node) => ({
+          ...node,
+          data: {
+            ...node.data,
+            // Highlight current location in red
+            isCurrentLocation:
+              currentState?.[processName] === (node.data.locationName || node.id.split('.').pop())
+          }
+        }))
+
+        return {
+          processName,
+          nodes,
+          edges: processData.edges || []
         }
-      }))
-      
-      return {
-        processName,
-        nodes,
-        edges: processData.edges || []
-      }
-    }).filter(Boolean)
+      })
+      .filter(Boolean)
   }, [processes, currentState])
 
   // [A] Enabled Transitions List
@@ -110,10 +110,10 @@ const SimulatorView = () => {
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
         <Typography variant="subtitle1">Enabled Transitions</Typography>
       </Box>
-      <List 
-        dense 
-        sx={{ 
-          flexGrow: 1, 
+      <List
+        dense
+        sx={{
+          flexGrow: 1,
           overflow: 'auto',
           '& .MuiListItemButton-root.selected': {
             backgroundColor: 'primary.main',
@@ -130,10 +130,7 @@ const SimulatorView = () => {
           </ListItem>
         ) : simulationError ? (
           <ListItem>
-            <ListItemText 
-              secondary={`Error: ${simulationError}`}
-              sx={{ color: 'error.main' }}
-            />
+            <ListItemText secondary={`Error: ${simulationError}`} sx={{ color: 'error.main' }} />
           </ListItem>
         ) : enabledTransitions.length === 0 ? (
           <ListItem>
@@ -146,7 +143,7 @@ const SimulatorView = () => {
               className={selectedTransition === index ? 'selected' : ''}
               onClick={async () => {
                 setSelectedTransition(index)
-                await executeTransition(transition.id).catch(error => {
+                await executeTransition(transition.id).catch((error) => {
                   console.error('Execute transition error:', error)
                 })
               }}
@@ -168,29 +165,34 @@ const SimulatorView = () => {
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
         <Typography variant="subtitle1">Process Visualizations</Typography>
       </Box>
-      <Box sx={{ 
-        flexGrow: 1, 
-        p: 2, 
-        overflow: 'auto',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: 2,
-        alignContent: 'start'
-      }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 2,
+          overflow: 'auto',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: 2,
+          alignContent: 'start'
+        }}
+      >
         {visualizationData.map((processViz) => (
-          <Box key={processViz.processName} sx={{ 
-            height: '250px',
-            width: '100%',
-            border: '1px solid #e0e0e0',
-            borderRadius: 1,
-            position: 'relative'
-          }}>
-            <Typography 
-              variant="subtitle2" 
-              sx={{ 
-                position: 'absolute', 
-                top: 8, 
-                left: 12, 
+          <Box
+            key={processViz.processName}
+            sx={{
+              height: '250px',
+              width: '100%',
+              border: '1px solid #e0e0e0',
+              borderRadius: 1,
+              position: 'relative'
+            }}
+          >
+            <Typography
+              variant="subtitle2"
+              sx={{
+                position: 'absolute',
+                top: 8,
+                left: 12,
                 zIndex: 1000,
                 backgroundColor: 'white',
                 px: 1,
@@ -228,7 +230,7 @@ const SimulatorView = () => {
     </Paper>
   )
 
-  // [C] Variables & Clocks  
+  // [C] Variables & Clocks
   const renderVariablesAndClocks = () => (
     <Paper sx={{ height: '30%', display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
@@ -246,7 +248,11 @@ const SimulatorView = () => {
             </Typography>
           ) : (
             intVars.map((intVar) => (
-              <Typography key={intVar.name} variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}>
+              <Typography
+                key={intVar.name}
+                variant="body2"
+                sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
+              >
                 {intVar.name} = {intVar.initial || 0}
               </Typography>
             ))
@@ -257,13 +263,15 @@ const SimulatorView = () => {
         <Typography variant="subtitle2" gutterBottom>
           Clock Constraints (Zone):
         </Typography>
-        <Box sx={{ 
-          backgroundColor: 'grey.50', 
-          p: 1, 
-          borderRadius: 1,
-          fontFamily: 'monospace',
-          fontSize: '0.75rem'
-        }}>
+        <Box
+          sx={{
+            backgroundColor: 'grey.50',
+            p: 1,
+            borderRadius: 1,
+            fontFamily: 'monospace',
+            fontSize: '0.75rem'
+          }}
+        >
           {Object.keys(clockValues || {}).length === 0 ? (
             <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
               No clock constraints
@@ -286,14 +294,14 @@ const SimulatorView = () => {
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
         <Typography variant="subtitle1">Simulation Trace & Controls</Typography>
       </Box>
-      
+
       {/* Simulation Trace */}
       <Box sx={{ flexGrow: 1, overflow: 'auto', p: 1 }}>
         {simulationTrace.map((entry, index) => (
-          <Typography 
+          <Typography
             key={index}
-            variant="body2" 
-            sx={{ 
+            variant="body2"
+            sx={{
               mb: 0.5,
               p: 0.5,
               backgroundColor: index === tracePosition ? 'primary.light' : 'transparent',
@@ -306,13 +314,15 @@ const SimulatorView = () => {
             }}
             onClick={() => jumpToTracePosition(index)}
           >
-            {index === 0 ? (
-              `Initial: (${Object.entries(entry.state).map(([proc, loc]) => loc).join(', ')})`
-            ) : entry.transition ? (
-              `Sync: ${entry.transition.processName}@${entry.transition.event || 'τ'}`
-            ) : (
-              `State: (${Object.entries(entry.state).map(([proc, loc]) => loc).join(', ')})`
-            )}
+            {index === 0
+              ? `Initial: (${Object.entries(entry.state)
+                  .map(([, loc]) => loc)
+                  .join(', ')})`
+              : entry.transition
+                ? `Sync: ${entry.transition.processName}@${entry.transition.event || 'τ'}`
+                : `State: (${Object.entries(entry.state)
+                    .map(([, loc]) => loc)
+                    .join(', ')})`}
           </Typography>
         ))}
       </Box>
@@ -363,7 +373,7 @@ const SimulatorView = () => {
             startIcon={<RandomIcon />}
             disabled={enabledTransitions.length === 0}
             onClick={async () => {
-              await randomStep().catch(error => {
+              await randomStep().catch((error) => {
                 console.error('Random step error:', error)
               })
             }}
@@ -376,7 +386,7 @@ const SimulatorView = () => {
             startIcon={<ResetIcon />}
             onClick={async () => {
               setAutoPlay(false)
-              await resetSimulation().catch(error => {
+              await resetSimulation().catch((error) => {
                 console.error('Reset simulation error:', error)
               })
             }}
@@ -384,7 +394,7 @@ const SimulatorView = () => {
             重置
           </Button>
         </Stack>
-        
+
         {/* Speed Control */}
         <Box>
           <Typography variant="body2" gutterBottom sx={{ fontSize: '0.8rem' }}>
