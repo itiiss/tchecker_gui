@@ -1,0 +1,1 @@
+{"intval":"rawMaterials=2,workerQueue=0,machineQueue=0,finishedProducts=0","labels":"","vloc":"<Preparing,Ready,Waiting>","zone":"(0<=workerTime<=5 && 0<=machineTime<=5 && 0<=qcTime<=5 && workerTime==machineTime && workerTime==qcTime && machineTime==qcTime)"}

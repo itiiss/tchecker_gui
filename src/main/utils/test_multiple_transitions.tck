@@ -1,0 +1,27 @@
+system:SimpleSystem{}
+
+# --- Global Declarations ---
+event:action1{}
+event:action2{}
+event:action3{}
+int:1:0:5:0:counter{}
+
+# --- Process Definitions ---
+
+# Process: actor
+process:actor{}
+location:actor:Start{initial:}
+location:actor:State1{}
+location:actor:State2{}
+location:actor:End{}
+
+# Multiple immediate transitions from Start
+edge:actor:Start:State1:action1{do:counter = counter + 1}
+edge:actor:Start:State2:action2{do:counter = counter + 2}
+edge:actor:Start:End:action3{do:counter = counter + 3}
+
+# Multiple transitions from State1
+edge:actor:State1:State2:action2{do:counter = counter + 1}
+edge:actor:State1:End:action3{do:counter = counter + 1}
+
+# --- Synchronizations ---

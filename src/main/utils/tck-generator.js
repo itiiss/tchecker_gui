@@ -27,8 +27,12 @@ function formatAttributes(attrs) {
   }
 
   // 边属性
-  if (attrs.guard) attributePairs.push({ key: 'provided', value: attrs.guard })
-  if (attrs.action) attributePairs.push({ key: 'do', value: attrs.action })
+  if (attrs.guard && attrs.guard !== 'true' && attrs.guard.trim() !== '') {
+    attributePairs.push({ key: 'provided', value: attrs.guard })
+  }
+  if (attrs.action && attrs.action.trim() !== '') {
+    attributePairs.push({ key: 'do', value: attrs.action })
+  }
 
   // 如果没有收集到任何有效属性，也返回空括号
   if (attributePairs.length === 0) {

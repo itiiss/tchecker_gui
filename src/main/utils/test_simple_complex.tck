@@ -1,0 +1,26 @@
+system:ProducerConsumerSystem{}
+
+# --- Global Declarations ---
+event:produce{}
+event:consume{}
+clock:1:pt{}
+clock:1:ct{}
+int:1:0:3:0:buffer{}
+
+# --- Process Definitions ---
+
+# Process: producer
+process:producer{}
+location:producer:Idle{initial::invariant:pt <= 5}
+location:producer:Working{invariant:pt <= 3}
+edge:producer:Idle:Working:produce{provided:pt >= 1:do:pt = 0}
+edge:producer:Working:Idle:produce{provided:pt >= 2}
+
+# Process: buffer
+process:buffer{}
+location:buffer:Empty{initial:}
+location:buffer:Partial{}
+edge:buffer:Empty:Partial:produce{do:buffer = buffer + 1}
+edge:buffer:Partial:Empty:consume{provided:buffer >= 1:do:buffer = buffer - 1}
+
+# --- Synchronizations ---

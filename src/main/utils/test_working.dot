@@ -1,0 +1,8 @@
+digraph TestSystem {
+  0 [initial="true", intval="counter=0", labels="waiting", vloc="<Idle,Zero>", zone="(x==0)"]
+  1 [intval="counter=0", labels="waiting", vloc="<Idle,Zero>", zone="(0<=x)"]
+  2 [intval="counter=1", labels="waiting", vloc="<Idle,Low>", zone="(0<=x)"]
+  0 -> 2 [vedge="<counter@start>"]
+  1 -> 2 [vedge="<counter@start>"]
+  2 -> 1 [vedge="<counter@reset>"]
+}

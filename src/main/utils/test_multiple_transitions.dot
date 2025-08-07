@@ -1,0 +1,5 @@
+digraph SimpleSystem {
+  0 [initial="true", intval="counter=0", labels="", vloc="<Start>", zone="()"]
+  1 [intval="counter=3", labels="", vloc="<End>", zone="()"]
+  0 -> 1 [vedge="<actor@action3>"]
+}

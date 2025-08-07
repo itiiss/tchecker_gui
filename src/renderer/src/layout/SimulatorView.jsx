@@ -44,6 +44,8 @@ const SimulatorView = () => {
     clockValues,
     processes,
     intVars,
+    simulationLoading,
+    simulationError,
     initializeSimulator,
     executeTransition,
     resetSimulation,
@@ -59,7 +61,9 @@ const SimulatorView = () => {
 
   useEffect(() => {
     if (!simulatorInitialized) {
-      initializeSimulator()
+      initializeSimulator().catch(error => {
+        console.error('Failed to initialize simulator:', error)
+      })
     }
   }, [simulatorInitialized, initializeSimulator])
 
@@ -67,8 +71,11 @@ const SimulatorView = () => {
   useEffect(() => {
     let interval
     if (autoPlay && enabledTransitions.length > 0) {
-      interval = setInterval(() => {
-        randomStep()
+      interval = setInterval(async () => {
+        await randomStep().catch(error => {
+          console.error('Auto play error:', error)
+          setAutoPlay(false)
+        })
       }, playSpeed)
     }
     return () => clearInterval(interval)
@@ -117,7 +124,18 @@ const SimulatorView = () => {
           }
         }}
       >
-        {enabledTransitions.length === 0 ? (
+        {simulationLoading ? (
+          <ListItem>
+            <ListItemText secondary="Loading..." />
+          </ListItem>
+        ) : simulationError ? (
+          <ListItem>
+            <ListItemText 
+              secondary={`Error: ${simulationError}`}
+              sx={{ color: 'error.main' }}
+            />
+          </ListItem>
+        ) : enabledTransitions.length === 0 ? (
           <ListItem>
             <ListItemText secondary="No transitions available" />
           </ListItem>
@@ -126,9 +144,11 @@ const SimulatorView = () => {
             <ListItemButton
               key={transition.id}
               className={selectedTransition === index ? 'selected' : ''}
-              onClick={() => {
+              onClick={async () => {
                 setSelectedTransition(index)
-                executeTransition(transition.id)
+                await executeTransition(transition.id).catch(error => {
+                  console.error('Execute transition error:', error)
+                })
               }}
             >
               <ListItemText
@@ -148,11 +168,19 @@ const SimulatorView = () => {
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
         <Typography variant="subtitle1">Process Visualizations</Typography>
       </Box>
-      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 2, gap: 2 }}>
+      <Box sx={{ 
+        flexGrow: 1, 
+        p: 2, 
+        overflow: 'auto',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: 2,
+        alignContent: 'start'
+      }}>
         {visualizationData.map((processViz) => (
           <Box key={processViz.processName} sx={{ 
-            flexGrow: 1, 
-            minHeight: '200px',
+            height: '250px',
+            width: '100%',
             border: '1px solid #e0e0e0',
             borderRadius: 1,
             position: 'relative'
@@ -236,12 +264,12 @@ const SimulatorView = () => {
           fontFamily: 'monospace',
           fontSize: '0.75rem'
         }}>
-          {Object.keys(clockValues).length === 0 ? (
+          {Object.keys(clockValues || {}).length === 0 ? (
             <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
               No clock constraints
             </Typography>
           ) : (
-            Object.entries(clockValues).map(([clockName, value]) => (
+            Object.entries(clockValues || {}).map(([clockName, value]) => (
               <Typography key={clockName} variant="body2" sx={{ fontSize: '0.75rem' }}>
                 {clockName} = {value}
               </Typography>
@@ -306,11 +334,15 @@ const SimulatorView = () => {
             variant="contained"
             startIcon={<NextIcon />}
             disabled={enabledTransitions.length === 0}
-            onClick={() => {
-              if (selectedTransition !== null && enabledTransitions[selectedTransition]) {
-                executeTransition(enabledTransitions[selectedTransition].id)
-              } else if (enabledTransitions.length > 0) {
-                executeTransition(enabledTransitions[0].id)
+            onClick={async () => {
+              try {
+                if (selectedTransition !== null && enabledTransitions[selectedTransition]) {
+                  await executeTransition(enabledTransitions[selectedTransition].id)
+                } else if (enabledTransitions.length > 0) {
+                  await executeTransition(enabledTransitions[0].id)
+                }
+              } catch (error) {
+                console.error('Execute transition error:', error)
               }
             }}
           >
@@ -330,7 +362,11 @@ const SimulatorView = () => {
             variant="outlined"
             startIcon={<RandomIcon />}
             disabled={enabledTransitions.length === 0}
-            onClick={randomStep}
+            onClick={async () => {
+              await randomStep().catch(error => {
+                console.error('Random step error:', error)
+              })
+            }}
           >
             随机
           </Button>
@@ -338,9 +374,11 @@ const SimulatorView = () => {
             size="small"
             variant="outlined"
             startIcon={<ResetIcon />}
-            onClick={() => {
+            onClick={async () => {
               setAutoPlay(false)
-              resetSimulation()
+              await resetSimulation().catch(error => {
+                console.error('Reset simulation error:', error)
+              })
             }}
           >
             重置

@@ -1,0 +1,48 @@
+system:ProductionLineSystem{}
+
+# --- Global Declarations ---
+event:startWork{}
+event:finishPrep{}
+event:machineProcess{}
+event:finishMachine{}
+event:qualityCheck{}
+event:passQC{}
+event:failQC{}
+event:urgentOrder{}
+event:restockMaterial{}
+clock:1:workerTime{}
+clock:1:machineTime{}
+clock:1:qcTime{}
+int:1:0:5:3:rawMaterials{}
+int:1:0:3:0:workerQueue{}
+int:1:0:2:0:machineQueue{}
+int:1:0:10:0:finishedProducts{}
+
+# --- Process Definitions ---
+
+# Process: worker
+process:worker{}
+location:worker:Idle{initial:}
+location:worker:Preparing{invariant:workerTime <= 5}
+location:worker:Waiting{invariant:workerTime <= 10}
+edge:worker:Idle:Preparing:startWork{provided:rawMaterials > 0:do:rawMaterials = rawMaterials - 1}
+edge:worker:Preparing:Waiting:finishPrep{provided:workerTime >= 1:do:workerQueue = workerQueue + 1}
+edge:worker:Preparing:Idle:urgentOrder{}
+edge:worker:Waiting:Idle:machineProcess{provided:workerTime >= 1 && machineQueue < 2}
+
+# Process: machine
+process:machine{}
+location:machine:Ready{initial:}
+location:machine:Processing{invariant:machineTime <= 8}
+edge:machine:Ready:Processing:machineProcess{provided:workerQueue > 0:do:workerQueue = workerQueue - 1}
+edge:machine:Processing:Ready:finishMachine{provided:machineTime >= 6}
+edge:machine:Ready:Ready:restockMaterial{}
+
+# Process: qualityControl
+process:qualityControl{}
+location:qualityControl:Waiting{initial:}
+location:qualityControl:Inspecting{invariant:qcTime <= 4}
+edge:qualityControl:Waiting:Inspecting:qualityCheck{provided:machineQueue > 0:do:machineQueue = machineQueue - 1}
+edge:qualityControl:Inspecting:Waiting:passQC{provided:qcTime >= 3:do:finishedProducts = finishedProducts + 1}
+
+# --- Synchronizations ---

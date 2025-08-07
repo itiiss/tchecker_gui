@@ -1,0 +1,40 @@
+system:TestSystem{}
+
+# --- Global Declarations ---
+event:start{}
+event:tick{}
+event:stop{}
+event:reset{}
+event:synch{}
+clock:1:x{}
+clock:1:y{}
+int:1:0:5:0:counter{}
+int:1:0:3:0:state_id{}
+
+# --- Process Definitions ---
+
+# Process: timer
+process:timer{}
+location:timer:Idle{initial::labels:waiting}
+location:timer:Running{invariant:x <= 3:labels:active}
+location:timer:Done{committed::labels:finished}
+edge:timer:Idle:Running:start{do:x = 0}
+edge:timer:Running:Done:tick{provided:x >= 2:do:y = 0}
+edge:timer:Done:Idle:reset{do:x = 0, y = 0}
+
+# Process: counter
+process:counter{}
+location:counter:Zero{initial::labels:empty}
+location:counter:Low{invariant:y <= 5:labels:counting}
+edge:counter:Zero:Low:start{do:counter = 1, y = 0}
+edge:counter:Low:Zero:reset{do:counter = 0}
+
+# Process: simple
+process:simple{}
+location:simple:A{initial:}
+location:simple:B{}
+edge:simple:A:B:synch{}
+edge:simple:B:A:synch{}
+
+# --- Synchronizations ---
+sync:timer@synch:counter@synch{}

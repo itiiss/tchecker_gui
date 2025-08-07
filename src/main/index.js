@@ -73,6 +73,51 @@ app.whenReady().then(() => {
     }
   })
 
+  // IPC handler for initializing simulator
+  ipcMain.handle('initialize-simulator', async (event, modelData) => {
+    try {
+      console.log('Received initialize simulator request:', modelData)
+      const appPath = app.getAppPath()
+      const simulationManagerPath = join(appPath, 'src/main/utils/simulation-manager.js')
+      const { initializeSimulator } = require(simulationManagerPath)
+      const result = await initializeSimulator(modelData)
+      return result
+    } catch (error) {
+      console.error('Initialize simulator error:', error)
+      throw error
+    }
+  })
+
+  // IPC handler for executing transition
+  ipcMain.handle('execute-transition', async (event, modelData, transitionId, currentState) => {
+    try {
+      console.log('Received execute transition request:', { transitionId, currentState })
+      const appPath = app.getAppPath()
+      const simulationManagerPath = join(appPath, 'src/main/utils/simulation-manager.js')
+      const { executeTransition } = require(simulationManagerPath)
+      const result = await executeTransition(modelData, transitionId, currentState)
+      return result
+    } catch (error) {
+      console.error('Execute transition error:', error)
+      throw error
+    }
+  })
+
+  // IPC handler for resetting simulator
+  ipcMain.handle('reset-simulator', async (event, modelData) => {
+    try {
+      console.log('Received reset simulator request:', modelData)
+      const appPath = app.getAppPath()
+      const simulationManagerPath = join(appPath, 'src/main/utils/simulation-manager.js')
+      const { resetSimulator } = require(simulationManagerPath)
+      const result = await resetSimulator(modelData)
+      return result
+    } catch (error) {
+      console.error('Reset simulator error:', error)
+      throw error
+    }
+  })
+
   createWindow()
 
   app.on('activate', function () {

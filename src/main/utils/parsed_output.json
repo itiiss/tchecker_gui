@@ -4,19 +4,91 @@
       "id": "0",
       "attributes": {
         "initial": "true",
-        "intval": "",
-        "labels": "",
-        "vloc": "<far>",
-        "zone": "(x==0)"
+        "intval": "buffer=0,produced=0,consumed=0",
+        "labels": "ready,capacity_0",
+        "vloc": "<Idle,Idle,Empty>",
+        "zone": "(pt==0 && ct==0 && pt==ct)"
       }
     },
     {
       "id": "1",
       "attributes": {
-        "intval": "",
-        "labels": "safe",
-        "vloc": "<near>",
-        "zone": "(x==0)"
+        "intval": "buffer=1,produced=0,consumed=0",
+        "labels": "ready,capacity_1_2",
+        "vloc": "<Idle,Idle,Partial>",
+        "zone": "(0<=pt<=4 && 0<=ct<=4 && pt==ct)"
+      }
+    },
+    {
+      "id": "2",
+      "attributes": {
+        "intval": "buffer=2,produced=0,consumed=0",
+        "labels": "ready,capacity_1_2",
+        "vloc": "<Idle,Idle,Partial>",
+        "zone": "(0<=pt<=4 && 0<=ct<=4 && pt==ct)"
+      }
+    },
+    {
+      "id": "3",
+      "attributes": {
+        "intval": "buffer=2,produced=0,consumed=0",
+        "labels": "ready,capacity_3",
+        "vloc": "<Idle,Idle,Full>",
+        "zone": "(0<=pt<=4 && 0<=ct<=4 && pt==ct)"
+      }
+    },
+    {
+      "id": "4",
+      "attributes": {
+        "intval": "buffer=2,produced=1,consumed=1",
+        "labels": "ready,capacity_3",
+        "vloc": "<Idle,Idle,Full>",
+        "zone": "(2<=pt<=3 && 2<=ct<=4 && -2<=pt-ct<=0)"
+      }
+    },
+    {
+      "id": "5",
+      "attributes": {
+        "intval": "buffer=1,produced=0,consumed=0",
+        "labels": "ready,busy,capacity_1_2",
+        "vloc": "<Idle,Processing,Partial>",
+        "zone": "(1<=pt<=5 && 0<=ct<=2 && 1<=pt-ct<=4)"
+      }
+    },
+    {
+      "id": "6",
+      "attributes": {
+        "intval": "buffer=2,produced=0,consumed=0",
+        "labels": "ready,busy,capacity_1_2",
+        "vloc": "<Idle,Processing,Partial>",
+        "zone": "(1<=pt<=4 && ct==0 && 1<=pt-ct<=4)"
+      }
+    },
+    {
+      "id": "7",
+      "attributes": {
+        "intval": "buffer=2,produced=0,consumed=0",
+        "labels": "ready,busy,capacity_3",
+        "vloc": "<Idle,Processing,Full>",
+        "zone": "(1<=pt<=5 && 0<=ct<=2 && 1<=pt-ct<=4)"
+      }
+    },
+    {
+      "id": "8",
+      "attributes": {
+        "intval": "buffer=2,produced=0,consumed=1",
+        "labels": "ready,busy,capacity_3",
+        "vloc": "<Working,Idle,Full>",
+        "zone": "(0<=pt<=2 && 1<=ct<=2 && -2<=pt-ct<=0)"
+      }
+    },
+    {
+      "id": "9",
+      "attributes": {
+        "intval": "buffer=2,produced=0,consumed=0",
+        "labels": "busy,capacity_3",
+        "vloc": "<Working,Processing,Full>",
+        "zone": "(pt==0 && 0<=ct<=2 && -2<=pt-ct<=0)"
       }
     }
   ],
@@ -25,7 +97,70 @@
       "source": "0",
       "target": "1",
       "attributes": {
-        "vedge": "<train@approach>"
+        "vedge": "<buffer@produce>"
+      }
+    },
+    {
+      "source": "1",
+      "target": "2",
+      "attributes": {
+        "vedge": "<buffer@produce>"
+      }
+    },
+    {
+      "source": "1",
+      "target": "3",
+      "attributes": {
+        "vedge": "<buffer@produce>"
+      }
+    },
+    {
+      "source": "2",
+      "target": "6",
+      "attributes": {
+        "vedge": "<consumer@consume>"
+      }
+    },
+    {
+      "source": "3",
+      "target": "1",
+      "attributes": {
+        "vedge": "<buffer@consume>"
+      }
+    },
+    {
+      "source": "5",
+      "target": "7",
+      "attributes": {
+        "vedge": "<buffer@produce>"
+      }
+    },
+    {
+      "source": "6",
+      "target": "5",
+      "attributes": {
+        "vedge": "<buffer@consume>"
+      }
+    },
+    {
+      "source": "7",
+      "target": "9",
+      "attributes": {
+        "vedge": "<producer@produce>"
+      }
+    },
+    {
+      "source": "8",
+      "target": "4",
+      "attributes": {
+        "vedge": "<producer@produce>"
+      }
+    },
+    {
+      "source": "9",
+      "target": "8",
+      "attributes": {
+        "vedge": "<consumer@consume>"
       }
     }
   ]

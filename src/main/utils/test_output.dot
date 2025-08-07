@@ -1,0 +1,5 @@
+digraph SimpleTest {
+  0 [initial="true", intval="", labels="", vloc="<Idle>", zone="(x==0)"]
+  1 [intval="", labels="", vloc="<Running>", zone="(x==0)"]
+  0 -> 1 [vedge="<timer@start>"]
+}

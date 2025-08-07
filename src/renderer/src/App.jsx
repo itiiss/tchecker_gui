@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Tabs, Tab, IconButton, TextField, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import Menubar from './layout/Menubar'
 import EditorView from './layout/EditorView'
 import SimulatorView from './layout/SimulatorView'
@@ -10,7 +11,7 @@ import DeclarationsView from './layout/DeclarationsView'
 import useEditorStore from './store/editorStore'
 
 function App() {
-  const { processes, activeProcess, setActiveProcess, addProcess, renameProcess } = useEditorStore()
+  const { processes, activeProcess, setActiveProcess, addProcess, renameProcess, copyProcess } = useEditorStore()
   const [mainTab, setMainTab] = React.useState('editor')
   const [editingProcess, setEditingProcess] = React.useState(null)
   const [editingName, setEditingName] = React.useState('')
@@ -53,6 +54,11 @@ function App() {
     } else if (e.key === 'Escape') {
       handleCancelEditing()
     }
+  }
+
+  const handleCopyProcess = (processName) => {
+    const newProcessName = copyProcess(processName)
+    setActiveProcess(newProcessName)
   }
 
   const renderContent = () => {
@@ -122,6 +128,20 @@ function App() {
                             }}
                           >
                             <EditIcon fontSize="small" />
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleCopyProcess(processName)
+                            }}
+                            sx={{
+                              p: 0.25,
+                              opacity: 0.6,
+                              '&:hover': { opacity: 1 }
+                            }}
+                          >
+                            <ContentCopyIcon fontSize="small" />
                           </IconButton>
                         </>
                       )}
