@@ -146,29 +146,14 @@ async function executeTransition(modelJson, transitionId, currentState) {
     })
     
     if (!currentStateNode) {
-      console.log('Could not find current state node, trying to find similar states')
-      // 尝试找到相似的状态
-      const similarNodes = parsedJson.nodes?.filter(node => {
-        const nodeVloc = node.attributes?.vloc || ''
-        return nodeVloc.includes('Preparing') || nodeVloc.includes('Idle') || nodeVloc.includes('Ready')
-      })
-      console.log('Similar nodes found:', similarNodes?.length)
+      console.error('Critical error: Could not find current state node')
+      console.log('Current state vloc:', currentStateVloc)
+      console.log('Available nodes:', parsedJson.nodes?.map(n => ({ id: n.id, vloc: n.attributes?.vloc })))
       
-      if (similarNodes && similarNodes.length > 0) {
-        const targetEdge = parsedJson.edges?.find(edge => {
-          const edgeId = edge.id
-          const vedge = edge.attributes?.vedge || ''
-          return edgeId === transitionId || transitionId.includes(vedge) || vedge.includes(transitionId)
-        })
-        
-        const newState = targetEdge ? parsedJson.nodes?.find(node => node.id === targetEdge.target) : similarNodes[1]
-        const nextTransitions = newState ? parsedJson.edges?.filter(edge => edge.source === newState.id) : []
-        
-        return {
-          success: true,
-          newState,
-          availableTransitions: nextTransitions
-        }
+      // 更严格的错误处理 - 不使用fallback逻辑，而是报错
+      return {
+        success: false,
+        error: `Cannot find current state node with vloc: ${currentStateVloc}. This indicates a state synchronization issue.`
       }
     }
 

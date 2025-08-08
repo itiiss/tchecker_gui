@@ -19,18 +19,8 @@ import {
   PlayArrow as AutoPlayIcon,
   Pause as PauseIcon
 } from '@mui/icons-material'
-import { ReactFlow, ReactFlowProvider, Background } from '@xyflow/react'
-import TimedAutomatonNode from '../components/node'
-import TimedAutomatonEdge from '../components/edge'
+import CytoscapeAutomaton from '../components/CytoscapeAutomaton'
 import useEditorStore from '../store/editorStore'
-import '@xyflow/react/dist/style.css'
-
-const nodeTypes = {
-  timedAutomatonNode: TimedAutomatonNode
-}
-const edgeTypes = {
-  timedAutomatonEdge: TimedAutomatonEdge
-}
 
 const SimulatorView = () => {
   const {
@@ -78,7 +68,7 @@ const SimulatorView = () => {
     return () => clearInterval(interval)
   }, [autoPlay, enabledTransitions, playSpeed, randomStep])
 
-  // Prepare visualization data for all processes
+  // Prepare visualization data for all processes - optimized to minimize re-computation
   const visualizationData = useMemo(() => {
     return Object.entries(processes)
       .map(([processName, processData]) => {
@@ -102,7 +92,13 @@ const SimulatorView = () => {
         }
       })
       .filter(Boolean)
-  }, [processes, currentState])
+  }, [
+    // More specific dependencies to avoid unnecessary re-computations
+    Object.keys(processes).length,
+    Object.values(processes).map(p => p.nodes?.length || 0).join(','),
+    Object.values(processes).map(p => p.edges?.length || 0).join(','),
+    JSON.stringify(currentState) // Only re-compute when actual state changes
+  ])
 
   // [A] Enabled Transitions List
   const renderEnabledTransitions = () => (
@@ -159,7 +155,7 @@ const SimulatorView = () => {
     </Paper>
   )
 
-  // [B] Process Visualizations with ReactFlow
+  // [B] Process Visualizations with Cytoscape
   const renderProcessVisualizations = () => (
     <Paper sx={{ height: '70%', display: 'flex', flexDirection: 'column', mb: 2 }}>
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
@@ -202,28 +198,14 @@ const SimulatorView = () => {
             >
               {processViz.processName}: {currentState?.[processViz.processName] || 'Unknown'}
             </Typography>
-            <ReactFlowProvider>
-              <ReactFlow
-                nodes={processViz.nodes}
-                edges={processViz.edges}
-                nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
-                fitView
-                panOnDrag={false}
-                nodesDraggable={false}
-                nodesConnectable={false}
-                elementsSelectable={false}
-                zoomOnScroll={false}
-                zoomOnPinch={false}
-                zoomOnDoubleClick={false}
-                panOnScroll={false}
-                preventScrolling={true}
-                minZoom={0.5}
-                maxZoom={2}
-              >
-                <Background />
-              </ReactFlow>
-            </ReactFlowProvider>
+            <CytoscapeAutomaton
+              key={`simulator-${processViz.processName}`} // Stable key to prevent recreation
+              nodes={processViz.nodes}
+              edges={processViz.edges}
+              onNodeUpdate={() => {}} // Read-only in simulator
+              onEdgeUpdate={() => {}} // Read-only in simulator
+              onEdgeCreate={() => {}} // Read-only in simulator
+            />
           </Box>
         ))}
       </Box>
@@ -343,20 +325,28 @@ const SimulatorView = () => {
             size="small"
             variant="contained"
             startIcon={<NextIcon />}
-            disabled={enabledTransitions.length === 0}
+            disabled={enabledTransitions.length === 0 || simulationLoading}
             onClick={async () => {
+              console.log('Next step clicked. Available transitions:', enabledTransitions.length)
+              console.log('Current state:', JSON.stringify(currentState))
+              console.log('Trace position:', tracePosition, 'of', simulationTrace.length)
+              
               try {
                 if (selectedTransition !== null && enabledTransitions[selectedTransition]) {
+                  console.log('Executing selected transition:', selectedTransition, enabledTransitions[selectedTransition])
                   await executeTransition(enabledTransitions[selectedTransition].id)
                 } else if (enabledTransitions.length > 0) {
+                  console.log('Executing first available transition:', enabledTransitions[0])
                   await executeTransition(enabledTransitions[0].id)
+                } else {
+                  console.warn('No transitions available to execute')
                 }
               } catch (error) {
                 console.error('Execute transition error:', error)
               }
             }}
           >
-            下一步
+            下一步 {simulationLoading ? '...' : ''}
           </Button>
           <Button
             size="small"

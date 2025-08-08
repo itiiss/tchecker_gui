@@ -3,23 +3,10 @@ import { Box, Tooltip, IconButton, Divider } from '@mui/material'
 import {
   AddCircleOutline as AddCircleOutlineIcon,
   Timeline as TimelineIcon,
-  ZoomIn as ZoomInIcon,
-  ZoomOut as ZoomOutIcon,
   PanTool as PanToolIcon
 } from '@mui/icons-material'
-import { ReactFlow, useReactFlow, ReactFlowProvider } from '@xyflow/react'
 import useEditorStore from '../store/editorStore'
-import TimedAutomatonEdge from '../components/edge'
-import TimedAutomatonNode from '../components/node'
-import { nanoid } from 'nanoid'
-import '@xyflow/react/dist/style.css'
-
-const nodeTypes = {
-  timedAutomatonNode: TimedAutomatonNode
-}
-const edgeTypes = {
-  timedAutomatonEdge: TimedAutomatonEdge
-}
+import CytoscapeAutomaton from '../components/CytoscapeAutomaton'
 
 let id = 2
 const getId = () => `${id++}`
@@ -28,53 +15,56 @@ const EditorContent = () => {
   const {
     processes,
     activeProcess,
-    mode,
-    onNodesChange,
-    onEdgesChange,
     setNodes,
     setEdges,
-    setMode
+    setMode,
+    mode
   } = useEditorStore()
-  const { zoomIn, zoomOut, screenToFlowPosition } = useReactFlow()
 
   const { nodes, edges } = processes[activeProcess] || { nodes: [], edges: [] }
 
-  const onConnect = useCallback(
-    (params) => {
-      const newEdge = {
-        id: `e-${nanoid()}`,
-        ...params,
-        type: 'timedAutomatonEdge',
-        data: {
-          event: '',
-          guard: 'true',
-          update: ''
-        }
-      }
-      setEdges((eds) => [...eds, newEdge])
-    },
-    [setEdges]
-  )
+  // Cytoscape节点更新处理
+  const handleNodeUpdate = useCallback((nodeId, updatedData) => {
+    console.log('Update node:', nodeId, updatedData)
+    setNodes((nds) =>
+      nds.map((node) =>
+        node.id === nodeId
+          ? { ...node, data: { ...node.data, ...updatedData } }
+          : node
+      )
+    )
+  }, [setNodes])
 
-  const onPaneClick = useCallback(
-    (event) => {
-      if (mode === 'add-node') {
-        const position = screenToFlowPosition({
-          x: event.clientX,
-          y: event.clientY
-        })
-        const newId = getId()
-        const newNode = {
-          id: newId,
-          type: 'timedAutomatonNode',
-          position,
-          data: { label: `Node ${newId}`, invariant: 'true' }
-        }
-        setNodes((nds) => nds.concat(newNode))
+  // Cytoscape边更新处理
+  const handleEdgeUpdate = useCallback((edgeId, updatedData) => {
+    console.log('Update edge:', edgeId, updatedData)
+    setEdges((eds) =>
+      eds.map((edge) =>
+        edge.id === edgeId
+          ? { ...edge, data: { ...edge.data, ...updatedData } }
+          : edge
+      )
+    )
+  }, [setEdges])
+
+  // Cytoscape边创建处理
+  const handleEdgeCreate = useCallback((sourceId, targetId) => {
+    const newEdgeId = `edge_${sourceId}_${targetId}_${Date.now()}`
+    const newEdge = {
+      id: newEdgeId,
+      source: sourceId,
+      target: targetId,
+      type: 'timedAutomatonEdge',
+      data: {
+        event: '',
+        guard: 'true',
+        action: ''
       }
-    },
-    [mode, screenToFlowPosition, setNodes]
-  )
+    }
+    console.log('Create new edge:', newEdge)
+    setEdges((eds) => [...eds, newEdge])
+    return newEdgeId
+  }, [setEdges])
 
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -96,16 +86,6 @@ const EditorContent = () => {
           </IconButton>
         </Tooltip>
         <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-        <Tooltip title="Zoom In">
-          <IconButton onClick={() => zoomIn()}>
-            <ZoomInIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Zoom Out">
-          <IconButton onClick={() => zoomOut()}>
-            <ZoomOutIcon />
-          </IconButton>
-        </Tooltip>
         <Tooltip title="Pan/Select Mode">
           <IconButton
             onClick={() => setMode('select')}
@@ -117,22 +97,12 @@ const EditorContent = () => {
       </Box>
 
       <div style={{ flexGrow: 1, height: '100%' }}>
-        <ReactFlow
+        <CytoscapeAutomaton
           nodes={nodes}
           edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onPaneClick={onPaneClick}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          fitView
-          panOnDrag={mode === 'select'}
-          nodesDraggable={mode === 'select'}
-          panOnScroll
-          zoomOnScroll
-          zoomOnPinch
-          zoomOnDoubleClick
+          onNodeUpdate={handleNodeUpdate}
+          onEdgeUpdate={handleEdgeUpdate}
+          onEdgeCreate={handleEdgeCreate}
         />
       </div>
     </Box>
@@ -142,9 +112,7 @@ const EditorContent = () => {
 const EditorView = () => {
   return (
     <Box sx={{ display: 'flex', flexGrow: 1, height: '100%' }}>
-      <ReactFlowProvider>
-        <EditorContent />
-      </ReactFlowProvider>
+      <EditorContent />
     </Box>
   )
 }

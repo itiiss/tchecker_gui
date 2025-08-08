@@ -568,7 +568,6 @@ const useEditorStore = create((set, get) => ({
 
   // Simulator control functions
   initializeSimulator: async () => {
-    const state = get()
     console.log('=== Starting simulator initialization ===')
     set({ simulationLoading: true, simulationError: null })
 
@@ -635,14 +634,24 @@ const useEditorStore = create((set, get) => ({
     const state = get()
     const transition = state.enabledTransitions.find((t) => t.id === transitionId)
 
-    if (!transition) return
+    if (!transition) {
+      console.warn('No transition found with id:', transitionId)
+      return
+    }
 
-    set({ simulationLoading: true, simulationError: null })
+    // 在执行过程中清空可用转换，防止重复点击
+    set({ 
+      simulationLoading: true, 
+      simulationError: null,
+      enabledTransitions: [] // 立即清空，防止重复执行
+    })
 
     try {
       // Get model data and current state for backend
       const modelData = get().convertModelDataForBackend()
       const currentBackendState = state.simulationTrace[state.tracePosition]?.backendState
+
+      console.log('Executing transition:', transitionId, 'from state:', currentBackendState?.attributes?.vloc)
 
       // Call backend to execute transition
       const { ipcRenderer } = window.require('electron')
@@ -657,6 +666,9 @@ const useEditorStore = create((set, get) => ({
         // Parse the new state and transitions
         const newState = get().parseBackendState(result.newState)
         const newEnabledTransitions = get().parseBackendTransitions(result.availableTransitions)
+
+        console.log('Transition executed successfully. New state:', result.newState?.attributes?.vloc)
+        console.log('New available transitions count:', newEnabledTransitions.length)
 
         // Add to trace
         const newTraceEntry = {
@@ -676,14 +688,22 @@ const useEditorStore = create((set, get) => ({
           simulationLoading: false
         })
       } else {
-        throw new Error(result.error)
+        console.error('Backend returned error:', result.error)
+        // 如果执行失败，恢复原来的转换列表
+        set({
+          simulationError: result.error,
+          simulationLoading: false,
+          enabledTransitions: state.enabledTransitions // 恢复原来的转换
+        })
       }
     } catch (error) {
+      console.error('Execute transition error:', error)
+      // 如果出错，恢复原来的转换列表
       set({
         simulationError: error.message,
-        simulationLoading: false
+        simulationLoading: false,
+        enabledTransitions: state.enabledTransitions // 恢复原来的转换
       })
-      console.error('Execute transition error:', error)
     }
   },
 
@@ -696,6 +716,10 @@ const useEditorStore = create((set, get) => ({
     if (state.tracePosition > 0) {
       const newPosition = state.tracePosition - 1
       const traceEntry = state.simulationTrace[newPosition]
+
+      console.log('Step backward to position:', newPosition)
+      console.log('Trace entry at position:', traceEntry)
+      console.log('Available transitions at position:', traceEntry.enabledTransitions?.length || 0)
 
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
@@ -712,6 +736,10 @@ const useEditorStore = create((set, get) => ({
     if (state.tracePosition < state.simulationTrace.length - 1) {
       const newPosition = state.tracePosition + 1
       const traceEntry = state.simulationTrace[newPosition]
+
+      console.log('Step forward to position:', newPosition)
+      console.log('Trace entry at position:', traceEntry)
+      console.log('Available transitions at position:', traceEntry.enabledTransitions?.length || 0)
 
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
@@ -769,7 +797,7 @@ const useEditorStore = create((set, get) => ({
     linkElement.click()
   },
 
-  loadTrace: (traceData) => {
+  loadTrace: () => {
     // TODO: Implement trace loading from file
     console.log('Load trace functionality to be implemented')
   },
