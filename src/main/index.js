@@ -1,5 +1,6 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
+import { writeFileSync, readFileSync } from 'fs'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
@@ -32,6 +33,61 @@ ipcMain.handle('verify-property', async (event, verificationRequest) => {
 })
 
 console.log('verify-property handler registered')
+
+// IPC handler for saving model
+ipcMain.handle('save-model', async (event, modelData) => {
+  try {
+    const { filePath, canceled } = await dialog.showSaveDialog({
+      title: 'Save Model',
+      defaultPath: `${modelData.systemName || 'model'}.json`,
+      filters: [
+        { name: 'JSON Files', extensions: ['json'] },
+        { name: 'All Files', extensions: ['*'] }
+      ]
+    })
+
+    if (canceled || !filePath) {
+      return { success: false, error: 'Save canceled by user' }
+    }
+
+    const jsonData = JSON.stringify(modelData, null, 2)
+    writeFileSync(filePath, jsonData, 'utf8')
+    
+    return { success: true, filePath }
+  } catch (error) {
+    console.error('Save model error:', error)
+    return { success: false, error: error.message }
+  }
+})
+
+// IPC handler for loading model
+ipcMain.handle('load-model', async () => {
+  try {
+    const { filePaths, canceled } = await dialog.showOpenDialog({
+      title: 'Load Model',
+      filters: [
+        { name: 'JSON Files', extensions: ['json'] },
+        { name: 'All Files', extensions: ['*'] }
+      ],
+      properties: ['openFile']
+    })
+
+    if (canceled || filePaths.length === 0) {
+      return { success: false, error: 'Load canceled by user' }
+    }
+
+    const filePath = filePaths[0]
+    const jsonData = readFileSync(filePath, 'utf8')
+    const modelData = JSON.parse(jsonData)
+    
+    return { success: true, filePath, modelData }
+  } catch (error) {
+    console.error('Load model error:', error)
+    return { success: false, error: error.message }
+  }
+})
+
+console.log('save-model and load-model handlers registered')
 
 function createWindow() {
   // Create the browser window.
@@ -131,10 +187,13 @@ app.whenReady().then(() => {
     }
   })
 
+
   // 验证所有IPC处理器都已注册
   console.log('=== IPC Handlers Registered in whenReady ===')
   console.log('verify-property handler registered:', ipcMain.listenerCount('verify-property') > 0)
   console.log('initialize-simulator handler registered:', ipcMain.listenerCount('initialize-simulator') > 0)
+  console.log('save-model handler registered:', ipcMain.listenerCount('save-model') > 0)
+  console.log('load-model handler registered:', ipcMain.listenerCount('load-model') > 0)
 
   createWindow()
 

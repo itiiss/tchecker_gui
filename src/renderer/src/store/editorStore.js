@@ -802,6 +802,70 @@ const useEditorStore = create((set, get) => ({
     console.log('Load trace functionality to be implemented')
   },
 
+  // Model save/load functionality
+  saveModel: async () => {
+    const state = get()
+    const modelData = {
+      systemName: state.systemName,
+      clocks: state.clocks,
+      intVars: state.intVars,
+      events: state.events,
+      synchronizations: state.synchronizations,
+      processes: state.processes
+    }
+
+    try {
+      const { ipcRenderer } = window.require('electron')
+      const result = await ipcRenderer.invoke('save-model', modelData)
+      if (result.success) {
+        console.log('Model saved successfully:', result.filePath)
+        return { success: true, filePath: result.filePath }
+      } else {
+        console.error('Failed to save model:', result.error)
+        return { success: false, error: result.error }
+      }
+    } catch (error) {
+      console.error('Save model error:', error)
+      return { success: false, error: error.message }
+    }
+  },
+
+  loadModel: async () => {
+    try {
+      const { ipcRenderer } = window.require('electron')
+      const result = await ipcRenderer.invoke('load-model')
+      
+      if (result.success && result.modelData) {
+        const modelData = result.modelData
+        set({
+          systemName: modelData.systemName || 'Untitled System',
+          clocks: modelData.clocks || [],
+          intVars: modelData.intVars || [],
+          events: modelData.events || [],
+          synchronizations: modelData.synchronizations || [],
+          processes: modelData.processes || {},
+          activeProcess: Object.keys(modelData.processes || {})[0] || null,
+          // Reset simulation state when loading new model
+          simulatorInitialized: false,
+          currentState: null,
+          enabledTransitions: [],
+          simulationTrace: [],
+          tracePosition: 0,
+          simulationResult: null,
+          simulationError: null
+        })
+        console.log('Model loaded successfully:', result.filePath)
+        return { success: true, filePath: result.filePath }
+      } else {
+        console.error('Failed to load model:', result.error)
+        return { success: false, error: result.error }
+      }
+    } catch (error) {
+      console.error('Load model error:', error)
+      return { success: false, error: error.message }
+    }
+  },
+
   // Helper functions for backend integration
   convertModelDataForBackend: () => {
     const state = get()

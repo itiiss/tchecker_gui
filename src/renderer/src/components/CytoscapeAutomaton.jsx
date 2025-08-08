@@ -7,10 +7,23 @@ import {
   ZoomOut as ZoomOutIcon,
   CenterFocusStrong as CenterIcon,
   AccountTree as LayoutIcon,
-  Timeline as TimelineIcon
+  Timeline as TimelineIcon,
+  AddCircleOutline as AddCircleOutlineIcon,
+  Visibility as VisibilityIcon
 } from '@mui/icons-material'
 
-const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate, onEdgeCreate }) => {
+const CytoscapeAutomaton = ({ 
+  nodes = [], 
+  edges = [], 
+  mode = 'select',
+  onNodeUpdate, 
+  onEdgeUpdate, 
+  onEdgeCreate, 
+  onNodeDelete,
+  onEdgeDelete,
+  onNodeCreate,
+  onModeChange
+}) => {
   const cyRef = useRef(null)
   const [editingNode, setEditingNode] = useState(null)
   const [editingEdge, setEditingEdge] = useState(null)
@@ -68,7 +81,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
         classes: totalParallel > 1 ? `parallel-edge parallel-${edgeIndex}` : ''
       }
     })
-  ], [nodes.length, edges.length]) // Only re-create when node/edge count changes
+  ], [nodes, edges]) // Re-create when nodes or edges change
 
   // 创建边标签
   function createEdgeLabel(edgeData) {
@@ -339,6 +352,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
   const [edgeSourceNode, setEdgeSourceNode] = useState(null)
   const [tempEdge, setTempEdge] = useState(null)
 
+
   // 更新节点样式类 - 优化版本，只在状态真正改变时更新
   const updateNodeClasses = useCallback(() => {
     if (!cyRef.current) return
@@ -381,19 +395,47 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
     })
   }, [nodes])
 
-  // 监听节点数据变化并更新样式 - 只在状态相关属性改变时更新
+  // 监听节点数据变化并更新样式和标签
   React.useEffect(() => {
-    // 使用 requestAnimationFrame 来避免频繁更新
+    if (!cyRef.current) return
+
     const updateId = requestAnimationFrame(() => {
+      const cy = cyRef.current
+      
+      // 批量更新节点标签和样式
+      cy.batch(() => {
+        nodes.forEach(node => {
+          const cyNode = cy.getElementById(node.id)
+          if (cyNode.length) {
+            // 更新标签
+            cyNode.data('label', createNodeLabel(node.data))
+            // 更新其他数据
+            Object.keys(node.data).forEach(key => {
+              cyNode.data(key, node.data[key])
+            })
+          }
+        })
+
+        // 批量更新边标签
+        edges.forEach(edge => {
+          const cyEdge = cy.getElementById(edge.id)
+          if (cyEdge.length) {
+            // 更新标签
+            cyEdge.data('label', createEdgeLabel(edge.data))
+            // 更新其他数据
+            Object.keys(edge.data).forEach(key => {
+              cyEdge.data(key, edge.data[key])
+            })
+          }
+        })
+      })
+
+      // 更新节点样式类
       updateNodeClasses()
     })
     
     return () => cancelAnimationFrame(updateId)
-  }, [
-    // 只监听影响样式的属性变化
-    nodes.map(node => `${node.id}-${node.data?.isInitial}-${node.data?.isUrgent}-${node.data?.isCommitted}-${node.data?.isCurrentLocation}`).join(','),
-    updateNodeClasses
-  ])
+  }, [nodes, edges, updateNodeClasses])
 
   // 事件处理
   const handleCyInit = useCallback((cy) => {
@@ -454,7 +496,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
       }
     })
 
-    // 节点右键点击事件
+    // 节点右键点击事件 - 打开编辑对话框
     cy.on('cxttap', 'node', (event) => {
       const node = event.target
       const nodeData = node.data()
@@ -462,7 +504,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
       setEditingNode({
         id: nodeData.id,
         locationName: nodeData.locationName || nodeData.label || nodeData.id,
-        invariant: nodeData.invariant || 'true',
+        invariant: nodeData.invariant || '',
         labels: nodeData.labels || [],
         isInitial: nodeData.isInitial || false,
         isUrgent: nodeData.isUrgent || false,
@@ -470,7 +512,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
       })
     })
 
-    // 边右键点击事件
+    // 边右键点击事件 - 打开编辑对话框
     cy.on('cxttap', 'edge', (event) => {
       const edge = event.target
       const edgeData = edge.data()
@@ -478,7 +520,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
       setEditingEdge({
         id: edgeData.id,
         event: edgeData.event || '',
-        guard: edgeData.guard || 'true',
+        guard: edgeData.guard || '',
         action: edgeData.action || ''
       })
     })
@@ -486,13 +528,27 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
     // 节点拖动事件
     cy.on('position', 'node', (event) => {
       const node = event.target
-      console.log('Node moved:', node.id(), node.position())
+      const nodeId = node.id()
+      const position = node.position()
+      console.log('Node moved:', nodeId, position)
+      
+      // 更新节点位置到store
+      if (onNodeUpdate) {
+        onNodeUpdate(nodeId, { position })
+      }
     })
     
-    // 空白区域点击 - 取消边创建模式
+    // 空白区域点击 - 根据模式执行不同操作
     cy.on('tap', (event) => {
       if (event.target === cy) {
-        if (isCreatingEdge) {
+        if (mode === 'add-node') {
+          // 创建节点模式下，在点击位置创建新节点
+          const position = event.position || event.cyPosition
+          if (onNodeCreate && position) {
+            onNodeCreate(position)
+          }
+        } else if (isCreatingEdge) {
+          // 取消边创建模式
           cy.nodes().removeClass('edge-source')
           setEdgeSourceNode(null)
           setIsCreatingEdge(false)
@@ -502,7 +558,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
     
     // 初始化节点样式 - 减少延迟
     requestAnimationFrame(updateNodeClasses)
-  }, [isCreatingEdge, edgeSourceNode, onEdgeCreate, updateNodeClasses])
+  }, [isCreatingEdge, edgeSourceNode, mode, onEdgeCreate, onNodeCreate, onNodeDelete, onEdgeDelete, updateNodeClasses])
 
   return (
     <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
@@ -538,6 +594,58 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
         <Tooltip title="圆形布局">
           <IconButton onClick={handleLayout} size="small">
             <LayoutIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={mode === 'select' ? "查看模式 (当前)" : "切换到查看模式"}>
+          <IconButton 
+            onClick={() => {
+              // 取消边创建模式
+              if (cyRef.current) {
+                cyRef.current.nodes().removeClass('edge-source')
+              }
+              setEdgeSourceNode(null)
+              setIsCreatingEdge(false)
+              // 切换到查看模式
+              if (onModeChange) {
+                onModeChange('select')
+              }
+            }}
+            size="small"
+            color={mode === 'select' ? 'primary' : 'default'}
+            sx={{ 
+              backgroundColor: mode === 'select' ? '#e3f2fd' : 'transparent',
+              '&:hover': {
+                backgroundColor: mode === 'select' ? '#bbdefb' : 'rgba(0, 0, 0, 0.04)'
+              }
+            }}
+          >
+            <VisibilityIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={mode === 'add-node' ? "创建节点模式 (当前)" : "切换到创建节点模式"}>
+          <IconButton 
+            onClick={() => {
+              // 取消边创建模式
+              if (cyRef.current) {
+                cyRef.current.nodes().removeClass('edge-source')
+              }
+              setEdgeSourceNode(null)
+              setIsCreatingEdge(false)
+              // 切换到创建节点模式
+              if (onModeChange) {
+                onModeChange('add-node')
+              }
+            }}
+            size="small"
+            color={mode === 'add-node' ? 'primary' : 'default'}
+            sx={{ 
+              backgroundColor: mode === 'add-node' ? '#e8f5e8' : 'transparent',
+              '&:hover': {
+                backgroundColor: mode === 'add-node' ? '#c8e6c9' : 'rgba(0, 0, 0, 0.04)'
+              }
+            }}
+          >
+            <AddCircleOutlineIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title={isCreatingEdge ? "取消创建边" : "创建边模式"}>
@@ -589,6 +697,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
             nodeData={editingNode} 
             onClose={() => setEditingNode(null)}
             onUpdate={onNodeUpdate}
+            onDelete={onNodeDelete}
           />,
           document.body
         )}
@@ -600,6 +709,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
             edgeData={editingEdge} 
             onClose={() => setEditingEdge(null)}
             onUpdate={onEdgeUpdate}
+            onDelete={onEdgeDelete}
           />,
           document.body
         )}
@@ -608,7 +718,7 @@ const CytoscapeAutomaton = ({ nodes = [], edges = [], onNodeUpdate, onEdgeUpdate
 }
 
 // 节点编辑模态框组件
-function NodeEditorModal({ nodeData, onClose, onUpdate }) {
+function NodeEditorModal({ nodeData, onClose, onUpdate, onDelete }) {
   const [formData, setFormData] = useState(nodeData)
 
   const handleChange = (field, value) => {
@@ -631,6 +741,13 @@ function NodeEditorModal({ nodeData, onClose, onUpdate }) {
       onUpdate(formData.id, formData)
     }
     onClose()
+  }
+
+  const handleDelete = () => {
+    if (onDelete && window.confirm(`确定要删除节点 "${formData.locationName}" 吗？这将同时删除所有连接到该节点的边。`)) {
+      onDelete(formData.id)
+      onClose()
+    }
   }
 
   return (
@@ -702,6 +819,11 @@ function NodeEditorModal({ nodeData, onClose, onUpdate }) {
           <button style={buttonStyle} onClick={onClose}>
             Cancel
           </button>
+          {onDelete && (
+            <button style={{ ...buttonStyle, background: '#f44336' }} onClick={handleDelete}>
+              Delete
+            </button>
+          )}
           <button style={{ ...buttonStyle, background: '#4caf50' }} onClick={handleConfirm}>
             Confirm
           </button>
@@ -712,7 +834,7 @@ function NodeEditorModal({ nodeData, onClose, onUpdate }) {
 }
 
 // 边编辑模态框组件
-function EdgeEditorModal({ edgeData, onClose, onUpdate }) {
+function EdgeEditorModal({ edgeData, onClose, onUpdate, onDelete }) {
   const [formData, setFormData] = useState(edgeData)
 
   const handleChange = (field, value) => {
@@ -724,6 +846,13 @@ function EdgeEditorModal({ edgeData, onClose, onUpdate }) {
       onUpdate(formData.id, formData)
     }
     onClose()
+  }
+
+  const handleDelete = () => {
+    if (onDelete && window.confirm(`确定要删除这条边吗？`)) {
+      onDelete(formData.id)
+      onClose()
+    }
   }
 
   return (
@@ -763,6 +892,11 @@ function EdgeEditorModal({ edgeData, onClose, onUpdate }) {
           <button style={buttonStyle} onClick={onClose}>
             Cancel
           </button>
+          {onDelete && (
+            <button style={{ ...buttonStyle, background: '#f44336' }} onClick={handleDelete}>
+              Delete
+            </button>
+          )}
           <button style={{ ...buttonStyle, background: '#4caf50' }} onClick={handleConfirm}>
             Confirm
           </button>

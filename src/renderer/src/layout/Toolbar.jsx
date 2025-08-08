@@ -1,53 +1,97 @@
 import React from 'react'
-import { Tooltip, IconButton, CircularProgress } from '@mui/material'
+import { Tooltip, IconButton, Snackbar, Alert } from '@mui/material'
 import {
-  NoteAdd as NoteAddIcon,
   FolderOpen as FolderOpenIcon,
-  Save as SaveIcon,
-  PlayArrow as PlayArrowIcon
+  Save as SaveIcon
 } from '@mui/icons-material'
 import useEditorStore from '../store/editorStore'
 
+/* eslint-disable react/prop-types */
 const Toolbar = ({ onTabChange }) => {
-  const { initializeSimulator, simulationLoading } = useEditorStore()
+  const { saveModel, loadModel } = useEditorStore()
+  const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' })
 
-  const handleRunSimulation = async () => {
+
+  const handleSaveModel = async () => {
     try {
-      console.log('window.api:', window.api)
-      console.log('window.api.runSimulation:', window.api?.runSimulation)
-      await initializeSimulator()
-      // Switch to simulator tab after running simulation
-      if (onTabChange) {
-        onTabChange('simulator')
+      const result = await saveModel()
+      if (result.success) {
+        setSnackbar({
+          open: true,
+          message: `模型已保存到: ${result.filePath}`,
+          severity: 'success'
+        })
+      } else {
+        setSnackbar({
+          open: true,
+          message: `保存失败: ${result.error}`,
+          severity: 'error'
+        })
       }
     } catch (error) {
-      console.error('Simulation failed:', error)
+      setSnackbar({
+        open: true,
+        message: `保存失败: ${error.message}`,
+        severity: 'error'
+      })
     }
   }
 
+  const handleLoadModel = async () => {
+    try {
+      const result = await loadModel()
+      if (result.success) {
+        setSnackbar({
+          open: true,
+          message: `模型已从文件加载: ${result.filePath}`,
+          severity: 'success'
+        })
+      } else if (result.error !== 'Load canceled by user') {
+        setSnackbar({
+          open: true,
+          message: `加载失败: ${result.error}`,
+          severity: 'error'
+        })
+      }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: `加载失败: ${error.message}`,
+        severity: 'error'
+      })
+    }
+  }
+
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false })
+  }
+
   return (
-    <div>
-      <Tooltip title="New File">
-        <IconButton>
-          <NoteAddIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Open File">
-        <IconButton>
-          <FolderOpenIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Save File">
-        <IconButton>
-          <SaveIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Run Simulation">
-        <IconButton onClick={handleRunSimulation} disabled={simulationLoading} color="primary">
-          {simulationLoading ? <CircularProgress size={24} /> : <PlayArrowIcon />}
-        </IconButton>
-      </Tooltip>
-    </div>
+    <>
+      <div>
+        <Tooltip title="打开模型">
+          <IconButton onClick={handleLoadModel}>
+            <FolderOpenIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="保存模型">
+          <IconButton onClick={handleSaveModel}>
+            <SaveIcon />
+          </IconButton>
+        </Tooltip>
+      </div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   )
 }
 

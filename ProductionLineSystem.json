@@ -1,0 +1,381 @@
+{
+  "systemName": "ProductionLineSystem",
+  "clocks": [
+    { "name": "workerTime", "size": 1 },
+    { "name": "machineTime", "size": 1 },
+    { "name": "qcTime", "size": 1 },
+    { "name": "globalTime", "size": 1 }
+  ],
+  "intVars": [
+    { "name": "rawMaterials", "size": 1, "min": 0, "max": 5, "initial": 3 },
+    { "name": "workerQueue", "size": 1, "min": 0, "max": 3, "initial": 0 },
+    { "name": "machineQueue", "size": 1, "min": 0, "max": 2, "initial": 0 },
+    { "name": "finishedProducts", "size": 1, "min": 0, "max": 10, "initial": 0 },
+    { "name": "defectiveProducts", "size": 1, "min": 0, "max": 5, "initial": 0 }
+  ],
+  "events": [
+    { "name": "startWork" },
+    { "name": "finishPrep" },
+    { "name": "machineProcess" },
+    { "name": "finishMachine" },
+    { "name": "qualityCheck" },
+    { "name": "passQC" },
+    { "name": "failQC" },
+    { "name": "restockMaterial" },
+    { "name": "urgentOrder" },
+    { "name": "maintenanceBreak" }
+  ],
+  "synchronizations": [],
+  "processes": {
+    "worker": {
+      "nodes": [
+        {
+          "id": "worker.Idle",
+          "type": "timedAutomatonNode",
+          "position": { "x": 100, "y": 100 },
+          "data": {
+            "processName": "worker",
+            "locationName": "Idle",
+            "isInitial": true,
+            "invariant": "",
+            "labels": ["available"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        },
+        {
+          "id": "worker.Preparing",
+          "type": "timedAutomatonNode",
+          "position": { "x": 300, "y": 100 },
+          "data": {
+            "processName": "worker",
+            "locationName": "Preparing",
+            "isInitial": false,
+            "invariant": "workerTime <= 5",
+            "labels": ["busy", "preparing"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        },
+        {
+          "id": "worker.Waiting",
+          "type": "timedAutomatonNode",
+          "position": { "x": 500, "y": 100 },
+          "data": {
+            "processName": "worker",
+            "locationName": "Waiting",
+            "isInitial": false,
+            "invariant": "workerTime <= 10",
+            "labels": ["waiting_machine"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        },
+        {
+          "id": "worker.Resting",
+          "type": "timedAutomatonNode",
+          "position": { "x": 300, "y": 250 },
+          "data": {
+            "processName": "worker",
+            "locationName": "Resting",
+            "isInitial": false,
+            "invariant": "workerTime <= 15",
+            "labels": ["break"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_worker_1",
+          "source": "worker.Idle",
+          "target": "worker.Preparing",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "worker",
+            "event": "startWork",
+            "guard": "rawMaterials > 0",
+            "action": "rawMaterials = rawMaterials - 1"
+          }
+        },
+        {
+          "id": "e_worker_2",
+          "source": "worker.Preparing",
+          "target": "worker.Waiting",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "worker",
+            "event": "finishPrep",
+            "guard": "workerTime >= 1 && workerQueue < 3",
+            "action": "workerQueue = workerQueue + 1"
+          }
+        },
+        {
+          "id": "e_worker_2b",
+          "source": "worker.Preparing",
+          "target": "worker.Idle",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "worker",
+            "event": "urgentOrder",
+            "guard": "",
+            "action": ""
+          }
+        },
+        {
+          "id": "e_worker_3",
+          "source": "worker.Waiting",
+          "target": "worker.Idle",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "worker",
+            "event": "machineProcess",
+            "guard": "workerTime >= 1 && machineQueue < 2",
+            "action": "workerTime = 0"
+          }
+        },
+        {
+          "id": "e_worker_4",
+          "source": "worker.Idle",
+          "target": "worker.Resting",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "worker",
+            "event": "maintenanceBreak",
+            "guard": "globalTime >= 20",
+            "action": "workerTime = 0"
+          }
+        },
+        {
+          "id": "e_worker_5",
+          "source": "worker.Resting",
+          "target": "worker.Idle",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "worker",
+            "event": "urgentOrder",
+            "guard": "workerTime >= 5",
+            "action": "workerTime = 0"
+          }
+        },
+        {
+          "id": "e_worker_6",
+          "source": "worker.Resting",
+          "target": "worker.Idle",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "worker",
+            "event": "restockMaterial",
+            "guard": "workerTime >= 10",
+            "action": "rawMaterials = 5"
+          }
+        }
+      ]
+    },
+    "machine": {
+      "nodes": [
+        {
+          "id": "machine.Ready",
+          "type": "timedAutomatonNode",
+          "position": { "x": 150, "y": 100 },
+          "data": {
+            "processName": "machine",
+            "locationName": "Ready",
+            "isInitial": true,
+            "invariant": "",
+            "labels": ["ready"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        },
+        {
+          "id": "machine.Processing",
+          "type": "timedAutomatonNode",
+          "position": { "x": 350, "y": 100 },
+          "data": {
+            "processName": "machine",
+            "locationName": "Processing",
+            "isInitial": false,
+            "invariant": "machineTime <= 8",
+            "labels": ["busy", "processing"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        },
+        {
+          "id": "machine.Maintenance",
+          "type": "timedAutomatonNode",
+          "position": { "x": 250, "y": 250 },
+          "data": {
+            "processName": "machine",
+            "locationName": "Maintenance",
+            "isInitial": false,
+            "invariant": "machineTime <= 20",
+            "labels": ["maintenance"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_machine_1",
+          "source": "machine.Ready",
+          "target": "machine.Processing",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "machine",
+            "event": "machineProcess",
+            "guard": "workerQueue > 0",
+            "action": "workerQueue = workerQueue - 1"
+          }
+        },
+        {
+          "id": "e_machine_2",
+          "source": "machine.Processing",
+          "target": "machine.Ready",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "machine",
+            "event": "finishMachine",
+            "guard": "machineTime >= 6",
+            "action": "machineTime = 0"
+          }
+        },
+        {
+          "id": "e_machine_3",
+          "source": "machine.Ready",
+          "target": "machine.Maintenance",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "machine",
+            "event": "maintenanceBreak",
+            "guard": "globalTime >= 25",
+            "action": "machineTime = 0"
+          }
+        },
+        {
+          "id": "e_machine_4",
+          "source": "machine.Maintenance",
+          "target": "machine.Ready",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "machine",
+            "event": "urgentOrder",
+            "guard": "machineTime >= 8",
+            "action": "machineTime = 0"
+          }
+        },
+        {
+          "id": "e_machine_5",
+          "source": "machine.Ready",
+          "target": "machine.Ready",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "machine",
+            "event": "restockMaterial",
+            "guard": "",
+            "action": ""
+          }
+        }
+      ]
+    },
+    "qualityControl": {
+      "nodes": [
+        {
+          "id": "qualityControl.Waiting",
+          "type": "timedAutomatonNode",
+          "position": { "x": 200, "y": 100 },
+          "data": {
+            "processName": "qualityControl",
+            "locationName": "Waiting",
+            "isInitial": true,
+            "invariant": "",
+            "labels": ["waiting"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        },
+        {
+          "id": "qualityControl.Inspecting",
+          "type": "timedAutomatonNode",
+          "position": { "x": 400, "y": 100 },
+          "data": {
+            "processName": "qualityControl",
+            "locationName": "Inspecting",
+            "isInitial": false,
+            "invariant": "qcTime <= 4",
+            "labels": ["inspecting"],
+            "isCommitted": false,
+            "isUrgent": false
+          }
+        },
+        {
+          "id": "qualityControl.Deciding",
+          "type": "timedAutomatonNode",
+          "position": { "x": 300, "y": 250 },
+          "data": {
+            "processName": "qualityControl",
+            "locationName": "Deciding",
+            "isInitial": false,
+            "invariant": "qcTime <= 2",
+            "labels": ["deciding"],
+            "isCommitted": true,
+            "isUrgent": false
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_qc_1",
+          "source": "qualityControl.Waiting",
+          "target": "qualityControl.Inspecting",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "qualityControl",
+            "event": "qualityCheck",
+            "guard": "machineQueue > 0",
+            "action": "machineQueue = machineQueue - 1"
+          }
+        },
+        {
+          "id": "e_qc_2",
+          "source": "qualityControl.Inspecting",
+          "target": "qualityControl.Deciding",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "qualityControl",
+            "event": "qualityCheck",
+            "guard": "qcTime >= 3",
+            "action": "qcTime = 0"
+          }
+        },
+        {
+          "id": "e_qc_3",
+          "source": "qualityControl.Deciding",
+          "target": "qualityControl.Waiting",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "qualityControl",
+            "event": "passQC",
+            "guard": "finishedProducts < 10",
+            "action": "finishedProducts = finishedProducts + 1"
+          }
+        },
+        {
+          "id": "e_qc_4",
+          "source": "qualityControl.Deciding",
+          "target": "qualityControl.Waiting",
+          "type": "timedAutomatonEdge",
+          "data": {
+            "processName": "qualityControl",
+            "event": "failQC",
+            "guard": "defectiveProducts < 5",
+            "action": "defectiveProducts = defectiveProducts + 1"
+          }
+        }
+      ]
+    }
+  }
+}
