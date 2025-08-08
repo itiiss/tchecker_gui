@@ -110,7 +110,7 @@ const useEditorStore = create((set, get) => ({
           data: {
             processName: 'worker',
             event: 'finishPrep',
-            guard: 'workerTime >= 1',
+            guard: 'workerTime >= 1 && workerQueue < 3',
             action: 'workerQueue = workerQueue + 1'
           }
         },
@@ -362,7 +362,7 @@ const useEditorStore = create((set, get) => ({
           data: {
             processName: 'qualityControl',
             event: 'passQC',
-            guard: '',
+            guard: 'finishedProducts < 10',
             action: 'finishedProducts = finishedProducts + 1'
           }
         },
@@ -374,7 +374,7 @@ const useEditorStore = create((set, get) => ({
           data: {
             processName: 'qualityControl',
             event: 'failQC',
-            guard: '',
+            guard: 'defectiveProducts < 5',
             action: 'defectiveProducts = defectiveProducts + 1'
           }
         }
