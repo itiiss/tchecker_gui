@@ -1,0 +1,19 @@
+clock x;
+int count;
+chan sync;
+
+process Producer() {
+  state idle, work;
+  init idle;
+  trans idle -> work { guard x >= 1; assign x = 0, count = count + 1; };
+  trans work -> idle { sync sync!; };
+}
+
+process Consumer() {  
+  state wait, process;
+  init wait;
+  trans wait -> process { sync sync?; };
+  trans process -> wait { assign count = count - 1; };
+}
+
+system Producer, Consumer;

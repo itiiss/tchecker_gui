@@ -27,6 +27,7 @@
     "@xyflow/react": "^12.8.2",
     "cytoscape": "^3.33.0",
     "react-cytoscapejs": "^2.0.0",
+    "uppaal-to-tchecker": "^1.0.0",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

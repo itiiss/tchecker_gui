@@ -2,13 +2,14 @@ import React from 'react'
 import { Tooltip, IconButton, Snackbar, Alert } from '@mui/material'
 import {
   FolderOpen as FolderOpenIcon,
-  Save as SaveIcon
+  Save as SaveIcon,
+  FileUpload as ImportIcon
 } from '@mui/icons-material'
 import useEditorStore from '../store/editorStore'
 
 /* eslint-disable react/prop-types */
 const Toolbar = ({ onTabChange }) => {
-  const { saveModel, loadModel } = useEditorStore()
+  const { saveModel, loadModel, importUppaalModel } = useEditorStore()
   const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' })
 
 
@@ -63,6 +64,31 @@ const Toolbar = ({ onTabChange }) => {
   }
 
 
+  const handleImportUppaal = async () => {
+    try {
+      const result = await importUppaalModel()
+      if (result.success) {
+        setSnackbar({
+          open: true,
+          message: `Uppaal模型已成功导入: ${result.filePath}`,
+          severity: 'success'
+        })
+      } else if (result.error !== 'Import canceled by user') {
+        setSnackbar({
+          open: true,
+          message: `导入失败: ${result.error}`,
+          severity: 'error'
+        })
+      }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: `导入失败: ${error.message}`,
+        severity: 'error'
+      })
+    }
+  }
+
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false })
   }
@@ -78,6 +104,11 @@ const Toolbar = ({ onTabChange }) => {
         <Tooltip title="保存模型">
           <IconButton onClick={handleSaveModel}>
             <SaveIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="导入Uppaal模型">
+          <IconButton onClick={handleImportUppaal}>
+            <ImportIcon />
           </IconButton>
         </Tooltip>
       </div>
