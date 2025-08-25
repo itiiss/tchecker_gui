@@ -6,62 +6,48 @@
 /**
  * 格式化 TChecker 声明中的属性部分 { ... }
  * @param {object} attrs - 包含属性的键值对对象。
- * @returns {string} - 格式化后的属性字符串，TChecker使用大括号语法
+ * @returns {string} - 格式化后的属性字符串，例如 "{initial::invariant:x<=5}"
  */
 function formatAttributes(attrs) {
-  // 如果没有属性，返回空字符串
+  // 如果没有属性，直接返回空括号
   if (!attrs || Object.keys(attrs).length === 0) {
-    return ''
+    return '{}'
   }
 
   const attributePairs = []
 
   // --- 识别并收集所有有效的属性 ---
   // 位置属性
-  if (attrs.isInitial) attributePairs.push('initial:')
-  if (attrs.isCommitted) attributePairs.push('committed:') 
-  if (attrs.isUrgent) attributePairs.push('urgent:')
-  if (attrs.invariant && attrs.invariant.trim()) {
-    attributePairs.push(`invariant:${attrs.invariant}`)
+  if (attrs.isInitial) attributePairs.push({ key: 'initial', value: '' })
+  if (attrs.isCommitted) attributePairs.push({ key: 'committed', value: '' })
+  if (attrs.isUrgent) attributePairs.push({ key: 'urgent', value: '' })
+  if (attrs.invariant) attributePairs.push({ key: 'invariant', value: attrs.invariant })
+  if (attrs.labels && attrs.labels.length > 0) {
+    attributePairs.push({ key: 'labels', value: attrs.labels.join(',') })
   }
 
-  // 边属性 - TChecker不支持同时使用provided:和do:属性，优先选择do:
-  const hasAction = attrs.action && attrs.action.trim() !== ''
-  const hasGuard = attrs.guard && attrs.guard !== 'true' && attrs.guard.trim() !== ''
-  
-  if (hasAction) {
-    // 优先使用do:属性，跳过provided:属性以避免语法冲突
-    const tckAction = attrs.action.trim()
-      .replace(/\s*=\s*/g, '=') // 移除赋值符号周围的空格
-      .replace(/\s*,\s*/g, '; ') // 将逗号替换为分号（TChecker语法）
-      .replace(/\s*\+\s*/g, '+') // 移除运算符周围的空格
-      .replace(/\s*-\s*/g, '-')
-      .replace(/\s*\*\s*/g, '*')
-      .replace(/\s*\/\s*/g, '/')
-      .replace(/\(\s*([^)]+)\s*\)/g, '($1)') // 移除括号内的多余空格
-    attributePairs.push(`do:${tckAction}`)
-  } else if (hasGuard) {
-    // 只有在没有action时才添加provided:属性
-    const tckGuard = attrs.guard
-      .replace(/\|\|/g, ' or ')
-      .replace(/&&/g, ' and ')
-      .replace(/==/g, ' == ')
-      .replace(/!=/g, ' != ')
-    
-    // 暂时跳过复杂的guard表达式，因为TChecker语法限制
-    const isComplexGuard = tckGuard.includes(' or ') || tckGuard.includes(' and ')
-    if (!isComplexGuard) {
-      attributePairs.push(`provided:${tckGuard}`)
-    }
+  // 边属性
+  if (attrs.guard && attrs.guard !== 'true' && attrs.guard.trim() !== '') {
+    attributePairs.push({ key: 'provided', value: attrs.guard })
+  }
+  if (attrs.action && attrs.action.trim() !== '') {
+    attributePairs.push({ key: 'do', value: attrs.action })
   }
 
-  // 如果没有属性，返回空字符串
+  // 如果没有收集到任何有效属性，也返回空括号
   if (attributePairs.length === 0) {
-    return ''
+    return '{}'
   }
 
-  // 使用TChecker标准语法：{attribute:value,attribute2:value2}
-  return `{${attributePairs.join(',')}}`
+  // --- 修正的核心逻辑 ---
+  // 1. 将键值对数组转换为 "key:value" 格式的字符串数组
+  //    对于布尔型属性，value是空字符串，所以 `urgent:` 格式正确。
+  const formattedParts = attributePairs.map((pair) => `${pair.key}:${pair.value}`)
+
+  // 2. 用单个冒号连接这些格式化好的部分
+  const finalAttributeString = formattedParts.join(':')
+
+  return `{${finalAttributeString}}`
 }
 
 /**
@@ -73,22 +59,19 @@ function generateTckFromJSON(model) {
   const tckLines = []
 
   // 规则 1: system 声明必须在第一行
-  // 确保系统名称只包含字母、数字和下划线
-  const sanitizedSystemName = model.systemName.replace(/[^a-zA-Z0-9_]/g, '_')
-  tckLines.push(`system:${sanitizedSystemName}`)
+  tckLines.push(`system:${model.systemName}{}`)
   tckLines.push('') // 空行以增加可读性
 
   // --- 全局声明 ---
   tckLines.push('# --- Global Declarations ---')
   ;(model.events || []).forEach((event) => {
-    const eventName = typeof event === 'object' ? event.name : event
-    tckLines.push(`event:${eventName}`)
+    tckLines.push(`event:${event}{}`)
   })
   ;(model.clocks || []).forEach((clock) => {
-    tckLines.push(`clock:${clock.size}:${clock.name}`)
+    tckLines.push(`clock:${clock.size}:${clock.name}{}`)
   })
   ;(model.intVars || []).forEach((v) => {
-    tckLines.push(`int:${v.size}:${v.min}:${v.max}:${v.initial}:${v.name}`)
+    tckLines.push(`int:${v.size}:${v.min}:${v.max}:${v.initial}:${v.name}{}`)
   })
   tckLines.push('')
 
@@ -98,25 +81,28 @@ function generateTckFromJSON(model) {
     const procDetails = model.processes[procName]
     tckLines.push('')
     tckLines.push(`# Process: ${procName}`)
-    tckLines.push(`process:${procName}`)
+    tckLines.push(`process:${procName}{}`)
 
-    // 位置声明 - 包含属性
+    // 位置
     for (const locName in procDetails.locations) {
-      const location = procDetails.locations[locName]
-      // 避免使用TChecker保留关键字作为位置名称
-      const sanitizedLocName = locName === 'process' ? 'processing' : locName
-      const attrs = formatAttributes(location)
-      tckLines.push(`location:${procName}:${sanitizedLocName}${attrs}`)
+      const locDetails = procDetails.locations[locName]
+      const attributes = formatAttributes({
+        isInitial: locDetails.isInitial,
+        invariant: locDetails.invariant,
+        labels: locDetails.labels,
+        isCommitted: locDetails.isCommitted,
+        isUrgent: locDetails.isUrgent
+      })
+      tckLines.push(`location:${procName}:${locName}${attributes}`)
     }
 
-    // 边声明 - 包含属性
+    // 边
     for (const edge of procDetails.edges) {
-      const event = edge.event && edge.event.trim() ? edge.event : 'tau'
-      // 避免使用TChecker保留关键字作为位置名称
-      const sanitizedSource = edge.source === 'process' ? 'processing' : edge.source
-      const sanitizedTarget = edge.target === 'process' ? 'processing' : edge.target
-      const attrs = formatAttributes(edge)
-      tckLines.push(`edge:${procName}:${sanitizedSource}:${sanitizedTarget}:${event}${attrs}`)
+      const attributes = formatAttributes({
+        guard: edge.guard,
+        action: edge.action
+      })
+      tckLines.push(`edge:${procName}:${edge.source}:${edge.target}:${edge.event}${attributes}`)
     }
   }
   tckLines.push('')
@@ -125,9 +111,8 @@ function generateTckFromJSON(model) {
   tckLines.push('# --- Synchronizations ---')
   ;(model.synchronizations || []).forEach((sync) => {
     const syncStr = sync.constraints.join(':')
-    tckLines.push(`sync:${syncStr}`)
+    tckLines.push(`sync:${syncStr}{}`)
   })
-
 
   return tckLines.join('\n')
 }

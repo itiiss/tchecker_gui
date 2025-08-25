@@ -866,86 +866,6 @@ const useEditorStore = create((set, get) => ({
     }
   },
 
-  importUppaalModel: async () => {
-    try {
-      const { ipcRenderer } = window.require('electron')
-      const result = await ipcRenderer.invoke('import-uppaal-model')
-      
-      if (result.success && result.modelData) {
-        const modelData = result.modelData
-        
-        // 转换进程数据格式：从 locations/edges 格式转换为 nodes/edges 格式
-        const convertedProcesses = {}
-        Object.entries(modelData.processes || {}).forEach(([processName, processData]) => {
-          const nodes = []
-          const edges = []
-          
-          // 转换位置为节点
-          Object.entries(processData.locations || {}).forEach(([locationName, locationData]) => {
-            nodes.push({
-              id: `${processName}.${locationName}`,
-              type: 'timedAutomatonNode',
-              position: { x: Math.random() * 400 + 100, y: Math.random() * 300 + 100 }, // 随机位置
-              data: {
-                processName: processName,
-                locationName: locationName,
-                isInitial: locationData.isInitial || false,
-                invariant: locationData.invariant || '',
-                labels: locationData.labels || [],
-                isCommitted: locationData.isCommitted || false,
-                isUrgent: locationData.isUrgent || false
-              }
-            })
-          })
-          
-          // 转换边
-          processData.edges?.forEach((edge, index) => {
-            edges.push({
-              id: `edge_${processName}_${index}`,
-              source: `${processName}.${edge.source}`,
-              target: `${processName}.${edge.target}`,
-              type: 'timedAutomatonEdge',
-              data: {
-                processName: processName,
-                event: edge.event || '',
-                guard: edge.guard || '',
-                action: edge.action || ''
-              }
-            })
-          })
-          
-          convertedProcesses[processName] = { nodes, edges }
-        })
-        
-        set({
-          systemName: modelData.systemName || 'Imported Uppaal Model',
-          clocks: modelData.clocks || [],
-          intVars: modelData.intVars || [],
-          events: modelData.events || [],
-          synchronizations: modelData.synchronizations || [],
-          processes: convertedProcesses,
-          activeProcess: Object.keys(convertedProcesses)[0] || null,
-          // Reset simulation state when importing new model
-          simulatorInitialized: false,
-          currentState: null,
-          enabledTransitions: [],
-          simulationTrace: [],
-          tracePosition: 0,
-          simulationResult: null,
-          simulationError: null
-        })
-        console.log('Uppaal model imported successfully:', result.filePath)
-        return { success: true, filePath: result.filePath }
-      } else {
-        console.error('Failed to import Uppaal model:', result.error)
-        return { success: false, error: result.error }
-      }
-    } catch (error) {
-      console.error('Import Uppaal model error:', error)
-      return { success: false, error: error.message }
-    }
-  },
-
   // Helper functions for backend integration
   convertModelDataForBackend: () => {
     const state = get()
@@ -1000,21 +920,15 @@ const useEditorStore = create((set, get) => ({
     }
 
     // Combine manually defined events with auto-discovered events
-    const stateEvents = state.events.map((e) => {
-      if (typeof e === 'string') return e
-      if (typeof e === 'object' && e.name) return e.name
-      return null
-    }).filter(Boolean)
-    
     const combinedEvents = [
-      ...new Set([...stateEvents, ...allEvents])
+      ...new Set([...state.events.map((e) => e.name || e).filter(Boolean), ...allEvents])
     ]
 
     return {
       systemName: state.systemName,
       clocks: state.clocks,
       intVars: state.intVars,
-      events: combinedEvents.map(name => ({ name })), // Convert to object format
+      events: combinedEvents,
       synchronizations: state.synchronizations,
       processes: convertedProcesses
     }
