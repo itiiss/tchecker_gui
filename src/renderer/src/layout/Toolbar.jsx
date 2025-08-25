@@ -1,16 +1,12 @@
 import React from 'react'
 import { Tooltip, IconButton, Snackbar, Alert } from '@mui/material'
-import {
-  FolderOpen as FolderOpenIcon,
-  Save as SaveIcon
-} from '@mui/icons-material'
+import { FolderOpen as FolderOpenIcon, Save as SaveIcon } from '@mui/icons-material'
 import useEditorStore from '../store/editorStore'
 
 /* eslint-disable react/prop-types */
 const Toolbar = ({ onTabChange }) => {
   const { saveModel, loadModel } = useEditorStore()
   const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' })
-
 
   const handleSaveModel = async () => {
     try {
@@ -62,7 +58,6 @@ const Toolbar = ({ onTabChange }) => {
     }
   }
 
-
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false })
   }
@@ -70,12 +65,12 @@ const Toolbar = ({ onTabChange }) => {
   return (
     <>
       <div>
-        <Tooltip title="打开模型">
+        <Tooltip title="open">
           <IconButton onClick={handleLoadModel}>
             <FolderOpenIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="保存模型">
+        <Tooltip title="save">
           <IconButton onClick={handleSaveModel}>
             <SaveIcon />
           </IconButton>

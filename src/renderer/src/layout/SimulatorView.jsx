@@ -95,8 +95,12 @@ const SimulatorView = () => {
   }, [
     // More specific dependencies to avoid unnecessary re-computations
     Object.keys(processes).length,
-    Object.values(processes).map(p => p.nodes?.length || 0).join(','),
-    Object.values(processes).map(p => p.edges?.length || 0).join(','),
+    Object.values(processes)
+      .map((p) => p.nodes?.length || 0)
+      .join(','),
+    Object.values(processes)
+      .map((p) => p.edges?.length || 0)
+      .join(','),
     JSON.stringify(currentState) // Only re-compute when actual state changes
   ])
 
@@ -319,7 +323,7 @@ const SimulatorView = () => {
             disabled={tracePosition <= 0}
             onClick={stepBackward}
           >
-            上一步
+            Prev
           </Button>
           <Button
             size="small"
@@ -330,10 +334,14 @@ const SimulatorView = () => {
               console.log('Next step clicked. Available transitions:', enabledTransitions.length)
               console.log('Current state:', JSON.stringify(currentState))
               console.log('Trace position:', tracePosition, 'of', simulationTrace.length)
-              
+
               try {
                 if (selectedTransition !== null && enabledTransitions[selectedTransition]) {
-                  console.log('Executing selected transition:', selectedTransition, enabledTransitions[selectedTransition])
+                  console.log(
+                    'Executing selected transition:',
+                    selectedTransition,
+                    enabledTransitions[selectedTransition]
+                  )
                   await executeTransition(enabledTransitions[selectedTransition].id)
                 } else if (enabledTransitions.length > 0) {
                   console.log('Executing first available transition:', enabledTransitions[0])
@@ -346,7 +354,7 @@ const SimulatorView = () => {
               }
             }}
           >
-            下一步 {simulationLoading ? '...' : ''}
+            Next {simulationLoading ? '...' : ''}
           </Button>
           <Button
             size="small"
@@ -355,7 +363,7 @@ const SimulatorView = () => {
             onClick={() => setAutoPlay(!autoPlay)}
             disabled={enabledTransitions.length === 0}
           >
-            {autoPlay ? '暂停' : '自动播放'}
+            {autoPlay ? 'Pause' : 'Play'}
           </Button>
           <Button
             size="small"
@@ -368,7 +376,7 @@ const SimulatorView = () => {
               })
             }}
           >
-            随机
+            Random
           </Button>
           <Button
             size="small"
@@ -381,14 +389,14 @@ const SimulatorView = () => {
               })
             }}
           >
-            重置
+            Reset
           </Button>
         </Stack>
 
         {/* Speed Control */}
         <Box>
           <Typography variant="body2" gutterBottom sx={{ fontSize: '0.8rem' }}>
-            速度: Slow ← → Fast
+            Speed: Slow ← → Fast
           </Typography>
           <Slider
             size="small"

@@ -13,9 +13,9 @@ const Menubar = ({ onTabChange, activeTab }) => {
         <Toolbar activeTab={activeTab} onTabChange={onTabChange} />
         <Box sx={{ flexGrow: 1 }} />
         <Tabs value={activeTab} onChange={handleChange}>
-          <Tab label="编辑器" value="editor" />
-          <Tab label="模拟器" value="simulator" />
-          <Tab label="验证器" value="verifier" />
+          <Tab label="Editor" value="editor" />
+          <Tab label="Simulator" value="simulator" />
+          <Tab label="Verifier" value="verifier" />
         </Tabs>
       </MuiToolbar>
     </AppBar>

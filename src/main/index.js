@@ -12,13 +12,13 @@ ipcMain.handle('verify-property', async (event, verificationRequest) => {
   try {
     console.log('=== Received verify property request ===')
     console.log('Request:', JSON.stringify(verificationRequest, null, 2))
-    
+
     const appPath = app.getAppPath()
     const verificationManagerPath = join(appPath, 'src/main/utils/verification-manager.js')
     console.log('Loading from path:', verificationManagerPath)
-    
+
     const { verifyProperty } = require(verificationManagerPath)
-    
+
     const result = await verifyProperty(verificationRequest)
     console.log('Verification completed, result:', result)
     return result
@@ -52,7 +52,7 @@ ipcMain.handle('save-model', async (event, modelData) => {
 
     const jsonData = JSON.stringify(modelData, null, 2)
     writeFileSync(filePath, jsonData, 'utf8')
-    
+
     return { success: true, filePath }
   } catch (error) {
     console.error('Save model error:', error)
@@ -79,7 +79,7 @@ ipcMain.handle('load-model', async () => {
     const filePath = filePaths[0]
     const jsonData = readFileSync(filePath, 'utf8')
     const modelData = JSON.parse(jsonData)
-    
+
     return { success: true, filePath, modelData }
   } catch (error) {
     console.error('Load model error:', error)
@@ -187,11 +187,13 @@ app.whenReady().then(() => {
     }
   })
 
-
   // 验证所有IPC处理器都已注册
   console.log('=== IPC Handlers Registered in whenReady ===')
   console.log('verify-property handler registered:', ipcMain.listenerCount('verify-property') > 0)
-  console.log('initialize-simulator handler registered:', ipcMain.listenerCount('initialize-simulator') > 0)
+  console.log(
+    'initialize-simulator handler registered:',
+    ipcMain.listenerCount('initialize-simulator') > 0
+  )
   console.log('save-model handler registered:', ipcMain.listenerCount('save-model') > 0)
   console.log('load-model handler registered:', ipcMain.listenerCount('load-model') > 0)
 
