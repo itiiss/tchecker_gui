@@ -1,6 +1,5 @@
-import React, { useRef, useCallback, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import CytoscapeComponent from 'react-cytoscapejs'
 import { Box, Tooltip, IconButton } from '@mui/material'
 import {
   ZoomIn as ZoomInIcon,
@@ -11,564 +10,651 @@ import {
   AddCircleOutline as AddCircleOutlineIcon,
   Visibility as VisibilityIcon
 } from '@mui/icons-material'
+import { select, pointer as d3Pointer } from 'd3-selection'
+import { zoom, zoomIdentity } from 'd3-zoom'
+import { drag } from 'd3-drag'
+import 'd3-transition'
 
-const CytoscapeAutomaton = ({ 
-  nodes = [], 
-  edges = [], 
+/* eslint-disable react/prop-types */
+
+const NODE_RADIUS = 38
+const EDGE_OFFSET_STEP = 40
+const LOOP_RADIUS = 60
+
+function buildPositionMap(nodes) {
+  const map = new Map()
+  nodes.forEach((node) => {
+    map.set(node.id, {
+      x: node.x ?? 0,
+      y: node.y ?? 0,
+      data: node.data || {}
+    })
+  })
+  return map
+}
+
+function createNodeLines(node) {
+  const data = node.data || {}
+  const lines = []
+  const name = data.locationName || (node.id.includes('.') ? node.id.split('.').pop() : node.id)
+  if (name) lines.push(name)
+  if (data.invariant && data.invariant.trim() && data.invariant.trim() !== 'true') {
+    lines.push(data.invariant.trim())
+  }
+  if (Array.isArray(data.labels) && data.labels.length > 0) {
+    lines.push(data.labels.join(', '))
+  }
+  return lines
+}
+
+function createEdgeLabel(edgeData) {
+  if (!edgeData) return ''
+  const parts = []
+  if (edgeData.guard && edgeData.guard.trim() && edgeData.guard.trim() !== 'true') {
+    parts.push(`[${edgeData.guard.trim()}]`)
+  }
+  if (edgeData.action && edgeData.action.trim()) {
+    parts.push(edgeData.action.trim())
+  }
+  return parts.join(' / ')
+}
+
+function buildEdgeMeta(edges) {
+  const directionGroups = new Map()
+  const undirectedGroups = new Map()
+
+  edges.forEach((edge) => {
+    const dirKey = `${edge.source}->${edge.target}`
+    if (!directionGroups.has(dirKey)) directionGroups.set(dirKey, [])
+    directionGroups.get(dirKey).push(edge)
+
+    const unorderedKey = [edge.source, edge.target].sort().join('<->')
+    if (!undirectedGroups.has(unorderedKey)) undirectedGroups.set(unorderedKey, [])
+    undirectedGroups.get(unorderedKey).push(edge)
+  })
+
+  const meta = new Map()
+  edges.forEach((edge) => {
+    const dirKey = `${edge.source}->${edge.target}`
+    const unorderedKey = [edge.source, edge.target].sort().join('<->')
+    const sameDirection = directionGroups.get(dirKey) || []
+    const undirected = undirectedGroups.get(unorderedKey) || []
+    const undirectedSorted = [...undirected].sort((a, b) => {
+      if (a.source === b.source) {
+        if (a.target === b.target) {
+          return a.id.localeCompare(b.id)
+        }
+        return a.target.localeCompare(b.target)
+      }
+      return a.source.localeCompare(b.source)
+    })
+    const sameDirectionIndex = Math.max(
+      sameDirection.findIndex((item) => item.id === edge.id),
+      0
+    )
+    const undirectedIndex = Math.max(
+      undirectedSorted.findIndex((item) => item.id === edge.id),
+      0
+    )
+
+    meta.set(edge.id, {
+      sameDirectionCount: sameDirection.length,
+      sameDirectionIndex,
+      totalParallel: undirected.length,
+      undirectedIndex,
+      isSelfLoop: edge.source === edge.target
+    })
+  })
+
+  return meta
+}
+
+function computeEdgeGeometry(edge, meta, positionsMap) {
+  const source = positionsMap.get(edge.source)
+  const target = positionsMap.get(edge.target)
+  const label = createEdgeLabel(edge.data)
+
+  if (!source || !target) {
+    return {
+      path: '',
+      labelX: 0,
+      labelY: 0,
+      label
+    }
+  }
+
+  if (meta?.isSelfLoop) {
+    const startX = source.x + NODE_RADIUS
+    const startY = source.y
+    const endX = source.x
+    const endY = source.y - NODE_RADIUS
+    const path = `M ${startX} ${startY} A ${LOOP_RADIUS} ${LOOP_RADIUS} 0 1 1 ${endX} ${endY}`
+    return {
+      path,
+      labelX: source.x + LOOP_RADIUS * 0.2,
+      labelY: source.y - LOOP_RADIUS - 12,
+      label
+    }
+  }
+
+  const dx = target.x - source.x
+  const dy = target.y - source.y
+  const distance = Math.hypot(dx, dy) || 1
+  const normX = dx / distance
+  const normY = dy / distance
+  const startX = source.x + normX * NODE_RADIUS
+  const startY = source.y + normY * NODE_RADIUS
+  const endX = target.x - normX * NODE_RADIUS
+  const endY = target.y - normY * NODE_RADIUS
+
+  const canonicalSourceId = edge.source < edge.target ? edge.source : edge.target
+  const canonicalTargetId = edge.source < edge.target ? edge.target : edge.source
+  const canonicalSource = positionsMap.get(canonicalSourceId) || source
+  const canonicalTarget = positionsMap.get(canonicalTargetId) || target
+  const cdx = canonicalTarget.x - canonicalSource.x
+  const cdy = canonicalTarget.y - canonicalSource.y
+  const cdistance = Math.hypot(cdx, cdy) || 1
+  const perpendicularX = -cdy / cdistance
+  const perpendicularY = cdx / cdistance
+
+  const sameDirectionCount = meta?.sameDirectionCount || 1
+  const sameDirectionIndex = meta?.sameDirectionIndex || 0
+  const pairCount = meta?.totalParallel || 1
+  const pairIndex = meta?.undirectedIndex || 0
+
+  let offset = 0
+
+  if (sameDirectionCount > 1) {
+    const offsetIndex = sameDirectionIndex - (sameDirectionCount - 1) / 2
+    offset = EDGE_OFFSET_STEP * offsetIndex
+  } else if (pairCount > 1) {
+    const pairOffsetIndex = pairIndex - (pairCount - 1) / 2
+    offset = EDGE_OFFSET_STEP * pairOffsetIndex
+  }
+
+  if (offset !== 0) {
+    const controlX = (startX + endX) / 2 + perpendicularX * offset
+    const controlY = (startY + endY) / 2 + perpendicularY * offset
+    return {
+      path: `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`,
+      labelX: controlX,
+      labelY: controlY - 6,
+      label
+    }
+  }
+
+  return {
+    path: `M ${startX} ${startY} L ${endX} ${endY}`,
+    labelX: (startX + endX) / 2,
+    labelY: (startY + endY) / 2 - 6,
+    label
+  }
+}
+
+function getNodeVisual(node, isSource) {
+  const data = node.data || {}
+  let stroke = '#424242'
+  let strokeWidth = 2
+  let strokeDasharray = null
+  let fill = '#f5f5f5'
+
+  if (data.isInitial) {
+    stroke = '#2e7d32'
+    strokeWidth = 4
+  }
+  if (data.isUrgent) {
+    stroke = '#f57c00'
+    strokeWidth = 4
+    strokeDasharray = '6 3'
+    fill = '#fff3e0'
+  }
+  if (data.isCommitted) {
+    stroke = '#7b1fa2'
+    strokeWidth = 4
+    strokeDasharray = '2 2'
+    fill = '#f3e5f5'
+  }
+  if (data.isCurrentLocation) {
+    stroke = '#d32f2f'
+    strokeWidth = 5
+    strokeDasharray = null
+    fill = '#ffcdd2'
+  }
+  if (isSource) {
+    stroke = '#ff5722'
+    strokeWidth = 4
+    strokeDasharray = null
+    fill = '#ffccbc'
+  }
+
+  return { stroke, strokeWidth, strokeDasharray, fill }
+}
+
+const CytoscapeAutomaton = ({
+  nodes = [],
+  edges = [],
   mode = 'select',
-  onNodeUpdate, 
-  onEdgeUpdate, 
-  onEdgeCreate, 
+  onNodeUpdate,
+  onEdgeUpdate,
+  onEdgeCreate,
   onNodeDelete,
   onEdgeDelete,
   onNodeCreate,
   onModeChange
 }) => {
-  const cyRef = useRef(null)
+  const containerRef = useRef(null)
+  const svgRef = useRef(null)
+  const gRef = useRef(null)
+  const zoomBehaviorRef = useRef(null)
+  const transformRef = useRef(zoomIdentity)
+  const nodesPositionRef = useRef(new Map())
+  const dragPositionsRef = useRef(new Map())
+  const dragRafRef = useRef(null)
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [isCreatingEdge, setIsCreatingEdge] = useState(false)
+  const [edgeSourceNode, setEdgeSourceNode] = useState(null)
   const [editingNode, setEditingNode] = useState(null)
   const [editingEdge, setEditingEdge] = useState(null)
-  
-  // Track the last state to avoid unnecessary re-renders
-  const lastCurrentStateRef = useRef(null)
+  const [dragPositionsSnapshot, setDragPositionsSnapshot] = useState(new Map())
 
-  // 创建节点标签（包含名称和invariant）
-  function createNodeLabel(nodeData) {
-    const name = nodeData?.locationName || nodeData?.label || nodeData?.id || ''
-    const invariant = nodeData?.invariant && nodeData.invariant !== 'true' ? nodeData.invariant : ''
-    
-    if (invariant) {
-      return `${name}\n${invariant}`
-    }
-    return name
-  }
+  const triggerDragRerender = useCallback(() => {
+    if (dragRafRef.current !== null) return
+    dragRafRef.current = requestAnimationFrame(() => {
+      dragRafRef.current = null
+      setDragPositionsSnapshot(new Map(dragPositionsRef.current))
+    })
+  }, [])
 
-  // 转换节点数据格式 - 优化为只包含基础数据，不包含状态类
-  const cytoscapeElements = React.useMemo(() => [
-    ...nodes.map(node => ({
-      data: {
+  const normalizedNodes = useMemo(
+    () =>
+      nodes.map((node) => ({
         id: node.id,
-        label: createNodeLabel(node.data),
-        ...node.data
-      },
-      position: node.position,
-      // 初始不设置状态类，通过动态更新处理
-      classes: ''
-    })),
-    ...edges.map((edge) => {
-      // 计算平行边的偏移
-      const parallelEdges = edges.filter(e => 
-        (e.source === edge.source && e.target === edge.target) ||
-        (e.source === edge.target && e.target === edge.source)
-      )
-      
-      const sameDirectionEdges = edges.filter(e => 
-        e.source === edge.source && e.target === edge.target
-      )
-      
-      const edgeIndex = sameDirectionEdges.findIndex(e => e.id === edge.id)
-      const totalParallel = parallelEdges.length
-      
+        x: dragPositionsSnapshot.get(node.id)?.x ?? node.position?.x ?? 0,
+        y: dragPositionsSnapshot.get(node.id)?.y ?? node.position?.y ?? 0,
+        data: node.data || {}
+      })),
+    [nodes, dragPositionsSnapshot]
+  )
+
+  useEffect(() => {
+    nodesPositionRef.current = buildPositionMap(normalizedNodes)
+  }, [normalizedNodes])
+
+  useEffect(
+    () => () => {
+      if (dragRafRef.current !== null) {
+        cancelAnimationFrame(dragRafRef.current)
+      }
+    },
+    []
+  )
+
+  useEffect(() => {
+    const validIds = new Set(nodes.map((node) => node.id))
+    let removed = false
+    for (const key of dragPositionsRef.current.keys()) {
+      if (!validIds.has(key)) {
+        dragPositionsRef.current.delete(key)
+        removed = true
+      }
+    }
+    if (removed) {
+      triggerDragRerender()
+    }
+  }, [nodes, triggerDragRerender])
+
+  const edgeMetaMap = useMemo(() => buildEdgeMeta(edges), [edges])
+  const nodesById = useMemo(() => buildPositionMap(normalizedNodes), [normalizedNodes])
+
+  const edgesToRender = useMemo(() => {
+    return edges.map((edge) => {
+      const meta = edgeMetaMap.get(edge.id)
+      const geometry = computeEdgeGeometry(edge, meta, nodesById)
       return {
-        data: {
-          id: edge.id,
-          source: edge.source,
-          target: edge.target,
-          label: createEdgeLabel(edge.data),
-          edgeIndex,
-          totalParallel,
-          ...edge.data
-        },
-        classes: totalParallel > 1 ? `parallel-edge parallel-${edgeIndex}` : ''
+        edge,
+        geometry
       }
     })
-  ], [nodes, edges]) // Re-create when nodes or edges change
+  }, [edges, edgeMetaMap, nodesById])
 
-  // 创建边标签
-  function createEdgeLabel(edgeData) {
-    if (!edgeData) return ''
-    const parts = []
-    if (edgeData.guard && edgeData.guard !== 'true') {
-      parts.push(`[${edgeData.guard}]`)
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0]
+      if (entry) {
+        setDimensions({
+          width: entry.contentRect.width,
+          height: entry.contentRect.height
+        })
+      }
+    })
+
+    observer.observe(containerRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!svgRef.current || !gRef.current) return
+
+    const svg = select(svgRef.current)
+    const g = select(gRef.current)
+    const zoomBehavior = zoom()
+      .scaleExtent([0.3, 3])
+      .on('zoom', (event) => {
+        g.attr('transform', event.transform)
+        transformRef.current = event.transform
+      })
+
+    svg.call(zoomBehavior)
+    zoomBehaviorRef.current = zoomBehavior
+    transformRef.current = zoomIdentity
+
+    return () => {
+      svg.on('.zoom', null)
     }
-    if (edgeData.action) {
-      parts.push(edgeData.action)
+  }, [])
+
+  const updateConnectedEdgesDuringDrag = useCallback(
+    (nodeId) => {
+      if (!gRef.current) return
+      const g = select(gRef.current)
+      const positionsMap = nodesPositionRef.current
+
+      edges
+        .filter((edge) => edge.source === nodeId || edge.target === nodeId)
+        .forEach((edge) => {
+          const meta = edgeMetaMap.get(edge.id)
+          const geometry = computeEdgeGeometry(edge, meta, positionsMap)
+          const edgeGroup = g.select(`.edge-group[data-edge-id="${edge.id}"]`)
+          const visualPath = edgeGroup.select('path.edge-visual')
+          if (!visualPath.empty()) {
+            visualPath.attr('d', geometry.path)
+          }
+          const hitboxPath = edgeGroup.select('path.edge-hitbox')
+          if (!hitboxPath.empty()) {
+            hitboxPath.attr('d', geometry.path)
+          }
+          const textSelection = edgeGroup.select('text')
+          if (!textSelection.empty()) {
+            textSelection.attr('x', geometry.labelX).attr('y', geometry.labelY).text(geometry.label)
+          }
+        })
+    },
+    [edges, edgeMetaMap]
+  )
+
+  useEffect(() => {
+    if (!gRef.current || !svgRef.current) return
+
+    const g = select(gRef.current)
+    const svg = select(svgRef.current)
+    const nodeSelection = g.selectAll('.node-group')
+    const nodeById = new Map(normalizedNodes.map((node) => [node.id, node]))
+
+    nodeSelection.each(function () {
+      const nodeId = select(this).attr('data-node-id')
+      const datum = nodeById.get(nodeId)
+      if (datum) {
+        select(this).datum({ ...datum })
+      }
+    })
+
+    const dragBehavior = drag()
+      .on('start', function (event, d) {
+        if (!d) return
+        select(this).raise().classed('dragging', true)
+        dragPositionsRef.current.set(d.id, {
+          x: d.x,
+          y: d.y
+        })
+        triggerDragRerender()
+      })
+      .on('drag', function (event, d) {
+        if (!d) return
+        const sourceEvent = event.sourceEvent || event
+        const [px, py] = d3Pointer(sourceEvent, svg.node())
+        const transform = transformRef.current || zoomIdentity
+        const [x, y] = transform.invert([px, py])
+        d.x = x
+        d.y = y
+        nodesPositionRef.current.set(d.id, {
+          ...nodesPositionRef.current.get(d.id),
+          x,
+          y
+        })
+        dragPositionsRef.current.set(d.id, { x, y })
+        triggerDragRerender()
+        updateConnectedEdgesDuringDrag(d.id)
+      })
+      .on('end', function (event, d) {
+        if (!d) return
+        select(this).classed('dragging', false)
+        const latest = nodesPositionRef.current.get(d.id) || d
+        dragPositionsRef.current.delete(d.id)
+        triggerDragRerender()
+        if (onNodeUpdate) {
+          onNodeUpdate(d.id, {
+            position: {
+              x: latest.x,
+              y: latest.y
+            }
+          })
+        }
+      })
+
+    nodeSelection.call(dragBehavior)
+
+    return () => {
+      nodeSelection.on('.drag', null)
     }
-    return parts.join(' / ')
-  }
+  }, [normalizedNodes, updateConnectedEdgesDuringDrag, onNodeUpdate, triggerDragRerender])
 
-  // Cytoscape样式配置
-  const stylesheet = [
-    // 基础节点样式 - 添加过渡效果
-    {
-      selector: 'node',
-      style: {
-        'background-color': '#f5f5f5',
-        'border-width': 2,
-        'border-color': '#424242',
-        'label': 'data(label)',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'font-family': 'monospace',
-        'font-size': '10px',
-        'font-weight': 'normal',
-        'color': '#333',
-        'width': 80,
-        'height': 80,
-        'shape': 'ellipse',
-        'text-wrap': 'wrap',
-        'text-max-width': '70px',
-        'transition-property': 'background-color, border-color, border-width, box-shadow',
-        'transition-duration': '300ms',
-        'transition-timing-function': 'ease-out'
-      }
-    },
-    // Initial状态：绿色双重边框
-    {
-      selector: 'node.initial-state',
-      style: {
-        'border-width': 4,
-        'border-color': '#2e7d32',
-        'border-style': 'double',
-        'background-color': '#e8f5e8'
-      }
-    },
-    // Urgent状态：橙色虚线边框  
-    {
-      selector: 'node.urgent-state',
-      style: {
-        'border-width': 4,
-        'border-color': '#f57c00',
-        'background-color': '#fff3e0',
-        'border-style': 'dashed'
-      }
-    },
-    // Committed状态：紫色点线边框
-    {
-      selector: 'node.committed-state',
-      style: {
-        'border-width': 4,
-        'border-color': '#7b1fa2',
-        'background-color': '#f3e5f5',
-        'border-style': 'dotted'
-      }
-    },
-    // Initial + Urgent组合
-    {
-      selector: 'node.initial-state.urgent-state',
-      style: {
-        'border-width': 5,
-        'border-color': '#f57c00',
-        'background-color': '#fff3e0',
-        'border-style': 'solid',
-        'box-shadow': 'inset 0 0 0 3px #2e7d32'
-      }
-    },
-    // Initial + Committed组合
-    {
-      selector: 'node.initial-state.committed-state',
-      style: {
-        'border-width': 5,
-        'border-color': '#7b1fa2',
-        'background-color': '#f3e5f5',
-        'border-style': 'solid',
-        'box-shadow': 'inset 0 0 0 3px #2e7d32'
-      }
-    },
-    // 当前位置节点 - 添加平滑过渡效果
-    {
-      selector: 'node.current-state',
-      style: {
-        'background-color': '#ffcdd2',
-        'border-color': '#d32f2f',
-        'border-width': 5,
-        'border-style': 'solid',
-        'box-shadow': '0 0 15px #d32f2f',
-        'transition-property': 'background-color, border-color, border-width, box-shadow',
-        'transition-duration': '300ms',
-        'transition-timing-function': 'ease-out'
-      }
-    },
-    // 边样式 - 直线，标签位置优化
-    {
-      selector: 'edge',
-      style: {
-        'width': 2,
-        'line-color': '#616161',
-        'target-arrow-color': '#616161',
-        'target-arrow-shape': 'triangle',
-        'curve-style': 'straight',
-        'arrow-scale': 1.0,
-        'font-family': 'monospace',
-        'font-size': '8px',
-        'font-weight': 'normal',
-        'color': '#424242',
-        'text-background-color': 'white',
-        'text-background-opacity': 0.9,
-        'text-background-padding': '2px',
-        'text-border-width': 1,
-        'text-border-color': '#bdbdbd',
-        'text-border-opacity': 0.8,
-        'label': 'data(label)',
-        'text-rotation': 'none',
-        'source-text-offset': 15,
-        'target-text-offset': 15,
-        'text-margin-y': -10
-      }
-    },
-    // 自环边样式
-    {
-      selector: 'edge[source = target]',
-      style: {
-        'curve-style': 'loop',
-        'loop-direction': '-45deg',
-        'loop-sweep': '60deg',
-        'source-distance-from-node': 10,
-        'target-distance-from-node': 10,
-        'text-margin-y': -20 // 自环边标签更向上
-      }
-    },
-    // 选中状态 - 去除蓝色
-    {
-      selector: ':selected',
-      style: {
-        'overlay-color': '#757575',
-        'overlay-opacity': 0.2
-      }
-    },
-    // 边创建源节点高亮
-    {
-      selector: 'node.edge-source',
-      style: {
-        'border-color': '#ff5722',
-        'border-width': 4,
-        'background-color': '#ffccbc'
-      }
-    },
-    // 平行边样式
-    {
-      selector: 'edge.parallel-edge',
-      style: {
-        'curve-style': 'bezier',
-        'control-point-step-size': 40
-      }
-    },
-    {
-      selector: 'edge.parallel-0',
-      style: {
-        'control-point-distance': -20,
-        'control-point-weight': 0.5
-      }
-    },
-    {
-      selector: 'edge.parallel-1', 
-      style: {
-        'control-point-distance': 20,
-        'control-point-weight': 0.5
-      }
-    },
-    {
-      selector: 'edge.parallel-2',
-      style: {
-        'control-point-distance': -40,
-        'control-point-weight': 0.5
-      }
-    },
-    {
-      selector: 'edge.parallel-3',
-      style: {
-        'control-point-distance': 40,
-        'control-point-weight': 0.5
-      }
-    },
-    // hover状态
-    {
-      selector: 'node:hover',
-      style: {
-        'border-color': '#2196f3',
-        'border-width': 3
-      }
-    },
-    {
-      selector: 'edge:hover',
-      style: {
-        'width': 3,
-        'line-color': '#2196f3',
-        'target-arrow-color': '#2196f3'
-      }
+  const cancelEdgeCreation = useCallback(() => {
+    setIsCreatingEdge(false)
+    setEdgeSourceNode(null)
+  }, [])
+
+  useEffect(() => {
+    if (mode === 'add-node') {
+      cancelEdgeCreation()
     }
-  ]
+  }, [mode, cancelEdgeCreation])
 
-  // Cytoscape配置
-  const cytoscapeConfig = {
-    layout: {
-      name: 'preset', // 使用预设位置
-      fit: true,
-      padding: 50
-    },
-    wheelSensitivity: 0.2,
-    maxZoom: 3,
-    minZoom: 0.3,
-    userPanningEnabled: true,
-    userZoomingEnabled: true,
-    boxSelectionEnabled: false
-  }
-
-  // 工具栏操作
   const handleZoomIn = useCallback(() => {
-    if (cyRef.current) {
-      cyRef.current.zoom(cyRef.current.zoom() * 1.2)
-      cyRef.current.center()
-    }
+    if (!svgRef.current || !zoomBehaviorRef.current) return
+    select(svgRef.current).transition().duration(150).call(zoomBehaviorRef.current.scaleBy, 1.2)
   }, [])
 
   const handleZoomOut = useCallback(() => {
-    if (cyRef.current) {
-      cyRef.current.zoom(cyRef.current.zoom() * 0.8)
-      cyRef.current.center()
-    }
+    if (!svgRef.current || !zoomBehaviorRef.current) return
+    select(svgRef.current).transition().duration(150).call(zoomBehaviorRef.current.scaleBy, 0.8)
   }, [])
 
   const handleCenter = useCallback(() => {
-    if (cyRef.current) {
-      cyRef.current.fit(50)
-    }
-  }, [])
+    if (!svgRef.current || !zoomBehaviorRef.current || normalizedNodes.length === 0) return
+    const padding = 80
+    const xs = normalizedNodes.map((node) => node.x)
+    const ys = normalizedNodes.map((node) => node.y)
+    const minX = Math.min(...xs)
+    const maxX = Math.max(...xs)
+    const minY = Math.min(...ys)
+    const maxY = Math.max(...ys)
+
+    const graphWidth = Math.max(maxX - minX, 1)
+    const graphHeight = Math.max(maxY - minY, 1)
+    const width = dimensions.width || 1
+    const height = dimensions.height || 1
+
+    const scale = Math.min(
+      Math.min((width - padding) / graphWidth, (height - padding) / graphHeight),
+      3
+    )
+    const k = Math.max(scale, 0.3)
+    const tx = width / 2 - ((minX + maxX) / 2) * k
+    const ty = height / 2 - ((minY + maxY) / 2) * k
+
+    select(svgRef.current)
+      .transition()
+      .duration(200)
+      .call(zoomBehaviorRef.current.transform, zoomIdentity.translate(tx, ty).scale(k))
+  }, [dimensions.height, dimensions.width, normalizedNodes])
 
   const handleLayout = useCallback(() => {
-    if (cyRef.current) {
-      // 应用圆形布局
-      const layout = cyRef.current.layout({
-        name: 'circle',
-        radius: 200,
-        spacingFactor: 1.5,
-        avoidOverlap: true
+    if (!normalizedNodes.length || !onNodeUpdate) return
+    const width = dimensions.width || 400
+    const height = dimensions.height || 400
+    const radius = Math.max(Math.min(width, height) / 2 - 80, 120)
+    const centerX = width / 2
+    const centerY = height / 2
+
+    normalizedNodes.forEach((node, index) => {
+      const angle = (2 * Math.PI * index) / normalizedNodes.length
+      const x = centerX + radius * Math.cos(angle)
+      const y = centerY + radius * Math.sin(angle)
+      onNodeUpdate(node.id, {
+        position: { x, y }
       })
-      layout.run()
+    })
+  }, [dimensions.height, dimensions.width, normalizedNodes, onNodeUpdate])
+
+  const handleSelectMode = useCallback(() => {
+    cancelEdgeCreation()
+    if (onModeChange) {
+      onModeChange('select')
     }
-  }, [])
+  }, [cancelEdgeCreation, onModeChange])
 
-  // 边创建相关状态
-  const [isCreatingEdge, setIsCreatingEdge] = useState(false)
-  const [edgeSourceNode, setEdgeSourceNode] = useState(null)
-  const [tempEdge, setTempEdge] = useState(null)
+  const handleAddNodeMode = useCallback(() => {
+    cancelEdgeCreation()
+    if (onModeChange) {
+      onModeChange('add-node')
+    }
+  }, [cancelEdgeCreation, onModeChange])
 
+  const handleToggleEdgeMode = useCallback(() => {
+    if (isCreatingEdge) {
+      cancelEdgeCreation()
+    } else {
+      setIsCreatingEdge(true)
+      setEdgeSourceNode(null)
+      if (onModeChange) {
+        onModeChange('select')
+      }
+    }
+  }, [isCreatingEdge, cancelEdgeCreation, onModeChange])
 
-  // 更新节点样式类 - 优化版本，只在状态真正改变时更新
-  const updateNodeClasses = useCallback(() => {
-    if (!cyRef.current) return
-    
-    const cy = cyRef.current
-    
-    // 批量更新，减少DOM操作
-    cy.batch(() => {
-      nodes.forEach(node => {
-        const cyNode = cy.getElementById(node.id)
-        if (cyNode.length) {
-          // 计算新的状态类
-          const newClasses = [
-            node.data?.isInitial ? 'initial-state' : '',
-            node.data?.isUrgent ? 'urgent-state' : '', 
-            node.data?.isCommitted ? 'committed-state' : '',
-            node.data?.isCurrentLocation ? 'current-state' : ''
-          ].filter(Boolean)
-          
-          // 获取当前类
-          const currentClasses = cyNode.classes() || []
-          const currentStateClasses = currentClasses.filter(cls => 
-            ['initial-state', 'urgent-state', 'committed-state', 'current-state'].includes(cls)
-          )
-          
-          // 只有在类实际改变时才更新
-          const newClassesStr = newClasses.sort().join(' ')
-          const currentClassesStr = currentStateClasses.sort().join(' ')
-          
-          if (newClassesStr !== currentClassesStr) {
-            // 清除旧的状态类
-            cyNode.removeClass('initial-state urgent-state committed-state current-state')
-            // 添加新的状态类
-            if (newClasses.length > 0) {
-              cyNode.addClass(newClasses.join(' '))
-            }
-          }
-        }
-      })
-    })
-  }, [nodes])
+  const handleBackgroundClick = useCallback(
+    (event) => {
+      if (!svgRef.current) return
+      if (mode === 'add-node' && onNodeCreate) {
+        const [px, py] = d3Pointer(event.nativeEvent, svgRef.current)
+        const transform = transformRef.current || zoomIdentity
+        const [x, y] = transform.invert([px, py])
+        onNodeCreate({ x, y })
+      } else if (isCreatingEdge) {
+        cancelEdgeCreation()
+      }
+    },
+    [cancelEdgeCreation, isCreatingEdge, mode, onNodeCreate]
+  )
 
-  // 监听节点数据变化并更新样式和标签
-  React.useEffect(() => {
-    if (!cyRef.current) return
-
-    const updateId = requestAnimationFrame(() => {
-      const cy = cyRef.current
-      
-      // 批量更新节点标签和样式
-      cy.batch(() => {
-        nodes.forEach(node => {
-          const cyNode = cy.getElementById(node.id)
-          if (cyNode.length) {
-            // 更新标签
-            cyNode.data('label', createNodeLabel(node.data))
-            // 更新其他数据
-            Object.keys(node.data).forEach(key => {
-              cyNode.data(key, node.data[key])
-            })
-          }
-        })
-
-        // 批量更新边标签
-        edges.forEach(edge => {
-          const cyEdge = cy.getElementById(edge.id)
-          if (cyEdge.length) {
-            // 更新标签
-            cyEdge.data('label', createEdgeLabel(edge.data))
-            // 更新其他数据
-            Object.keys(edge.data).forEach(key => {
-              cyEdge.data(key, edge.data[key])
-            })
-          }
-        })
-      })
-
-      // 更新节点样式类
-      updateNodeClasses()
-    })
-    
-    return () => cancelAnimationFrame(updateId)
-  }, [nodes, edges, updateNodeClasses])
-
-  // 事件处理
-  const handleCyInit = useCallback((cy) => {
-    cyRef.current = cy
-
-    // 节点左键点击 - 用于创建边
-    cy.on('tap', 'node', (event) => {
-      const node = event.target
-      const nodeData = node.data()
-      
+  const handleNodeClick = useCallback(
+    (event, node) => {
+      event.stopPropagation()
       if (isCreatingEdge) {
         if (!edgeSourceNode) {
-          // 选择源节点
-          setEdgeSourceNode(nodeData.id)
-          node.addClass('edge-source')
-          console.log('Edge source selected:', nodeData.id)
-        } else if (edgeSourceNode !== nodeData.id) {
-          // 选择目标节点，创建边
-          const newEdgeId = `edge_${edgeSourceNode}_${nodeData.id}_${Date.now()}`
-          const newEdge = {
-            id: newEdgeId,
-            source: edgeSourceNode,
-            target: nodeData.id,
-            data: {
-              event: '',
-              guard: 'true',
-              action: ''
-            }
-          }
-          
-          // 创建新边并添加到图中
-          const newCytoscapeEdge = {
-            data: {
-              id: newEdgeId,
-              source: edgeSourceNode,
-              target: nodeData.id,
-              label: '',
-              ...newEdge.data
-            },
-            classes: ''
-          }
-          
-          // 添加到Cytoscape实例
-          cy.add(newCytoscapeEdge)
-          
-          // 通过回调通知父组件创建新边
+          setEdgeSourceNode(node.id)
+        } else if (edgeSourceNode !== node.id) {
           if (onEdgeCreate) {
-            onEdgeCreate(edgeSourceNode, nodeData.id)
+            onEdgeCreate(edgeSourceNode, node.id)
           }
-          
-          console.log('New edge created:', newEdge)
-          
-          // 重置状态
-          cy.nodes().removeClass('edge-source')
-          setEdgeSourceNode(null)
-          setIsCreatingEdge(false)
+          cancelEdgeCreation()
         }
       }
-    })
+    },
+    [cancelEdgeCreation, edgeSourceNode, isCreatingEdge, onEdgeCreate]
+  )
 
-    // 节点右键点击事件 - 打开编辑对话框
-    cy.on('cxttap', 'node', (event) => {
-      const node = event.target
-      const nodeData = node.data()
-      console.log('Node right-clicked:', nodeData)
+  const handleNodeContextMenu = useCallback(
+    (event, node) => {
+      event.preventDefault()
+      event.stopPropagation()
+      if (!onNodeUpdate) return
+      const data = node.data || {}
       setEditingNode({
-        id: nodeData.id,
-        locationName: nodeData.locationName || nodeData.label || nodeData.id,
-        invariant: nodeData.invariant || '',
-        labels: nodeData.labels || [],
-        isInitial: nodeData.isInitial || false,
-        isUrgent: nodeData.isUrgent || false,
-        isCommitted: nodeData.isCommitted || false
+        id: node.id,
+        locationName: data.locationName || '',
+        invariant: data.invariant || '',
+        labels: Array.isArray(data.labels) ? data.labels : [],
+        isInitial: !!data.isInitial,
+        isUrgent: !!data.isUrgent,
+        isCommitted: !!data.isCommitted
       })
-    })
+    },
+    [onNodeUpdate]
+  )
 
-    // 边右键点击事件 - 打开编辑对话框
-    cy.on('cxttap', 'edge', (event) => {
-      const edge = event.target
-      const edgeData = edge.data()
-      console.log('Edge right-clicked:', edgeData)
+  const handleEdgeContextMenu = useCallback(
+    (event, edge) => {
+      event.preventDefault()
+      event.stopPropagation()
+      if (!onEdgeUpdate) return
+      const data = edge.data || {}
       setEditingEdge({
-        id: edgeData.id,
-        event: edgeData.event || '',
-        guard: edgeData.guard || '',
-        action: edgeData.action || ''
+        id: edge.id,
+        event: data.event || '',
+        guard: data.guard || '',
+        action: data.action || ''
       })
-    })
+    },
+    [onEdgeUpdate]
+  )
 
-    // 节点拖动事件
-    cy.on('position', 'node', (event) => {
-      const node = event.target
-      const nodeId = node.id()
-      const position = node.position()
-      console.log('Node moved:', nodeId, position)
-      
-      // 更新节点位置到store
+  const handleNodeUpdate = useCallback(
+    (nodeId, updatedData) => {
       if (onNodeUpdate) {
-        onNodeUpdate(nodeId, { position })
+        onNodeUpdate(nodeId, updatedData)
       }
-    })
-    
-    // 空白区域点击 - 根据模式执行不同操作
-    cy.on('tap', (event) => {
-      if (event.target === cy) {
-        if (mode === 'add-node') {
-          // 创建节点模式下，在点击位置创建新节点
-          const position = event.position || event.cyPosition
-          if (onNodeCreate && position) {
-            onNodeCreate(position)
-          }
-        } else if (isCreatingEdge) {
-          // 取消边创建模式
-          cy.nodes().removeClass('edge-source')
-          setEdgeSourceNode(null)
-          setIsCreatingEdge(false)
-        }
+    },
+    [onNodeUpdate]
+  )
+
+  const handleNodeDelete = useCallback(
+    (nodeId) => {
+      if (onNodeDelete) {
+        onNodeDelete(nodeId)
       }
-    })
-    
-    // 初始化节点样式 - 减少延迟
-    requestAnimationFrame(updateNodeClasses)
-  }, [isCreatingEdge, edgeSourceNode, mode, onEdgeCreate, onNodeCreate, onNodeDelete, onEdgeDelete, updateNodeClasses])
+    },
+    [onNodeDelete]
+  )
+
+  const handleEdgeUpdate = useCallback(
+    (edgeId, updatedData) => {
+      if (onEdgeUpdate) {
+        onEdgeUpdate(edgeId, updatedData)
+      }
+    },
+    [onEdgeUpdate]
+  )
+
+  const handleEdgeDelete = useCallback(
+    (edgeId) => {
+      if (onEdgeDelete) {
+        onEdgeDelete(edgeId)
+      }
+    },
+    [onEdgeDelete]
+  )
 
   return (
-    <Box sx={{ width: '100%', height: '100%', position: 'relative' }}>
-      {/* 工具栏 */}
+    <Box ref={containerRef} sx={{ width: '100%', height: '100%', position: 'relative' }}>
       <Box
         sx={{
           position: 'absolute',
           top: 10,
           right: 10,
-          zIndex: 1000,
+          zIndex: 10,
           bgcolor: 'background.paper',
           borderRadius: 1,
           boxShadow: 2,
@@ -596,23 +682,12 @@ const CytoscapeAutomaton = ({
             <LayoutIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title={mode === 'select' ? "查看模式 (当前)" : "切换到查看模式"}>
-          <IconButton 
-            onClick={() => {
-              // 取消边创建模式
-              if (cyRef.current) {
-                cyRef.current.nodes().removeClass('edge-source')
-              }
-              setEdgeSourceNode(null)
-              setIsCreatingEdge(false)
-              // 切换到查看模式
-              if (onModeChange) {
-                onModeChange('select')
-              }
-            }}
+        <Tooltip title={mode === 'select' ? '查看模式 (当前)' : '切换到查看模式'}>
+          <IconButton
+            onClick={handleSelectMode}
             size="small"
             color={mode === 'select' ? 'primary' : 'default'}
-            sx={{ 
+            sx={{
               backgroundColor: mode === 'select' ? '#e3f2fd' : 'transparent',
               '&:hover': {
                 backgroundColor: mode === 'select' ? '#bbdefb' : 'rgba(0, 0, 0, 0.04)'
@@ -622,23 +697,12 @@ const CytoscapeAutomaton = ({
             <VisibilityIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title={mode === 'add-node' ? "创建节点模式 (当前)" : "切换到创建节点模式"}>
-          <IconButton 
-            onClick={() => {
-              // 取消边创建模式
-              if (cyRef.current) {
-                cyRef.current.nodes().removeClass('edge-source')
-              }
-              setEdgeSourceNode(null)
-              setIsCreatingEdge(false)
-              // 切换到创建节点模式
-              if (onModeChange) {
-                onModeChange('add-node')
-              }
-            }}
+        <Tooltip title={mode === 'add-node' ? '创建节点模式 (当前)' : '切换到创建节点模式'}>
+          <IconButton
+            onClick={handleAddNodeMode}
             size="small"
             color={mode === 'add-node' ? 'primary' : 'default'}
-            sx={{ 
+            sx={{
               backgroundColor: mode === 'add-node' ? '#e8f5e8' : 'transparent',
               '&:hover': {
                 backgroundColor: mode === 'add-node' ? '#c8e6c9' : 'rgba(0, 0, 0, 0.04)'
@@ -648,24 +712,12 @@ const CytoscapeAutomaton = ({
             <AddCircleOutlineIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title={isCreatingEdge ? "取消创建边" : "创建边模式"}>
-          <IconButton 
-            onClick={() => {
-              if (isCreatingEdge) {
-                // 取消创建边模式
-                if (cyRef.current) {
-                  cyRef.current.nodes().removeClass('edge-source')
-                }
-                setEdgeSourceNode(null)
-                setIsCreatingEdge(false)
-              } else {
-                // 进入创建边模式
-                setIsCreatingEdge(true)
-              }
-            }}
+        <Tooltip title={isCreatingEdge ? '取消创建边' : '创建边模式'}>
+          <IconButton
+            onClick={handleToggleEdgeMode}
             size="small"
             color={isCreatingEdge ? 'secondary' : 'default'}
-            sx={{ 
+            sx={{
               backgroundColor: isCreatingEdge ? '#ffeb3b' : 'transparent',
               '&:hover': {
                 backgroundColor: isCreatingEdge ? '#fdd835' : 'rgba(0, 0, 0, 0.04)'
@@ -677,39 +729,132 @@ const CytoscapeAutomaton = ({
         </Tooltip>
       </Box>
 
-      {/* Cytoscape图形 */}
-      <CytoscapeComponent
-        elements={cytoscapeElements}
-        stylesheet={stylesheet}
-        {...cytoscapeConfig}
+      <svg
+        ref={svgRef}
+        width="100%"
+        height="100%"
         style={{
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#fafafa'
+          backgroundColor: '#fafafa',
+          cursor: mode === 'add-node' ? 'crosshair' : 'default'
         }}
-        cy={handleCyInit}
-      />
+        onClick={handleBackgroundClick}
+      >
+        <defs>
+          <marker
+            id="edge-arrow"
+            viewBox="0 -5 10 10"
+            refX="10"
+            refY="0"
+            markerWidth="6"
+            markerHeight="6"
+            orient="auto"
+          >
+            <path d="M0,-5L10,0L0,5" fill="#616161" />
+          </marker>
+        </defs>
+        <g ref={gRef}>
+          {edgesToRender.map(({ edge, geometry }) => (
+            <g
+              key={edge.id}
+              className="edge-group"
+              data-edge-id={edge.id}
+              onContextMenu={(event) => handleEdgeContextMenu(event, edge)}
+            >
+              <path
+                className="edge-visual"
+                data-source={edge.source}
+                data-target={edge.target}
+                d={geometry.path}
+                fill="none"
+                stroke="#616161"
+                strokeWidth={2}
+                markerEnd="url(#edge-arrow)"
+              />
+              <path
+                className="edge-hitbox"
+                d={geometry.path}
+                fill="none"
+                stroke="transparent"
+                strokeWidth={18}
+                pointerEvents="stroke"
+                style={{ cursor: 'pointer' }}
+                onContextMenu={(event) => handleEdgeContextMenu(event, edge)}
+              />
+              {geometry.label && (
+                <text
+                  x={geometry.labelX}
+                  y={geometry.labelY}
+                  textAnchor="middle"
+                  fontFamily="monospace"
+                  fontSize={10}
+                  fill="#424242"
+                  pointerEvents="auto"
+                  style={{ cursor: 'pointer' }}
+                  onContextMenu={(event) => handleEdgeContextMenu(event, edge)}
+                >
+                  {geometry.label}
+                </text>
+              )}
+            </g>
+          ))}
+          {normalizedNodes.map((node) => {
+            const isSource = isCreatingEdge && edgeSourceNode === node.id
+            const { stroke, strokeWidth, strokeDasharray, fill } = getNodeVisual(node, isSource)
+            const lines = createNodeLines(node)
+            return (
+              <g
+                key={node.id}
+                className="node-group"
+                data-node-id={node.id}
+                transform={`translate(${node.x}, ${node.y})`}
+                onClick={(event) => handleNodeClick(event, node)}
+                onContextMenu={(event) => handleNodeContextMenu(event, node)}
+                style={{ cursor: 'pointer' }}
+              >
+                <circle
+                  r={NODE_RADIUS}
+                  fill={fill}
+                  stroke={stroke}
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={strokeDasharray || undefined}
+                />
+                <text
+                  textAnchor="middle"
+                  fontFamily="monospace"
+                  fontSize={11}
+                  fill="#333"
+                  dominantBaseline="middle"
+                >
+                  {lines.map((line, index) => (
+                    <tspan key={line + index} x={0} dy={index === 0 ? 0 : '1.2em'}>
+                      {line}
+                    </tspan>
+                  ))}
+                </text>
+              </g>
+            )
+          })}
+        </g>
+      </svg>
 
-      {/* 节点编辑模态框 */}
-      {editingNode && 
+      {editingNode &&
         createPortal(
-          <NodeEditorModal 
-            nodeData={editingNode} 
+          <NodeEditorModal
+            nodeData={editingNode}
             onClose={() => setEditingNode(null)}
-            onUpdate={onNodeUpdate}
-            onDelete={onNodeDelete}
+            onUpdate={handleNodeUpdate}
+            onDelete={handleNodeDelete}
           />,
           document.body
         )}
 
-      {/* 边编辑模态框 */}
-      {editingEdge && 
+      {editingEdge &&
         createPortal(
-          <EdgeEditorModal 
-            edgeData={editingEdge} 
+          <EdgeEditorModal
+            edgeData={editingEdge}
             onClose={() => setEditingEdge(null)}
-            onUpdate={onEdgeUpdate}
-            onDelete={onEdgeDelete}
+            onUpdate={handleEdgeUpdate}
+            onDelete={handleEdgeDelete}
           />,
           document.body
         )}
@@ -717,22 +862,21 @@ const CytoscapeAutomaton = ({
   )
 }
 
-// 节点编辑模态框组件
 function NodeEditorModal({ nodeData, onClose, onUpdate, onDelete }) {
   const [formData, setFormData] = useState(nodeData)
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
   const handleUrgentCommittedChange = (field, checked) => {
-    setFormData(prev => {
-      const update = { ...prev, [field]: checked }
+    setFormData((prev) => {
+      const next = { ...prev, [field]: checked }
       if (checked) {
-        if (field === 'isUrgent') update.isCommitted = false
-        if (field === 'isCommitted') update.isUrgent = false
+        if (field === 'isUrgent') next.isCommitted = false
+        if (field === 'isCommitted') next.isUrgent = false
       }
-      return update
+      return next
     })
   }
 
@@ -744,7 +888,12 @@ function NodeEditorModal({ nodeData, onClose, onUpdate, onDelete }) {
   }
 
   const handleDelete = () => {
-    if (onDelete && window.confirm(`确定要删除节点 "${formData.locationName}" 吗？这将同时删除所有连接到该节点的边。`)) {
+    if (
+      onDelete &&
+      window.confirm(
+        `确定要删除节点 "${formData.locationName}" 吗？这将同时删除所有连接到该节点的边。`
+      )
+    ) {
       onDelete(formData.id)
       onClose()
     }
@@ -753,9 +902,7 @@ function NodeEditorModal({ nodeData, onClose, onUpdate, onDelete }) {
   return (
     <div style={modalOverlayStyle} onClick={onClose}>
       <div style={modalContentStyle} onClick={(e) => e.stopPropagation()}>
-        <h3 style={{ marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
-          Edit Location
-        </h3>
+        <h3 style={modalHeaderStyle}>Edit Location</h3>
         <div style={fieldStyle}>
           <label>Name:</label>
           <input
@@ -782,63 +929,65 @@ function NodeEditorModal({ nodeData, onClose, onUpdate, onDelete }) {
             onChange={(e) =>
               handleChange(
                 'labels',
-                e.target.value.split(',').map((s) => s.trim()).filter(s => s)
+                e.target.value
+                  .split(',')
+                  .map((s) => s.trim())
+                  .filter((s) => s)
               )
             }
             style={inputStyle}
           />
         </div>
-        <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: '15px 0' }} />
+        <hr style={dividerStyle} />
         <div style={checkboxGroupStyle}>
-          <div>
+          <label>
             <input
               type="checkbox"
               checked={!!formData.isInitial}
               onChange={(e) => handleChange('isInitial', e.target.checked)}
             />
-            <label>Initial</label>
-          </div>
-          <div>
+            Initial
+          </label>
+          <label>
             <input
               type="checkbox"
               checked={!!formData.isUrgent}
               onChange={(e) => handleUrgentCommittedChange('isUrgent', e.target.checked)}
             />
-            <label>Urgent</label>
-          </div>
-          <div>
+            Urgent
+          </label>
+          <label>
             <input
               type="checkbox"
               checked={!!formData.isCommitted}
               onChange={(e) => handleUrgentCommittedChange('isCommitted', e.target.checked)}
             />
-            <label>Committed</label>
-          </div>
+            Committed
+          </label>
         </div>
-        <div style={buttonContainerStyle}>
-          <button style={buttonStyle} onClick={onClose}>
-            Cancel
+        <div style={modalActionsStyle}>
+          <button onClick={handleDelete} style={deleteButtonStyle}>
+            Delete
           </button>
-          {onDelete && (
-            <button style={{ ...buttonStyle, background: '#f44336' }} onClick={handleDelete}>
-              Delete
+          <div>
+            <button onClick={onClose} style={secondaryButtonStyle}>
+              Cancel
             </button>
-          )}
-          <button style={{ ...buttonStyle, background: '#4caf50' }} onClick={handleConfirm}>
-            Confirm
-          </button>
+            <button onClick={handleConfirm} style={primaryButtonStyle}>
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-// 边编辑模态框组件
 function EdgeEditorModal({ edgeData, onClose, onUpdate, onDelete }) {
   const [formData, setFormData] = useState(edgeData)
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
   const handleConfirm = () => {
@@ -849,7 +998,7 @@ function EdgeEditorModal({ edgeData, onClose, onUpdate, onDelete }) {
   }
 
   const handleDelete = () => {
-    if (onDelete && window.confirm(`确定要删除这条边吗？`)) {
+    if (onDelete && window.confirm('确定要删除这条边吗？')) {
       onDelete(formData.id)
       onClose()
     }
@@ -858,9 +1007,7 @@ function EdgeEditorModal({ edgeData, onClose, onUpdate, onDelete }) {
   return (
     <div style={modalOverlayStyle} onClick={onClose}>
       <div style={modalContentStyle} onClick={(e) => e.stopPropagation()}>
-        <h3 style={{ marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
-          Edit Transition
-        </h3>
+        <h3 style={modalHeaderStyle}>Edit Transition</h3>
         <div style={fieldStyle}>
           <label>Event:</label>
           <input
@@ -888,84 +1035,113 @@ function EdgeEditorModal({ edgeData, onClose, onUpdate, onDelete }) {
             style={inputStyle}
           />
         </div>
-        <div style={buttonContainerStyle}>
-          <button style={buttonStyle} onClick={onClose}>
-            Cancel
+        <div style={modalActionsStyle}>
+          <button onClick={handleDelete} style={deleteButtonStyle}>
+            Delete
           </button>
-          {onDelete && (
-            <button style={{ ...buttonStyle, background: '#f44336' }} onClick={handleDelete}>
-              Delete
+          <div>
+            <button onClick={onClose} style={secondaryButtonStyle}>
+              Cancel
             </button>
-          )}
-          <button style={{ ...buttonStyle, background: '#4caf50' }} onClick={handleConfirm}>
-            Confirm
-          </button>
+            <button onClick={handleConfirm} style={primaryButtonStyle}>
+              Save
+            </button>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-// 样式定义
 const modalOverlayStyle = {
   position: 'fixed',
   top: 0,
   left: 0,
-  width: '100%',
-  height: '100%',
-  background: 'rgba(0, 0, 0, 0.5)',
-  zIndex: 9999,
+  width: '100vw',
+  height: '100vh',
+  backgroundColor: 'rgba(0, 0, 0, 0.3)',
   display: 'flex',
+  alignItems: 'center',
   justifyContent: 'center',
-  alignItems: 'center'
+  zIndex: 1300
 }
 
 const modalContentStyle = {
-  background: 'white',
-  border: '1px solid #ccc',
+  width: '360px',
+  backgroundColor: '#fff',
   borderRadius: '8px',
   padding: '20px',
-  fontFamily: 'monospace',
-  fontSize: '14px',
-  minWidth: '300px',
-  maxWidth: '400px'
+  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.2)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px'
+}
+
+const modalHeaderStyle = {
+  margin: 0,
+  borderBottom: '1px solid #eee',
+  paddingBottom: '10px'
 }
 
 const fieldStyle = {
   display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: '10px'
+  flexDirection: 'column',
+  gap: '6px'
 }
 
 const inputStyle = {
-  padding: '4px 8px',
+  padding: '8px',
+  fontSize: '0.95rem',
   border: '1px solid #ccc',
   borderRadius: '4px',
-  fontSize: '14px',
-  fontFamily: 'monospace',
-  width: '200px'
+  fontFamily: 'inherit'
 }
 
-const checkboxGroupStyle = { 
-  display: 'flex', 
-  justifyContent: 'space-around', 
-  marginBottom: '20px' 
+const checkboxGroupStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginTop: '6px'
 }
 
-const buttonContainerStyle = { 
-  display: 'flex', 
-  justifyContent: 'flex-end', 
-  gap: '10px' 
+const modalActionsStyle = {
+  marginTop: '12px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
 }
 
-const buttonStyle = {
-  padding: '8px 15px',
-  border: 'none',
-  borderRadius: '5px',
+const deleteButtonStyle = {
+  backgroundColor: '#f5f5f5',
+  color: '#d32f2f',
+  border: '1px solid #d32f2f',
+  padding: '6px 12px',
+  borderRadius: '4px',
+  cursor: 'pointer'
+}
+
+const secondaryButtonStyle = {
+  backgroundColor: '#f5f5f5',
+  color: '#424242',
+  border: '1px solid #bdbdbd',
+  padding: '6px 12px',
+  borderRadius: '4px',
   cursor: 'pointer',
-  background: '#f44336',
-  color: 'white'
+  marginRight: '8px'
+}
+
+const primaryButtonStyle = {
+  backgroundColor: '#1976d2',
+  color: '#fff',
+  border: 'none',
+  padding: '6px 14px',
+  borderRadius: '4px',
+  cursor: 'pointer'
+}
+
+const dividerStyle = {
+  border: 'none',
+  borderTop: '1px solid #eee',
+  margin: '12px 0'
 }
 
 export default CytoscapeAutomaton
