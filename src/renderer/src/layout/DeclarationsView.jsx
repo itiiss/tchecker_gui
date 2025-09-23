@@ -1,7 +1,16 @@
-import React from 'react'
-import { Box, Typography, TextField, Button, List, ListItem, IconButton } from '@mui/material'
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  List,
+  ListItem,
+  IconButton,
+  Tooltip
+} from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import useEditorStore from '../store/editorStore'
 
 const DeclarationsView = () => {
@@ -86,19 +95,15 @@ const DeclarationsView = () => {
               onChange={(e) => handleClockChange(index, 'name', e.target.value)}
               sx={{ mr: 1 }}
             />
-            <TextField
-              label="Size"
-              type="number"
-              value={clock.size}
-              onChange={(e) => handleClockChange(index, 'size', parseInt(e.target.value, 10))}
-              sx={{ mr: 1 }}
-            />
             <IconButton onClick={() => handleRemoveClock(index)}>
               <DeleteIcon />
             </IconButton>
           </ListItem>
         ))}
       </List>
+      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
+        所有时钟的大小固定为 1。
+      </Typography>
       <Button startIcon={<AddIcon />} onClick={handleAddClock}>
         Add Clock
       </Button>
@@ -113,13 +118,6 @@ const DeclarationsView = () => {
               label="Name"
               value={intVar.name}
               onChange={(e) => handleIntVarChange(index, 'name', e.target.value)}
-              sx={{ mr: 1 }}
-            />
-            <TextField
-              label="Size"
-              type="number"
-              value={intVar.size}
-              onChange={(e) => handleIntVarChange(index, 'size', parseInt(e.target.value, 10))}
               sx={{ mr: 1 }}
             />
             <TextField
@@ -149,12 +147,30 @@ const DeclarationsView = () => {
           </ListItem>
         ))}
       </List>
+      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
+        整数变量的大小固定为 1。
+      </Typography>
       <Button startIcon={<AddIcon />} onClick={handleAddIntVar}>
         Add Integer Variable
       </Button>
 
-      <Typography variant="h6" sx={{ mt: 3 }}>
+      <Typography variant="h6" sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
         Synchronizations
+        <Tooltip
+          title={
+            <>
+              <Typography variant="caption" component="span">
+                示例：P1!alpha, P2?alpha
+              </Typography>
+              <br />
+              <Typography variant="caption" component="span">
+                使用逗号分隔多个进程约束
+              </Typography>
+            </>
+          }
+        >
+          <InfoOutlinedIcon fontSize="small" color="action" />
+        </Tooltip>
       </Typography>
       <List>
         {synchronizations.map((sync, index) => (

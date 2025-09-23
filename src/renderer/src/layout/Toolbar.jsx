@@ -1,12 +1,20 @@
 import React from 'react'
 import { Tooltip, IconButton, Snackbar, Alert } from '@mui/material'
-import { FolderOpen as FolderOpenIcon, Save as SaveIcon } from '@mui/icons-material'
+import { FolderOpen as FolderOpenIcon, Save as SaveIcon, Visibility as VisibilityIcon } from '@mui/icons-material'
 import useEditorStore from '../store/editorStore'
+import PreviewDialog from '../components/PreviewDialog'
 
 /* eslint-disable react/prop-types */
 const Toolbar = ({ onTabChange }) => {
-  const { saveModel, loadModel } = useEditorStore()
+  const { saveModel, loadModel, generateTckPreview } = useEditorStore()
   const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' })
+  const [previewDialog, setPreviewDialog] = React.useState({
+    open: false,
+    content: '',
+    loading: false,
+    error: null,
+    syntaxResult: null
+  })
 
   const handleSaveModel = async () => {
     try {
@@ -62,6 +70,49 @@ const Toolbar = ({ onTabChange }) => {
     setSnackbar({ ...snackbar, open: false })
   }
 
+  const handlePreview = async () => {
+    setPreviewDialog({
+      open: true,
+      content: '',
+      loading: true,
+      error: null,
+      syntaxResult: null
+    })
+    
+    try {
+      const result = await generateTckPreview()
+      if (result.success) {
+        setPreviewDialog({
+          open: true,
+          content: result.tckContent,
+          loading: false,
+          error: null,
+          syntaxResult: result.syntaxResult || null
+        })
+      } else {
+        setPreviewDialog({
+          open: true,
+          content: '',
+          loading: false,
+          error: result.error,
+          syntaxResult: null
+        })
+      }
+    } catch (error) {
+      setPreviewDialog({
+        open: true,
+        content: '',
+        loading: false,
+        error: error.message,
+        syntaxResult: null
+      })
+    }
+  }
+
+  const handleClosePreview = () => {
+    setPreviewDialog({ ...previewDialog, open: false })
+  }
+
   return (
     <>
       <div>
@@ -75,6 +126,11 @@ const Toolbar = ({ onTabChange }) => {
             <SaveIcon />
           </IconButton>
         </Tooltip>
+        <Tooltip title="preview TCK">
+          <IconButton onClick={handlePreview}>
+            <VisibilityIcon />
+          </IconButton>
+        </Tooltip>
       </div>
       <Snackbar
         open={snackbar.open}
@@ -86,6 +142,15 @@ const Toolbar = ({ onTabChange }) => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+      
+      <PreviewDialog
+        open={previewDialog.open}
+        onClose={handleClosePreview}
+        tckContent={previewDialog.content}
+        loading={previewDialog.loading}
+        error={previewDialog.error}
+        syntaxResult={previewDialog.syntaxResult}
+      />
     </>
   )
 }

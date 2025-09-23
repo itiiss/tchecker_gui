@@ -2,88 +2,74 @@ import { create } from 'zustand'
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
 
 const useEditorStore = create((set, get) => ({
-  systemName: 'ProductionLineSystem',
+  systemName: 'fischer_3_10',
   clocks: [
-    { name: 'workerTime', size: 1 }, // 工人操作时间
-    { name: 'machineTime', size: 1 }, // 机器处理时间
-    { name: 'qcTime', size: 1 }, // 质检时间
-    { name: 'globalTime', size: 1 } // 全局时间
+    { name: 'x1', size: 1 }, // Process P1 clock
+    { name: 'x2', size: 1 }, // Process P2 clock
+    { name: 'x3', size: 1 }  // Process P3 clock
   ],
   intVars: [
-    { name: 'rawMaterials', size: 1, min: 0, max: 5, initial: 3 }, // 原材料库存
-    { name: 'workerQueue', size: 1, min: 0, max: 3, initial: 0 }, // 工人队列中的任务
-    { name: 'machineQueue', size: 1, min: 0, max: 2, initial: 0 }, // 机器队列中的任务
-    { name: 'finishedProducts', size: 1, min: 0, max: 10, initial: 0 }, // 完成品
-    { name: 'defectiveProducts', size: 1, min: 0, max: 5, initial: 0 } // 次品
+    { name: 'id', size: 1, min: 0, max: 10, initial: 0 } // Shared variable for mutual exclusion
   ],
   events: [
-    { name: 'startWork' }, // 开始工作
-    { name: 'finishPrep' }, // 完成准备
-    { name: 'machineProcess' }, // 机器处理
-    { name: 'finishMachine' }, // 机器完成
-    { name: 'qualityCheck' }, // 质检
-    { name: 'passQC' }, // 质检通过
-    { name: 'failQC' }, // 质检失败
-    { name: 'restockMaterial' }, // 补充原材料
-    { name: 'urgentOrder' }, // 紧急订单
-    { name: 'maintenanceBreak' } // 维护休息
+    { name: 'tau' } // Internal transition event
   ],
   synchronizations: [],
   processes: {
-    worker: {
+    P1: {
       nodes: [
         {
-          id: 'worker.Idle',
+          id: 'P1.A',
           type: 'timedAutomatonNode',
           position: { x: 100, y: 100 },
           data: {
-            processName: 'worker',
-            locationName: 'Idle',
+            processName: 'P1',
+            locationName: 'A',
             isInitial: true,
             invariant: '',
-            labels: ['available'],
+            labels: [],
             isCommitted: false,
             isUrgent: false
           }
         },
         {
-          id: 'worker.Preparing',
+          id: 'P1.req',
           type: 'timedAutomatonNode',
           position: { x: 300, y: 100 },
           data: {
-            processName: 'worker',
-            locationName: 'Preparing',
+            processName: 'P1',
+            locationName: 'req',
             isInitial: false,
-            invariant: 'workerTime <= 5',
-            labels: ['busy', 'preparing'],
+            invariant: 'x1<=10',
+            labels: [],
             isCommitted: false,
             isUrgent: false
           }
         },
         {
-          id: 'worker.Waiting',
+          id: 'P1.wait',
           type: 'timedAutomatonNode',
           position: { x: 500, y: 100 },
           data: {
-            processName: 'worker',
-            locationName: 'Waiting',
+            processName: 'P1',
+            locationName: 'wait',
             isInitial: false,
-            invariant: 'workerTime <= 10',
-            labels: ['waiting_machine'],
+            invariant: '',
+            labels: [],
             isCommitted: false,
             isUrgent: false
           }
         },
         {
-          id: 'worker.Resting',
+          id: 'P1.cs',
           type: 'timedAutomatonNode',
           position: { x: 300, y: 250 },
           data: {
-            processName: 'worker',
-            locationName: 'Resting',
+            processName: 'P1',
+            locationName: 'cs',
             isInitial: false,
-            invariant: 'workerTime <= 15',
-            labels: ['break'],
+            invariant: '',
+            labels: ['cs1'],
             isCommitted: false,
             isUrgent: false
           }
@@ -91,297 +77,313 @@ const useEditorStore = create((set, get) => ({
       ],
       edges: [
         {
-          id: 'e_worker_1',
-          source: 'worker.Idle',
-          target: 'worker.Preparing',
+          id: 'e_P1_1',
+          source: 'P1.A',
+          target: 'P1.req',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'worker',
-            event: 'startWork',
-            guard: 'rawMaterials > 0',
-            action: 'rawMaterials = rawMaterials - 1'
+            processName: 'P1',
+            event: 'tau',
+            guard: 'id==0',
+            action: 'x1=0'
           }
         },
         {
-          id: 'e_worker_2',
-          source: 'worker.Preparing',
-          target: 'worker.Waiting',
+          id: 'e_P1_2',
+          source: 'P1.req',
+          target: 'P1.wait',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'worker',
-            event: 'finishPrep',
-            guard: 'workerTime >= 1 && workerQueue < 3',
-            action: 'workerQueue = workerQueue + 1'
+            processName: 'P1',
+            event: 'tau',
+            guard: 'x1<=10',
+            action: 'x1=0;id=1'
           }
         },
         {
-          id: 'e_worker_2b',
-          source: 'worker.Preparing',
-          target: 'worker.Idle',
+          id: 'e_P1_3',
+          source: 'P1.wait',
+          target: 'P1.req',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'worker',
-            event: 'urgentOrder',
-            guard: '',
+            processName: 'P1',
+            event: 'tau',
+            guard: 'id==0',
+            action: 'x1=0'
+          }
+        },
+        {
+          id: 'e_P1_4',
+          source: 'P1.wait',
+          target: 'P1.cs',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'P1',
+            event: 'tau',
+            guard: 'x1>10&&id==1',
             action: ''
           }
         },
         {
-          id: 'e_worker_3',
-          source: 'worker.Waiting',
-          target: 'worker.Idle',
+          id: 'e_P1_5',
+          source: 'P1.cs',
+          target: 'P1.A',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'worker',
-            event: 'machineProcess',
-            guard: 'workerTime >= 1 && machineQueue < 2',
-            action: 'workerTime = 0'
-          }
-        },
-        {
-          id: 'e_worker_4',
-          source: 'worker.Idle',
-          target: 'worker.Resting',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'worker',
-            event: 'maintenanceBreak',
-            guard: 'globalTime >= 20',
-            action: 'workerTime = 0'
-          }
-        },
-        {
-          id: 'e_worker_5',
-          source: 'worker.Resting',
-          target: 'worker.Idle',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'worker',
-            event: 'urgentOrder',
-            guard: 'workerTime >= 5',
-            action: 'workerTime = 0'
-          }
-        },
-        {
-          id: 'e_worker_6',
-          source: 'worker.Resting',
-          target: 'worker.Idle',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'worker',
-            event: 'restockMaterial',
-            guard: 'workerTime >= 10',
-            action: 'rawMaterials = 5'
-          }
-        }
-      ]
-    },
-    machine: {
-      nodes: [
-        {
-          id: 'machine.Ready',
-          type: 'timedAutomatonNode',
-          position: { x: 150, y: 100 },
-          data: {
-            processName: 'machine',
-            locationName: 'Ready',
-            isInitial: true,
-            invariant: '',
-            labels: ['ready'],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'machine.Processing',
-          type: 'timedAutomatonNode',
-          position: { x: 350, y: 100 },
-          data: {
-            processName: 'machine',
-            locationName: 'Processing',
-            isInitial: false,
-            invariant: 'machineTime <= 8',
-            labels: ['busy', 'processing'],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'machine.Maintenance',
-          type: 'timedAutomatonNode',
-          position: { x: 250, y: 250 },
-          data: {
-            processName: 'machine',
-            locationName: 'Maintenance',
-            isInitial: false,
-            invariant: 'machineTime <= 20',
-            labels: ['maintenance'],
-            isCommitted: false,
-            isUrgent: false
-          }
-        }
-      ],
-      edges: [
-        {
-          id: 'e_machine_1',
-          source: 'machine.Ready',
-          target: 'machine.Processing',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'machine',
-            event: 'machineProcess',
-            guard: 'workerQueue > 0',
-            action: 'workerQueue = workerQueue - 1'
-          }
-        },
-        {
-          id: 'e_machine_2',
-          source: 'machine.Processing',
-          target: 'machine.Ready',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'machine',
-            event: 'finishMachine',
-            guard: 'machineTime >= 6',
-            action: 'machineTime = 0'
-          }
-        },
-        {
-          id: 'e_machine_3',
-          source: 'machine.Ready',
-          target: 'machine.Maintenance',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'machine',
-            event: 'maintenanceBreak',
-            guard: 'globalTime >= 25',
-            action: 'machineTime = 0'
-          }
-        },
-        {
-          id: 'e_machine_4',
-          source: 'machine.Maintenance',
-          target: 'machine.Ready',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'machine',
-            event: 'urgentOrder',
-            guard: 'machineTime >= 8',
-            action: 'machineTime = 0'
-          }
-        },
-        {
-          id: 'e_machine_5',
-          source: 'machine.Ready',
-          target: 'machine.Ready',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'machine',
-            event: 'restockMaterial',
+            processName: 'P1',
+            event: 'tau',
             guard: '',
-            action: ''
+            action: 'id=0'
           }
         }
       ]
     },
-    qualityControl: {
+    P2: {
       nodes: [
         {
-          id: 'qualityControl.Waiting',
+          id: 'P2.A',
           type: 'timedAutomatonNode',
-          position: { x: 200, y: 100 },
+          position: { x: 100, y: 100 },
           data: {
-            processName: 'qualityControl',
-            locationName: 'Waiting',
+            processName: 'P2',
+            locationName: 'A',
             isInitial: true,
             invariant: '',
-            labels: ['waiting'],
+            labels: [],
             isCommitted: false,
             isUrgent: false
           }
         },
         {
-          id: 'qualityControl.Inspecting',
+          id: 'P2.req',
           type: 'timedAutomatonNode',
-          position: { x: 400, y: 100 },
+          position: { x: 300, y: 100 },
           data: {
-            processName: 'qualityControl',
-            locationName: 'Inspecting',
+            processName: 'P2',
+            locationName: 'req',
             isInitial: false,
-            invariant: 'qcTime <= 4',
-            labels: ['inspecting'],
+            invariant: 'x2<=10',
+            labels: [],
             isCommitted: false,
             isUrgent: false
           }
         },
         {
-          id: 'qualityControl.Deciding',
+          id: 'P2.wait',
+          type: 'timedAutomatonNode',
+          position: { x: 500, y: 100 },
+          data: {
+            processName: 'P2',
+            locationName: 'wait',
+            isInitial: false,
+            invariant: '',
+            labels: [],
+            isCommitted: false,
+            isUrgent: false
+          }
+        },
+        {
+          id: 'P2.cs',
           type: 'timedAutomatonNode',
           position: { x: 300, y: 250 },
           data: {
-            processName: 'qualityControl',
-            locationName: 'Deciding',
+            processName: 'P2',
+            locationName: 'cs',
             isInitial: false,
-            invariant: 'qcTime <= 2',
-            labels: ['deciding'],
-            isCommitted: true,
+            invariant: '',
+            labels: ['cs2'],
+            isCommitted: false,
             isUrgent: false
           }
         }
       ],
       edges: [
         {
-          id: 'e_qc_1',
-          source: 'qualityControl.Waiting',
-          target: 'qualityControl.Inspecting',
+          id: 'e_P2_1',
+          source: 'P2.A',
+          target: 'P2.req',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'qualityControl',
-            event: 'qualityCheck',
-            guard: 'machineQueue > 0',
-            action: 'machineQueue = machineQueue - 1'
+            processName: 'P2',
+            event: 'tau',
+            guard: 'id==0',
+            action: 'x2=0'
           }
         },
         {
-          id: 'e_qc_2',
-          source: 'qualityControl.Inspecting',
-          target: 'qualityControl.Deciding',
+          id: 'e_P2_2',
+          source: 'P2.req',
+          target: 'P2.wait',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'qualityControl',
-            event: 'qualityCheck',
-            guard: 'qcTime >= 3',
-            action: 'qcTime = 0'
+            processName: 'P2',
+            event: 'tau',
+            guard: 'x2<=10',
+            action: 'x2=0;id=2'
           }
         },
         {
-          id: 'e_qc_3',
-          source: 'qualityControl.Deciding',
-          target: 'qualityControl.Waiting',
+          id: 'e_P2_3',
+          source: 'P2.wait',
+          target: 'P2.req',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'qualityControl',
-            event: 'passQC',
-            guard: 'finishedProducts < 10',
-            action: 'finishedProducts = finishedProducts + 1'
+            processName: 'P2',
+            event: 'tau',
+            guard: 'id==0',
+            action: 'x2=0'
           }
         },
         {
-          id: 'e_qc_4',
-          source: 'qualityControl.Deciding',
-          target: 'qualityControl.Waiting',
+          id: 'e_P2_4',
+          source: 'P2.wait',
+          target: 'P2.cs',
           type: 'timedAutomatonEdge',
           data: {
-            processName: 'qualityControl',
-            event: 'failQC',
-            guard: 'defectiveProducts < 5',
-            action: 'defectiveProducts = defectiveProducts + 1'
+            processName: 'P2',
+            event: 'tau',
+            guard: 'x2>10&&id==2',
+            action: ''
+          }
+        },
+        {
+          id: 'e_P2_5',
+          source: 'P2.cs',
+          target: 'P2.A',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'P2',
+            event: 'tau',
+            guard: '',
+            action: 'id=0'
+          }
+        }
+      ]
+    },
+    P3: {
+      nodes: [
+        {
+          id: 'P3.A',
+          type: 'timedAutomatonNode',
+          position: { x: 100, y: 100 },
+          data: {
+            processName: 'P3',
+            locationName: 'A',
+            isInitial: true,
+            invariant: '',
+            labels: [],
+            isCommitted: false,
+            isUrgent: false
+          }
+        },
+        {
+          id: 'P3.req',
+          type: 'timedAutomatonNode',
+          position: { x: 300, y: 100 },
+          data: {
+            processName: 'P3',
+            locationName: 'req',
+            isInitial: false,
+            invariant: 'x3<=10',
+            labels: [],
+            isCommitted: false,
+            isUrgent: false
+          }
+        },
+        {
+          id: 'P3.wait',
+          type: 'timedAutomatonNode',
+          position: { x: 500, y: 100 },
+          data: {
+            processName: 'P3',
+            locationName: 'wait',
+            isInitial: false,
+            invariant: '',
+            labels: [],
+            isCommitted: false,
+            isUrgent: false
+          }
+        },
+        {
+          id: 'P3.cs',
+          type: 'timedAutomatonNode',
+          position: { x: 300, y: 250 },
+          data: {
+            processName: 'P3',
+            locationName: 'cs',
+            isInitial: false,
+            invariant: '',
+            labels: ['cs3'],
+            isCommitted: false,
+            isUrgent: false
+          }
+        }
+      ],
+      edges: [
+        {
+          id: 'e_P3_1',
+          source: 'P3.A',
+          target: 'P3.req',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'P3',
+            event: 'tau',
+            guard: 'id==0',
+            action: 'x3=0'
+          }
+        },
+        {
+          id: 'e_P3_2',
+          source: 'P3.req',
+          target: 'P3.wait',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'P3',
+            event: 'tau',
+            guard: 'x3<=10',
+            action: 'x3=0;id=3'
+          }
+        },
+        {
+          id: 'e_P3_3',
+          source: 'P3.wait',
+          target: 'P3.req',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'P3',
+            event: 'tau',
+            guard: 'id==0',
+            action: 'x3=0'
+          }
+        },
+        {
+          id: 'e_P3_4',
+          source: 'P3.wait',
+          target: 'P3.cs',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'P3',
+            event: 'tau',
+            guard: 'x3>10&&id==3',
+            action: ''
+          }
+        },
+        {
+          id: 'e_P3_5',
+          source: 'P3.cs',
+          target: 'P3.A',
+          type: 'timedAutomatonEdge',
+          data: {
+            processName: 'P3',
+            event: 'tau',
+            guard: '',
+            action: 'id=0'
           }
         }
       ]
     }
   },
-  activeProcess: 'worker',
+  activeProcess: 'P1',
   mode: 'select',
   simulationResult: null,
   simulationLoading: false,
@@ -862,6 +864,26 @@ const useEditorStore = create((set, get) => ({
       }
     } catch (error) {
       console.error('Load model error:', error)
+      return { success: false, error: error.message }
+    }
+  },
+
+  // Preview functionality
+  generateTckPreview: async () => {
+    try {
+      const state = get()
+      const modelData = state.convertModelDataForBackend()
+      
+      const { ipcRenderer } = window.require('electron')
+      const result = await ipcRenderer.invoke('generate-tck-preview', modelData)
+      
+      if (result.success) {
+        return { success: true, tckContent: result.tckContent, syntaxResult: result.syntaxResult }
+      } else {
+        return { success: false, error: result.error }
+      }
+    } catch (error) {
+      console.error('Generate TCK preview error:', error)
       return { success: false, error: error.message }
     }
   },

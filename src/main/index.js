@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
-import { writeFileSync, readFileSync } from 'fs'
+import { writeFileSync, readFileSync, unlinkSync, existsSync } from 'fs'
+import { execFile } from 'child_process'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
@@ -84,6 +85,100 @@ ipcMain.handle('load-model', async () => {
   } catch (error) {
     console.error('Load model error:', error)
     return { success: false, error: error.message }
+  }
+})
+
+// IPC handler for generating TCK preview
+ipcMain.handle('generate-tck-preview', async (event, modelData) => {
+  try {
+    console.log('Received generate-tck-preview request:', modelData)
+    const appPath = app.getAppPath()
+    const tckGeneratorPath = join(appPath, 'src/main/utils/tck-generator.js')
+    console.log('Loading TCK generator from path:', tckGeneratorPath)
+    
+    const { generateTckFromJSON } = require(tckGeneratorPath)
+    const tckContent = generateTckFromJSON(modelData)
+
+    console.log('TCK content generated successfully')
+
+    const syntaxCandidates = [
+      process.env.TCK_SYNTAX_PATH,
+      join(appPath, 'src/main/build/src/tck-syntax'),
+      'tck-syntax'
+    ].filter(Boolean)
+
+    let syntaxCommand = null
+    for (const candidate of syntaxCandidates) {
+      if (candidate === 'tck-syntax') {
+        syntaxCommand = candidate
+        break
+      }
+      if (existsSync(candidate)) {
+        syntaxCommand = candidate
+        break
+      }
+    }
+
+    let syntaxResult = {
+      passed: false,
+      stdout: '',
+      stderr: '',
+      exitCode: null,
+      error: null,
+      command: syntaxCommand
+    }
+
+    if (!syntaxCommand) {
+      syntaxResult.error = '未找到 tck-syntax 可执行文件'
+    } else {
+      const tempFilePath = join(
+        app.getPath('temp'),
+        `tck_preview_${Date.now()}_${Math.random().toString(16).slice(2)}.tck`
+      )
+
+      writeFileSync(tempFilePath, tckContent, 'utf8')
+
+      try {
+        syntaxResult = await new Promise((resolve) => {
+          execFile(syntaxCommand, [tempFilePath], (error, stdout, stderr) => {
+            const isSuccess = !error
+            const exitCode = !error
+              ? 0
+              : typeof error.code === 'number'
+                ? error.code
+                : -1
+
+            resolve({
+              passed: isSuccess,
+              stdout: stdout ? stdout.toString() : '',
+              stderr: stderr ? stderr.toString() : '',
+              exitCode,
+              error: error
+                ? error.code === 'ENOENT'
+                  ? '无法执行 tck-syntax 命令'
+                  : error.message
+                : null,
+              command: syntaxCommand
+            })
+          })
+        })
+      } finally {
+        try {
+          unlinkSync(tempFilePath)
+        } catch (cleanupError) {
+          console.warn('Failed to remove temporary TCK file:', cleanupError)
+        }
+      }
+    }
+
+    return { success: true, tckContent, syntaxResult }
+  } catch (error) {
+    console.error('Generate TCK preview error:', error)
+    console.error('Error stack:', error.stack)
+    return {
+      success: false,
+      error: error.message
+    }
   }
 })
 
@@ -196,6 +291,7 @@ app.whenReady().then(() => {
   )
   console.log('save-model handler registered:', ipcMain.listenerCount('save-model') > 0)
   console.log('load-model handler registered:', ipcMain.listenerCount('load-model') > 0)
+  console.log('generate-tck-preview handler registered:', ipcMain.listenerCount('generate-tck-preview') > 0)
 
   createWindow()
 
