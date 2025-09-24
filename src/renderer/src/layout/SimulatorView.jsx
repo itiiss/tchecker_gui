@@ -10,6 +10,8 @@ import {
   Button,
   Slider,
   Stack,
+  Collapse,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -23,10 +25,115 @@ import {
   NavigateBefore as PrevIcon,
   Shuffle as RandomIcon,
   PlayArrow as AutoPlayIcon,
-  Pause as PauseIcon
+  Pause as PauseIcon,
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon
 } from '@mui/icons-material'
 import CytoscapeAutomaton from '../components/CytoscapeAutomaton'
 import useEditorStore from '../store/editorStore'
+
+const parseIntegerValuations = (intvalString = '') => {
+  if (!intvalString || typeof intvalString !== 'string') {
+    return {}
+  }
+
+  const valuations = {}
+  const regex = /([A-Za-z_][A-Za-z0-9_]*)\s*=\s*([-+]?\d+(?:\.\d+)?)/g
+  let match
+
+  while ((match = regex.exec(intvalString)) !== null) {
+    const name = match[1]
+    const numericValue = Number(match[2])
+    valuations[name] = Number.isNaN(numericValue) ? match[2] : numericValue
+  }
+
+  return valuations
+}
+
+const computeClockRanges = (zoneMatrix) => {
+  if (!zoneMatrix || !Array.isArray(zoneMatrix.headers) || !Array.isArray(zoneMatrix.rows)) {
+    return {}
+  }
+
+  const zeroIndex = zoneMatrix.headers.indexOf('0')
+  if (zeroIndex === -1) {
+    return {}
+  }
+
+  const rowMap = new Map(zoneMatrix.rows.map((row) => [row.label, row]))
+  const zeroRow = rowMap.get('0')
+
+  if (!zeroRow || !Array.isArray(zeroRow.values)) {
+    return {}
+  }
+
+  const ranges = {}
+
+  zoneMatrix.headers.forEach((header, headerIndex) => {
+    if (header === '0') return
+
+    const row = rowMap.get(header)
+    if (!row || !Array.isArray(row.values)) return
+
+    const upperCell = row.values[zeroIndex]
+    const lowerCell = zeroRow.values[headerIndex]
+
+    const upperBound =
+      upperCell && Number.isFinite(upperCell.value)
+        ? { value: upperCell.value, strict: Boolean(upperCell.strict) }
+        : null
+
+    const lowerBound =
+      lowerCell && Number.isFinite(lowerCell.value)
+        ? { value: -lowerCell.value, strict: Boolean(lowerCell.strict) }
+        : null
+
+    ranges[header] = { lower: lowerBound, upper: upperBound }
+  })
+
+  return ranges
+}
+
+const formatNumber = (value) => {
+  if (!Number.isFinite(value)) return 'inf'
+  if (Number.isInteger(value)) return value.toString()
+  const fixed = value.toFixed(3).replace(/0+$/, '').replace(/\.$/, '')
+  return fixed.length ? fixed : value.toString()
+}
+
+const formatClockRange = (clockName, range) => {
+  if (!range) {
+    return `${clockName} = ?`
+  }
+
+  const { lower, upper } = range
+
+  if (
+    lower &&
+    upper &&
+    !lower.strict &&
+    !upper.strict &&
+    Number.isFinite(lower.value) &&
+    Number.isFinite(upper.value) &&
+    Math.abs(lower.value - upper.value) < 1e-6
+  ) {
+    return `${clockName} = ${formatNumber(lower.value)}`
+  }
+
+  const lowerBracket = lower ? (lower.strict ? '(' : '[') : '('
+  const upperBracket = upper ? (upper.strict ? ')' : ']') : ')'
+  const lowerValue = lower ? formatNumber(lower.value) : '-inf'
+  const upperValue = upper ? formatNumber(upper.value) : 'inf'
+
+  return `${clockName} in ${lowerBracket}${lowerValue}, ${upperValue}${upperBracket}`
+}
+
+const extractClockName = (clock) => {
+  if (!clock) return ''
+  if (typeof clock === 'string') return clock
+  if (typeof clock === 'object') return clock.name || ''
+  return String(clock)
+}
 
 const SimulatorView = () => {
   const {
@@ -38,6 +145,7 @@ const SimulatorView = () => {
     clockValues,
     currentZoneMatrix,
     processes,
+    clocks,
     intVars,
     simulationLoading,
     simulationError,
@@ -52,6 +160,7 @@ const SimulatorView = () => {
   const [selectedTransition, setSelectedTransition] = useState(null)
   const [autoPlay, setAutoPlay] = useState(false)
   const [playSpeed, setPlaySpeed] = useState(1000) // milliseconds
+  const [zoneMatrixOpen, setZoneMatrixOpen] = useState(false)
 
   useEffect(() => {
     if (!simulatorInitialized) {
@@ -156,8 +265,8 @@ const SimulatorView = () => {
               }}
             >
               <ListItemText
-                primary={`sync: ${transition.processName}@${transition.event || 'τ'}`}
-                secondary={`${transition.sourceLocation} → ${transition.targetLocation}${transition.guard !== 'true' ? ` [${transition.guard}]` : ''}`}
+                primary={`${transition.processName}@${transition.event || 'τ'}`}
+                // secondary={`${transition.sourceLocation} → ${transition.targetLocation}${transition.guard !== 'true' ? ` [${transition.guard}]` : ''}`}
               />
             </ListItemButton>
           ))
@@ -306,6 +415,15 @@ const SimulatorView = () => {
   const renderVariablesAndClocks = () => {
     const currentTraceEntry = simulationTrace[tracePosition]
     const zoneMatrix = currentTraceEntry?.zoneMatrix || currentZoneMatrix
+    const backendState = currentTraceEntry?.backendState
+    const intValuations = parseIntegerValuations(backendState?.attributes?.intval)
+    const clockRanges = computeClockRanges(zoneMatrix)
+    const definedClockNames = (clocks || []).map(extractClockName).filter(Boolean)
+    const allClockNames =
+      definedClockNames.length > 0 ? definedClockNames : Object.keys(clockRanges)
+    const extraIntVars = Object.keys(intValuations).filter(
+      (name) => !intVars.some((intVar) => intVar.name === name)
+    )
 
     return (
       <Paper sx={{ height: '30%', display: 'flex', flexDirection: 'column' }}>
@@ -318,28 +436,83 @@ const SimulatorView = () => {
             Variables:
           </Typography>
           <Box sx={{ mb: 2 }}>
-            {intVars.length === 0 ? (
+            {intVars.length === 0 && extraIntVars.length === 0 ? (
               <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.8rem' }}>
                 No integer variables defined
               </Typography>
             ) : (
-              intVars.map((intVar) => (
+              <>
+                {intVars.map((intVar) => {
+                  const fallbackInitial =
+                    typeof intVar.initial === 'number'
+                      ? intVar.initial
+                      : Number.isFinite(Number(intVar.initial))
+                        ? Number(intVar.initial)
+                        : 0
+                  const value = intValuations[intVar.name]
+                  return (
+                    <Typography
+                      key={intVar.name}
+                      variant="body2"
+                      sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
+                    >
+                      {intVar.name} = {value ?? fallbackInitial}
+                    </Typography>
+                  )
+                })}
+                {extraIntVars.map((name) => (
+                  <Typography
+                    key={name}
+                    variant="body2"
+                    sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
+                  >
+                    {name} = {intValuations[name]}
+                  </Typography>
+                ))}
+              </>
+            )}
+          </Box>
+
+          {/* Clocks Section */}
+          <Typography variant="subtitle2" gutterBottom>
+            Clocks:
+          </Typography>
+          <Box sx={{ mb: 2 }}>
+            {allClockNames.length === 0 ? (
+              <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.8rem' }}>
+                No clocks defined
+              </Typography>
+            ) : (
+              allClockNames.map((clockName) => (
                 <Typography
-                  key={intVar.name}
+                  key={clockName}
                   variant="body2"
                   sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
                 >
-                  {intVar.name} = {intVar.initial || 0}
+                  {formatClockRange(clockName, clockRanges[clockName])}
                 </Typography>
               ))
             )}
           </Box>
 
           {/* Zone Matrix Section */}
-          <Typography variant="subtitle2" gutterBottom>
-            Zone Matrix (DBM):
-          </Typography>
-          {renderZoneMatrixTable(zoneMatrix)}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="subtitle2">Zone Matrix (DBM):</Typography>
+            <IconButton
+              size="small"
+              onClick={() => setZoneMatrixOpen((prev) => !prev)}
+              aria-label="Toggle zone matrix"
+            >
+              {zoneMatrixOpen ? (
+                <ExpandLessIcon fontSize="small" />
+              ) : (
+                <ExpandMoreIcon fontSize="small" />
+              )}
+            </IconButton>
+          </Box>
+          <Collapse in={zoneMatrixOpen} timeout="auto" unmountOnExit>
+            <Box sx={{ mt: 1 }}>{renderZoneMatrixTable(zoneMatrix)}</Box>
+          </Collapse>
         </Box>
       </Paper>
     )
