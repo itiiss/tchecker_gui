@@ -31,12 +31,12 @@
 // version 2.2 of Bison.
 
 /**
- ** \file /Users/zhaochen/Downloads/build/src/parsing/program_parser/location.hh
+ ** \file /Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/location.hh
  ** Define the tchecker::parsing::program::location class.
  */
 
-#ifndef YY_PPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_PROGRAM_PARSER_LOCATION_HH_INCLUDED
-# define YY_PPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_PROGRAM_PARSER_LOCATION_HH_INCLUDED
+#ifndef YY_PPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_PROGRAM_PARSER_LOCATION_HH_INCLUDED
+# define YY_PPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_PROGRAM_PARSER_LOCATION_HH_INCLUDED
 
 # include <iostream>
 # include <string>
@@ -55,7 +55,7 @@
 
 #line 13 "program.yy"
 namespace tchecker { namespace parsing { namespace program {
-#line 59 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/location.hh"
+#line 59 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/location.hh"
 
   /// A point in a source file.
   class position
@@ -301,6 +301,6 @@ namespace tchecker { namespace parsing { namespace program {
 
 #line 13 "program.yy"
 } } } // tchecker::parsing::program
-#line 305 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/location.hh"
+#line 305 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/location.hh"
 
-#endif // !YY_PPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_PROGRAM_PARSER_LOCATION_HH_INCLUDED
+#endif // !YY_PPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_PROGRAM_PARSER_LOCATION_HH_INCLUDED

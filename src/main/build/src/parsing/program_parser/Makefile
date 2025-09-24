@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,14 +142,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles /Users/zhaochen/Downloads/build/src/parsing/program_parser//CMakeFiles/progress.marks
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles /Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser//CMakeFiles/progress.marks
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/clean
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/clean
 .PHONY : clean
 
 # The main clean target
@@ -158,22 +158,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/rule
 .PHONY : src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/rule
 
 # Convenience name for target.
@@ -182,7 +182,7 @@ program_parsing_static: src/parsing/program_parser/CMakeFiles/program_parsing_st
 
 # fast build rule for target.
 program_parsing_static/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build
 .PHONY : program_parsing_static/fast
 
 program.lex-fixed.o: program.lex-fixed.cc.o
@@ -190,7 +190,7 @@ program.lex-fixed.o: program.lex-fixed.cc.o
 
 # target to build an object file
 program.lex-fixed.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.lex-fixed.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.lex-fixed.cc.o
 .PHONY : program.lex-fixed.cc.o
 
 program.lex-fixed.i: program.lex-fixed.cc.i
@@ -198,7 +198,7 @@ program.lex-fixed.i: program.lex-fixed.cc.i
 
 # target to preprocess a source file
 program.lex-fixed.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.lex-fixed.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.lex-fixed.cc.i
 .PHONY : program.lex-fixed.cc.i
 
 program.lex-fixed.s: program.lex-fixed.cc.s
@@ -206,7 +206,7 @@ program.lex-fixed.s: program.lex-fixed.cc.s
 
 # target to generate assembly for a file
 program.lex-fixed.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.lex-fixed.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.lex-fixed.cc.s
 .PHONY : program.lex-fixed.cc.s
 
 program.tab.o: program.tab.cc.o
@@ -214,7 +214,7 @@ program.tab.o: program.tab.cc.o
 
 # target to build an object file
 program.tab.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.tab.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.tab.cc.o
 .PHONY : program.tab.cc.o
 
 program.tab.i: program.tab.cc.i
@@ -222,7 +222,7 @@ program.tab.i: program.tab.cc.i
 
 # target to preprocess a source file
 program.tab.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.tab.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.tab.cc.i
 .PHONY : program.tab.cc.i
 
 program.tab.s: program.tab.cc.s
@@ -230,7 +230,7 @@ program.tab.s: program.tab.cc.s
 
 # target to generate assembly for a file
 program.tab.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.tab.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/build.make src/parsing/program_parser/CMakeFiles/program_parsing_static.dir/program.tab.cc.s
 .PHONY : program.tab.cc.s
 
 # Help Target
@@ -264,6 +264,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

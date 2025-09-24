@@ -131,6 +131,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/libtchecker_static.dir/utils/iterator.cc.o.d"
   "CMakeFiles/libtchecker_static.dir/utils/log.cc.o"
   "CMakeFiles/libtchecker_static.dir/utils/log.cc.o.d"
+  "CMakeFiles/libtchecker_static.dir/utils/matrix_visualizer.cc.o"
+  "CMakeFiles/libtchecker_static.dir/utils/matrix_visualizer.cc.o.d"
   "CMakeFiles/libtchecker_static.dir/utils/string.cc.o"
   "CMakeFiles/libtchecker_static.dir/utils/string.cc.o.d"
   "CMakeFiles/libtchecker_static.dir/variables/access.cc.o"

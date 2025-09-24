@@ -1,8 +1,8 @@
-# Install script for directory: /Users/zhaochen/Downloads/tchecker/src
+# Install script for directory: /Users/zz/Documents/ta/tchecker/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/path/to/install")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -38,7 +38,7 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zhaochen/Downloads/build/src/tck-liveness")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zz/Documents/ta/tchecker/build/src/tck-liveness")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-liveness" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-liveness")
     execute_process(COMMAND /usr/bin/install_name_tool
@@ -51,7 +51,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zhaochen/Downloads/build/src/tck-reach")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zz/Documents/ta/tchecker/build/src/tck-reach")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-reach" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-reach")
     execute_process(COMMAND /usr/bin/install_name_tool
@@ -64,7 +64,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zhaochen/Downloads/build/src/tck-simulate")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zz/Documents/ta/tchecker/build/src/tck-simulate")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-simulate" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-simulate")
     execute_process(COMMAND /usr/bin/install_name_tool
@@ -77,7 +77,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zhaochen/Downloads/build/src/tck-syntax")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zz/Documents/ta/tchecker/build/src/tck-syntax")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-syntax" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-syntax")
     execute_process(COMMAND /usr/bin/install_name_tool
@@ -90,7 +90,20 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/zhaochen/Downloads/build/src/libtchecker.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/zz/Documents/ta/tchecker/build/src/tck-matrix")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-matrix" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-matrix")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-matrix")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/tck-matrix")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/Users/zz/Documents/ta/tchecker/build/src/libtchecker.a")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libtchecker.a" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libtchecker.a")
     execute_process(COMMAND "/usr/bin/ranlib" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libtchecker.a")
@@ -99,30 +112,30 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/zhaochen/Downloads/build/src/algorithms/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/clockbounds/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/dbm/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/expression/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/fsm/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/graph/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/parsing/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/refzg/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/statement/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/syncprod/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/system/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/ta/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/ts/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/utils/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/variables/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/vm/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/waiting/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/zg/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/algorithms/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/clockbounds/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/dbm/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/expression/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/fsm/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/graph/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/parsing/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/refzg/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/statement/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/syncprod/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/system/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/ta/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/ts/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/utils/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/variables/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/vm/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/waiting/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/zg/cmake_install.cmake")
 
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/zhaochen/Downloads/build/src/install_local_manifest.txt"
+  file(WRITE "/Users/zz/Documents/ta/tchecker/build/src/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 # Include any dependencies generated for this target.
 include src/CMakeFiles/tck-syntax.dir/depend.make
@@ -73,32 +73,32 @@ src/CMakeFiles/tck-syntax.dir/codegen:
 .PHONY : src/CMakeFiles/tck-syntax.dir/codegen
 
 src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o: src/CMakeFiles/tck-syntax.dir/flags.make
-src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o: /Users/zhaochen/Downloads/tchecker/src/tck-syntax/syntax-check.cc
+src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o: /Users/zz/Documents/ta/tchecker/src/tck-syntax/syntax-check.cc
 src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o: src/CMakeFiles/tck-syntax.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o"
-	cd /Users/zhaochen/Downloads/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o -MF CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o.d -o CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o -c /Users/zhaochen/Downloads/tchecker/src/tck-syntax/syntax-check.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o"
+	cd /Users/zz/Documents/ta/tchecker/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o -MF CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o.d -o CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o -c /Users/zz/Documents/ta/tchecker/src/tck-syntax/syntax-check.cc
 
 src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.i"
-	cd /Users/zhaochen/Downloads/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zhaochen/Downloads/tchecker/src/tck-syntax/syntax-check.cc > CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zz/Documents/ta/tchecker/src/tck-syntax/syntax-check.cc > CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.i
 
 src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.s"
-	cd /Users/zhaochen/Downloads/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zhaochen/Downloads/tchecker/src/tck-syntax/syntax-check.cc -o CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zz/Documents/ta/tchecker/src/tck-syntax/syntax-check.cc -o CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.s
 
 src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o: src/CMakeFiles/tck-syntax.dir/flags.make
-src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o: /Users/zhaochen/Downloads/tchecker/src/tck-syntax/tck-syntax.cc
+src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o: /Users/zz/Documents/ta/tchecker/src/tck-syntax/tck-syntax.cc
 src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o: src/CMakeFiles/tck-syntax.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o"
-	cd /Users/zhaochen/Downloads/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o -MF CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o.d -o CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o -c /Users/zhaochen/Downloads/tchecker/src/tck-syntax/tck-syntax.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o"
+	cd /Users/zz/Documents/ta/tchecker/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o -MF CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o.d -o CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o -c /Users/zz/Documents/ta/tchecker/src/tck-syntax/tck-syntax.cc
 
 src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.i"
-	cd /Users/zhaochen/Downloads/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zhaochen/Downloads/tchecker/src/tck-syntax/tck-syntax.cc > CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zz/Documents/ta/tchecker/src/tck-syntax/tck-syntax.cc > CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.i
 
 src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.s"
-	cd /Users/zhaochen/Downloads/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zhaochen/Downloads/tchecker/src/tck-syntax/tck-syntax.cc -o CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zz/Documents/ta/tchecker/src/tck-syntax/tck-syntax.cc -o CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.s
 
 # Object files for target tck-syntax
 tck__syntax_OBJECTS = \
@@ -115,18 +115,18 @@ src/tck-syntax: src/libtchecker.a
 src/tck-syntax: /opt/homebrew/lib/libboost_json.a
 src/tck-syntax: /opt/homebrew/lib/libboost_container.a
 src/tck-syntax: src/CMakeFiles/tck-syntax.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable tck-syntax"
-	cd /Users/zhaochen/Downloads/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tck-syntax.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable tck-syntax"
+	cd /Users/zz/Documents/ta/tchecker/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tck-syntax.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 src/CMakeFiles/tck-syntax.dir/build: src/tck-syntax
 .PHONY : src/CMakeFiles/tck-syntax.dir/build
 
 src/CMakeFiles/tck-syntax.dir/clean:
-	cd /Users/zhaochen/Downloads/build/src && $(CMAKE_COMMAND) -P CMakeFiles/tck-syntax.dir/cmake_clean.cmake
+	cd /Users/zz/Documents/ta/tchecker/build/src && $(CMAKE_COMMAND) -P CMakeFiles/tck-syntax.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/tck-syntax.dir/clean
 
 src/CMakeFiles/tck-syntax.dir/depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zhaochen/Downloads/tchecker /Users/zhaochen/Downloads/tchecker/src /Users/zhaochen/Downloads/build /Users/zhaochen/Downloads/build/src /Users/zhaochen/Downloads/build/src/CMakeFiles/tck-syntax.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zz/Documents/ta/tchecker /Users/zz/Documents/ta/tchecker/src /Users/zz/Documents/ta/tchecker/build /Users/zz/Documents/ta/tchecker/build/src /Users/zz/Documents/ta/tchecker/build/src/CMakeFiles/tck-syntax.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : src/CMakeFiles/tck-syntax.dir/depend
 

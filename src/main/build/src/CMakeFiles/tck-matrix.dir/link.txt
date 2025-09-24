@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names "CMakeFiles/tck-matrix.dir/tck-matrix/tck-matrix.cc.o" -o tck-matrix   -L/opt/homebrew/lib  -Wl,-rpath,/opt/homebrew/lib libtchecker.a /opt/homebrew/lib/libboost_json.a /opt/homebrew/lib/libboost_container.a

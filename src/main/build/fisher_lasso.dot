@@ -1,0 +1,10 @@
+digraph fischer_10_10 {
+  0 [initial="true", intval="id=0", labels="", vloc="<A,A,A,A,A,A,A,A,A,A>", zone="(0<=x1 && 0<=x2 && 0<=x3 && 0<=x4 && 0<=x5 && 0<=x6 && 0<=x7 && 0<=x8 && 0<=x9 && 0<=x10)"]
+  1 [intval="id=0", labels="", vloc="<req,A,A,A,A,A,A,A,A,A>", zone="(0<=x1 && 0<=x2 && 0<=x3 && 0<=x4 && 0<=x5 && 0<=x6 && 0<=x7 && 0<=x8 && 0<=x9 && 0<=x10)"]
+  2 [intval="id=1", labels="", vloc="<wait,A,A,A,A,A,A,A,A,A>", zone="(0<=x1 && 0<=x2 && 0<=x3 && 0<=x4 && 0<=x5 && 0<=x6 && 0<=x7 && 0<=x8 && 0<=x9 && 0<=x10)"]
+  3 [final="true", intval="id=1", labels="cs1", vloc="<cs,A,A,A,A,A,A,A,A,A>", zone="(0<=x1 && 0<=x2 && 0<=x3 && 0<=x4 && 0<=x5 && 0<=x6 && 0<=x7 && 0<=x8 && 0<=x9 && 0<=x10)"]
+  0 -> 1 [guard="", reset="x1=0", src_invariant="", sync="", tgt_invariant="x1<=10", vedge="<P1@tau>"]
+  1 -> 2 [guard="x1<=10", reset="x1=0", src_invariant="x1<=10", sync="", tgt_invariant="", vedge="<P1@tau>"]
+  2 -> 3 [guard="x1>10", reset="", src_invariant="", sync="", tgt_invariant="", vedge="<P1@tau>"]
+  3 -> 0 [guard="", reset="", src_invariant="", sync="", tgt_invariant="", vedge="<P1@tau>"]
+}

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 # Utility rule file for save.
 
@@ -67,10 +67,10 @@ include test/CMakeFiles/save.dir/compiler_depend.make
 include test/CMakeFiles/save.dir/progress.make
 
 test/CMakeFiles/save:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Recursive 'save' target"
-	cd /Users/zhaochen/Downloads/build/test && /opt/homebrew/bin/cmake --build /Users/zhaochen/Downloads/build/test/bugfixes --target save-bugfixes --config Release
-	cd /Users/zhaochen/Downloads/build/test && /opt/homebrew/bin/cmake --build /Users/zhaochen/Downloads/build/test/simple-nr --target save-simple-nr --config Release
-	cd /Users/zhaochen/Downloads/build/test && /opt/homebrew/bin/cmake --build /Users/zhaochen/Downloads/build/test/algos --target save-algos --config Release
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Recursive 'save' target"
+	cd /Users/zz/Documents/ta/tchecker/build/test && /opt/homebrew/bin/cmake --build /Users/zz/Documents/ta/tchecker/build/test/bugfixes --target save-bugfixes --config 
+	cd /Users/zz/Documents/ta/tchecker/build/test && /opt/homebrew/bin/cmake --build /Users/zz/Documents/ta/tchecker/build/test/simple-nr --target save-simple-nr --config 
+	cd /Users/zz/Documents/ta/tchecker/build/test && /opt/homebrew/bin/cmake --build /Users/zz/Documents/ta/tchecker/build/test/algos --target save-algos --config 
 
 test/CMakeFiles/save.dir/codegen:
 .PHONY : test/CMakeFiles/save.dir/codegen
@@ -84,10 +84,10 @@ test/CMakeFiles/save.dir/build: save
 .PHONY : test/CMakeFiles/save.dir/build
 
 test/CMakeFiles/save.dir/clean:
-	cd /Users/zhaochen/Downloads/build/test && $(CMAKE_COMMAND) -P CMakeFiles/save.dir/cmake_clean.cmake
+	cd /Users/zz/Documents/ta/tchecker/build/test && $(CMAKE_COMMAND) -P CMakeFiles/save.dir/cmake_clean.cmake
 .PHONY : test/CMakeFiles/save.dir/clean
 
 test/CMakeFiles/save.dir/depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zhaochen/Downloads/tchecker /Users/zhaochen/Downloads/tchecker/test /Users/zhaochen/Downloads/build /Users/zhaochen/Downloads/build/test /Users/zhaochen/Downloads/build/test/CMakeFiles/save.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zz/Documents/ta/tchecker /Users/zz/Documents/ta/tchecker/test /Users/zz/Documents/ta/tchecker/build /Users/zz/Documents/ta/tchecker/build/test /Users/zz/Documents/ta/tchecker/build/test/CMakeFiles/save.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : test/CMakeFiles/save.dir/depend
 

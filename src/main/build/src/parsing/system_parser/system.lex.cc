@@ -1,6 +1,6 @@
-#line 1 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc"
+#line 1 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc"
 
-#line 3 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc"
+#line 3 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -815,16 +815,16 @@ void sp_reset_locations() {
 }
 	
 using namespace tchecker::parsing;
-#line 818 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc"
+#line 818 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc"
 #define YY_NO_INPUT 1
 /* %option debug */
 #line 55 "system.ll"
   // Code run each time a pattern is matched.
 	// move token's length wide
   #define YY_USER_ACTION  loc.columns(static_cast<int>(spyyleng));
-#line 825 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc"
+#line 825 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc"
 
-#line 827 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc"
+#line 827 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -1052,7 +1052,7 @@ YY_DECL
 
 
 
-#line 1055 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc"
+#line 1055 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1295,7 +1295,7 @@ YY_RULE_SETUP
 #line 143 "system.ll"
 ECHO;
 	YY_BREAK
-#line 1298 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc"
+#line 1298 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc"
 
 	case YY_END_OF_BUFFER:
 		{

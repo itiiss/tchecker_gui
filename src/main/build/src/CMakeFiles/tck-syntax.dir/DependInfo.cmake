@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/zhaochen/Downloads/tchecker/src/tck-syntax/syntax-check.cc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o" "gcc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o.d"
-  "/Users/zhaochen/Downloads/tchecker/src/tck-syntax/tck-syntax.cc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o" "gcc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o.d"
+  "/Users/zz/Documents/ta/tchecker/src/tck-syntax/syntax-check.cc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o" "gcc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o.d"
+  "/Users/zz/Documents/ta/tchecker/src/tck-syntax/tck-syntax.cc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o" "gcc" "src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

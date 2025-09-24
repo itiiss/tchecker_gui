@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 # Include any dependencies generated for this target.
 include src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/depend.make
@@ -69,22 +69,22 @@ include src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/progress.
 # Include the compile flags for this target's objects.
 include src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/flags.make
 
-src/parsing/system_parser/system.tab.cc: /Users/zhaochen/Downloads/tchecker/src/parsing/system_parser/system.yy
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "[BISON][system_parser] Building parser with bison 3.8.2"
-	cd /Users/zhaochen/Downloads/tchecker/src/parsing/system_parser && /opt/homebrew/bin/cmake -E make_directory /Users/zhaochen/Downloads/build/src/parsing/system_parser
-	cd /Users/zhaochen/Downloads/tchecker/src/parsing/system_parser && /opt/homebrew/opt/bison/bin/bison -v --defines=/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.hh -o /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc system.yy
+src/parsing/system_parser/system.tab.cc: /Users/zz/Documents/ta/tchecker/src/parsing/system_parser/system.yy
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "[BISON][system_parser] Building parser with bison 3.8.2"
+	cd /Users/zz/Documents/ta/tchecker/src/parsing/system_parser && /opt/homebrew/bin/cmake -E make_directory /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser
+	cd /Users/zz/Documents/ta/tchecker/src/parsing/system_parser && /opt/homebrew/opt/bison/bin/bison -v --defines=/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.hh -o /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc system.yy
 
 src/parsing/system_parser/system.tab.hh: src/parsing/system_parser/system.tab.cc
 	@$(CMAKE_COMMAND) -E touch_nocreate src/parsing/system_parser/system.tab.hh
 
 src/parsing/system_parser/system.lex-fixed.cc: src/parsing/system_parser/system.lex.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating system.lex-fixed.cc"
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && sed -e s/register//g /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc > system.lex-fixed.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating system.lex-fixed.cc"
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && sed -e s/register//g /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc > system.lex-fixed.cc
 
-src/parsing/system_parser/system.lex.cc: /Users/zhaochen/Downloads/tchecker/src/parsing/system_parser/system.ll
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "[FLEX][system_lexer] Building scanner with flex 2.6.4"
-	cd /Users/zhaochen/Downloads/tchecker/src/parsing/system_parser && /opt/homebrew/bin/cmake -E make_directory /Users/zhaochen/Downloads/build/src/parsing/system_parser
-	cd /Users/zhaochen/Downloads/tchecker/src/parsing/system_parser && /usr/bin/flex -Pspyy -o/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex.cc system.ll
+src/parsing/system_parser/system.lex.cc: /Users/zz/Documents/ta/tchecker/src/parsing/system_parser/system.ll
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "[FLEX][system_lexer] Building scanner with flex 2.6.4"
+	cd /Users/zz/Documents/ta/tchecker/src/parsing/system_parser && /opt/homebrew/bin/cmake -E make_directory /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser
+	cd /Users/zz/Documents/ta/tchecker/src/parsing/system_parser && /usr/bin/flex -Pspyy -o/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex.cc system.ll
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/codegen:
 .PHONY : src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/codegen
@@ -92,30 +92,30 @@ src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/codegen:
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o: src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/flags.make
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o: src/parsing/system_parser/system.tab.cc
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o: src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o"
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o -MF CMakeFiles/system_parsing_static.dir/system.tab.cc.o.d -o CMakeFiles/system_parsing_static.dir/system.tab.cc.o -c /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o"
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o -MF CMakeFiles/system_parsing_static.dir/system.tab.cc.o.d -o CMakeFiles/system_parsing_static.dir/system.tab.cc.o -c /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/system_parsing_static.dir/system.tab.cc.i"
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc > CMakeFiles/system_parsing_static.dir/system.tab.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc > CMakeFiles/system_parsing_static.dir/system.tab.cc.i
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/system_parsing_static.dir/system.tab.cc.s"
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc -o CMakeFiles/system_parsing_static.dir/system.tab.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc -o CMakeFiles/system_parsing_static.dir/system.tab.cc.s
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o: src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/flags.make
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o: src/parsing/system_parser/system.lex-fixed.cc
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o: src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o"
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o -MF CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o.d -o CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o -c /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex-fixed.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o"
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o -MF CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o.d -o CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o -c /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex-fixed.cc
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.i"
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex-fixed.cc > CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex-fixed.cc > CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.i
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.s"
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.lex-fixed.cc -o CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.lex-fixed.cc -o CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.s
 
 system_parsing_static: src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.tab.cc.o
 system_parsing_static: src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/system.lex-fixed.cc.o
@@ -127,13 +127,13 @@ src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/build: system_par
 .PHONY : src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/build
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/clean:
-	cd /Users/zhaochen/Downloads/build/src/parsing/system_parser && $(CMAKE_COMMAND) -P CMakeFiles/system_parsing_static.dir/cmake_clean.cmake
+	cd /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser && $(CMAKE_COMMAND) -P CMakeFiles/system_parsing_static.dir/cmake_clean.cmake
 .PHONY : src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/clean
 
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/depend: src/parsing/system_parser/system.lex-fixed.cc
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/depend: src/parsing/system_parser/system.lex.cc
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/depend: src/parsing/system_parser/system.tab.cc
 src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/depend: src/parsing/system_parser/system.tab.hh
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zhaochen/Downloads/tchecker /Users/zhaochen/Downloads/tchecker/src/parsing/system_parser /Users/zhaochen/Downloads/build /Users/zhaochen/Downloads/build/src/parsing/system_parser /Users/zhaochen/Downloads/build/src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zz/Documents/ta/tchecker /Users/zz/Documents/ta/tchecker/src/parsing/system_parser /Users/zz/Documents/ta/tchecker/build /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : src/parsing/system_parser/CMakeFiles/system_parsing_static.dir/depend
 

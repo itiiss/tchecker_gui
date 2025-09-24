@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,14 +142,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles /Users/zhaochen/Downloads/build/test/testutils//CMakeFiles/progress.marks
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles /Users/zz/Documents/ta/tchecker/build/test/testutils//CMakeFiles/progress.marks
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/clean
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/clean
 .PHONY : clean
 
 # The main clean target
@@ -158,22 +158,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 test/testutils/CMakeFiles/testutils.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/CMakeFiles/testutils.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/testutils/CMakeFiles/testutils.dir/rule
 .PHONY : test/testutils/CMakeFiles/testutils.dir/rule
 
 # Convenience name for target.
@@ -182,7 +182,7 @@ testutils: test/testutils/CMakeFiles/testutils.dir/rule
 
 # fast build rule for target.
 testutils/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/build
 .PHONY : testutils/fast
 
 utils.o: utils.cc.o
@@ -190,7 +190,7 @@ utils.o: utils.cc.o
 
 # target to build an object file
 utils.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/utils.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/utils.cc.o
 .PHONY : utils.cc.o
 
 utils.i: utils.cc.i
@@ -198,7 +198,7 @@ utils.i: utils.cc.i
 
 # target to preprocess a source file
 utils.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/utils.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/utils.cc.i
 .PHONY : utils.cc.i
 
 utils.s: utils.cc.s
@@ -206,7 +206,7 @@ utils.s: utils.cc.s
 
 # target to generate assembly for a file
 utils.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/utils.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/testutils/CMakeFiles/testutils.dir/build.make test/testutils/CMakeFiles/testutils.dir/utils.cc.s
 .PHONY : utils.cc.s
 
 # Help Target
@@ -237,6 +237,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

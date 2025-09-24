@@ -1,8 +1,8 @@
-# Install script for directory: /Users/zhaochen/Downloads/tchecker/src/algorithms
+# Install script for directory: /Users/zz/Documents/ta/tchecker/src/algorithms
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/path/to/install")
+  set(CMAKE_INSTALL_PREFIX "/usr/local")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -39,17 +39,17 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/zhaochen/Downloads/build/src/algorithms/couvreur_scc/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/algorithms/covreach/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/algorithms/ndfs/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/algorithms/path/cmake_install.cmake")
-  include("/Users/zhaochen/Downloads/build/src/algorithms/reach/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/algorithms/couvreur_scc/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/algorithms/covreach/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/algorithms/ndfs/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/algorithms/path/cmake_install.cmake")
+  include("/Users/zz/Documents/ta/tchecker/build/src/algorithms/reach/cmake_install.cmake")
 
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/zhaochen/Downloads/build/src/algorithms/install_local_manifest.txt"
+  file(WRITE "/Users/zz/Documents/ta/tchecker/build/src/algorithms/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

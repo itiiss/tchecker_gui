@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,14 +142,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles /Users/zhaochen/Downloads/build/test/bugfixes//CMakeFiles/progress.marks
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles /Users/zz/Documents/ta/tchecker/build/test/bugfixes//CMakeFiles/progress.marks
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/clean
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/clean
 .PHONY : clean
 
 # The main clean target
@@ -158,22 +158,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 test/bugfixes/CMakeFiles/bug-007-bin.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/CMakeFiles/bug-007-bin.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/CMakeFiles/bug-007-bin.dir/rule
 .PHONY : test/bugfixes/CMakeFiles/bug-007-bin.dir/rule
 
 # Convenience name for target.
@@ -182,12 +182,12 @@ bug-007-bin: test/bugfixes/CMakeFiles/bug-007-bin.dir/rule
 
 # fast build rule for target.
 bug-007-bin/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/build
 .PHONY : bug-007-bin/fast
 
 # Convenience name for target.
 test/bugfixes/CMakeFiles/save-bugfixes.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/CMakeFiles/save-bugfixes.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test/bugfixes/CMakeFiles/save-bugfixes.dir/rule
 .PHONY : test/bugfixes/CMakeFiles/save-bugfixes.dir/rule
 
 # Convenience name for target.
@@ -196,7 +196,7 @@ save-bugfixes: test/bugfixes/CMakeFiles/save-bugfixes.dir/rule
 
 # fast build rule for target.
 save-bugfixes/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/save-bugfixes.dir/build.make test/bugfixes/CMakeFiles/save-bugfixes.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/save-bugfixes.dir/build.make test/bugfixes/CMakeFiles/save-bugfixes.dir/build
 .PHONY : save-bugfixes/fast
 
 bug-007.o: bug-007.cc.o
@@ -204,7 +204,7 @@ bug-007.o: bug-007.cc.o
 
 # target to build an object file
 bug-007.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.o
 .PHONY : bug-007.cc.o
 
 bug-007.i: bug-007.cc.i
@@ -212,7 +212,7 @@ bug-007.i: bug-007.cc.i
 
 # target to preprocess a source file
 bug-007.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.i
 .PHONY : bug-007.cc.i
 
 bug-007.s: bug-007.cc.s
@@ -220,7 +220,7 @@ bug-007.s: bug-007.cc.s
 
 # target to generate assembly for a file
 bug-007.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f test/bugfixes/CMakeFiles/bug-007-bin.dir/build.make test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.s
 .PHONY : bug-007.cc.s
 
 # Help Target
@@ -252,6 +252,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

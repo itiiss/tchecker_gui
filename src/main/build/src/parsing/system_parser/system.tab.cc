@@ -54,7 +54,7 @@
   // Error detection
   static unsigned int old_error_count;
 
-#line 58 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 58 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
 
 
 #ifndef YY_
@@ -147,7 +147,7 @@
 
 #line 13 "system.yy"
 namespace tchecker { namespace parsing { namespace system {
-#line 151 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 151 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
 
   /// Build a parser object.
   parser_t::parser_t (std::string const & filename_yyarg, std::shared_ptr<tchecker::parsing::system_declaration_t> & system_declaration_yyarg)
@@ -443,43 +443,43 @@ namespace tchecker { namespace parsing { namespace system {
       case symbol_kind::S_TOK_ID: // "identifier"
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < std::string > (); }
-#line 447 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 447 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_TOK_INTEGER: // "integer value"
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < std::string > (); }
-#line 453 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 453 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_TOK_TEXT: // "text value"
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < std::string > (); }
-#line 459 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 459 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_attr_list: // attr_list
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < tchecker::parsing::attributes_t > (); }
-#line 465 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 465 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_non_empty_attr_list: // non_empty_attr_list
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < tchecker::parsing::attributes_t > (); }
-#line 471 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 471 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_attr: // attr
 #line 95 "system.yy"
                  { yyoutput << * yysym.value.template as < std::shared_ptr<tchecker::parsing::attr_t> > (); }
-#line 477 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 477 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_text_or_empty: // text_or_empty
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < std::string > (); }
-#line 483 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 483 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_sync_constraint_list: // sync_constraint_list
@@ -491,31 +491,31 @@ namespace tchecker { namespace parsing { namespace system {
     yyoutput << *it;
   }
 }
-#line 495 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 495 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_sync_constraint: // sync_constraint
 #line 95 "system.yy"
                  { yyoutput << * yysym.value.template as < std::shared_ptr<tchecker::parsing::sync_constraint_t> > (); }
-#line 501 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 501 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_sync_strength: // sync_strength
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < enum tchecker::sync_strength_t > (); }
-#line 507 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 507 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_integer: // integer
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < tchecker::integer_t > (); }
-#line 513 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 513 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       case symbol_kind::S_uinteger: // uinteger
 #line 94 "system.yy"
                  { yyoutput << yysym.value.template as < unsigned int > (); }
-#line 519 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 519 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
         break;
 
       default:
@@ -642,7 +642,7 @@ namespace tchecker { namespace parsing { namespace system {
   old_error_count = tchecker::log_error_count();
 }
 
-#line 646 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 646 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
 
 
     /* Initialize the stack.  The initial state will be set in
@@ -820,7 +820,7 @@ namespace tchecker { namespace parsing { namespace system {
   loc << yylhs.location;
   system_declaration = std::make_shared<tchecker::parsing::system_declaration_t>(yystack_[2].value.as < std::string > (), yystack_[1].value.as < tchecker::parsing::attributes_t > (), loc.str());
 }
-#line 824 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 824 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 3: // system: eol_sequence "system" ":" "identifier" attr_list end_declaration $@1 declaration_list
@@ -829,7 +829,7 @@ namespace tchecker { namespace parsing { namespace system {
   if (tchecker::log_error_count() > old_error_count)
     system_declaration = nullptr;
 }
-#line 833 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 833 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 4: // system: error "end of file"
@@ -837,31 +837,31 @@ namespace tchecker { namespace parsing { namespace system {
 {
   system_declaration = nullptr;
 }
-#line 841 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 841 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 5: // declaration_list: non_empty_declaration_list eol_sequence
 #line 130 "system.yy"
 {}
-#line 847 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 847 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 6: // declaration_list: eol_sequence
 #line 132 "system.yy"
 {}
-#line 853 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 853 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 7: // non_empty_declaration_list: eol_sequence declaration
 #line 138 "system.yy"
 {}
-#line 859 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 859 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 8: // non_empty_declaration_list: non_empty_declaration_list eol_sequence declaration
 #line 140 "system.yy"
 {}
-#line 865 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 865 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 9: // declaration: "clock" ":" uinteger ":" "identifier" attr_list end_declaration
@@ -888,7 +888,7 @@ namespace tchecker { namespace parsing { namespace system {
     }
   }
 }
-#line 892 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 892 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 10: // declaration: "edge" ":" "identifier" ":" "identifier" ":" "identifier" ":" "identifier" attr_list end_declaration
@@ -927,7 +927,7 @@ namespace tchecker { namespace parsing { namespace system {
     }
   }
 }
-#line 931 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 931 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 11: // declaration: "event" ":" "identifier" attr_list end_declaration
@@ -951,7 +951,7 @@ namespace tchecker { namespace parsing { namespace system {
     }
   }
 }
-#line 955 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 955 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 12: // declaration: "int" ":" uinteger ":" integer ":" integer ":" integer ":" "identifier" attr_list end_declaration
@@ -980,7 +980,7 @@ namespace tchecker { namespace parsing { namespace system {
     }
   }
 }
-#line 984 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 984 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 13: // declaration: "location" ":" "identifier" ":" "identifier" attr_list end_declaration
@@ -1009,7 +1009,7 @@ namespace tchecker { namespace parsing { namespace system {
     }
   }
 }
-#line 1013 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1013 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 14: // declaration: "process" ":" "identifier" attr_list end_declaration
@@ -1033,7 +1033,7 @@ namespace tchecker { namespace parsing { namespace system {
     }
   }
 }
-#line 1037 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1037 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 15: // declaration: "sync" ":" sync_constraint_list attr_list end_declaration
@@ -1052,25 +1052,25 @@ namespace tchecker { namespace parsing { namespace system {
     std::cerr << tchecker::log_error << yylhs.location << " " << e.what() << std::endl;
   }
 }
-#line 1056 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1056 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 17: // attr_list: "{" non_empty_attr_list "}"
 #line 321 "system.yy"
 { yylhs.value.as < tchecker::parsing::attributes_t > () = std::move(yystack_[1].value.as < tchecker::parsing::attributes_t > ()); }
-#line 1062 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1062 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 18: // attr_list: "{" "}"
 #line 323 "system.yy"
 { yylhs.value.as < tchecker::parsing::attributes_t > ().clear(); }
-#line 1068 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1068 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 19: // attr_list: %empty
 #line 325 "system.yy"
 { yylhs.value.as < tchecker::parsing::attributes_t > ().clear(); }
-#line 1074 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1074 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 20: // non_empty_attr_list: attr
@@ -1078,7 +1078,7 @@ namespace tchecker { namespace parsing { namespace system {
 {
   yylhs.value.as < tchecker::parsing::attributes_t > ().insert(yystack_[0].value.as < std::shared_ptr<tchecker::parsing::attr_t> > ());
 }
-#line 1082 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1082 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 21: // non_empty_attr_list: non_empty_attr_list ":" attr
@@ -1087,7 +1087,7 @@ namespace tchecker { namespace parsing { namespace system {
   yystack_[2].value.as < tchecker::parsing::attributes_t > ().insert(yystack_[0].value.as < std::shared_ptr<tchecker::parsing::attr_t> > ());
   yylhs.value.as < tchecker::parsing::attributes_t > () = std::move(yystack_[2].value.as < tchecker::parsing::attributes_t > ());
 }
-#line 1091 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1091 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 22: // attr: "identifier" ":" text_or_empty
@@ -1101,19 +1101,19 @@ namespace tchecker { namespace parsing { namespace system {
   boost::trim(yystack_[0].value.as < std::string > ());
   yylhs.value.as < std::shared_ptr<tchecker::parsing::attr_t> > () = std::make_shared<tchecker::parsing::attr_t>(yystack_[2].value.as < std::string > (), yystack_[0].value.as < std::string > (), tchecker::parsing::attr_parsing_position_t{key_loc.str(), value_loc.str()});
 }
-#line 1105 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1105 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 23: // text_or_empty: "text value"
 #line 358 "system.yy"
 { yylhs.value.as < std::string > () = std::move(yystack_[0].value.as < std::string > ()); }
-#line 1111 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1111 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 24: // text_or_empty: %empty
 #line 360 "system.yy"
 { yylhs.value.as < std::string > ().clear(); }
-#line 1117 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1117 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 25: // sync_constraint_list: sync_constraint
@@ -1122,7 +1122,7 @@ namespace tchecker { namespace parsing { namespace system {
   if (yystack_[0].value.as < std::shared_ptr<tchecker::parsing::sync_constraint_t> > () != nullptr)
     yylhs.value.as < std::vector<std::shared_ptr<tchecker::parsing::sync_constraint_t>> > ().push_back(yystack_[0].value.as < std::shared_ptr<tchecker::parsing::sync_constraint_t> > ());
 }
-#line 1126 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1126 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 26: // sync_constraint_list: sync_constraint_list ":" sync_constraint
@@ -1132,7 +1132,7 @@ namespace tchecker { namespace parsing { namespace system {
     yystack_[2].value.as < std::vector<std::shared_ptr<tchecker::parsing::sync_constraint_t>> > ().push_back(yystack_[0].value.as < std::shared_ptr<tchecker::parsing::sync_constraint_t> > ());
   yylhs.value.as < std::vector<std::shared_ptr<tchecker::parsing::sync_constraint_t>> > () = std::move(yystack_[2].value.as < std::vector<std::shared_ptr<tchecker::parsing::sync_constraint_t>> > ());
 }
-#line 1136 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1136 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 27: // sync_constraint: "identifier" "@" "identifier" sync_strength
@@ -1149,19 +1149,19 @@ namespace tchecker { namespace parsing { namespace system {
       yylhs.value.as < std::shared_ptr<tchecker::parsing::sync_constraint_t> > () = std::make_shared<tchecker::parsing::sync_constraint_t>(proc, event, yystack_[0].value.as < enum tchecker::sync_strength_t > ());
   }
 }
-#line 1153 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1153 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 28: // sync_strength: "?"
 #line 398 "system.yy"
 { yylhs.value.as < enum tchecker::sync_strength_t > () = tchecker::SYNC_WEAK; }
-#line 1159 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1159 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 29: // sync_strength: %empty
 #line 400 "system.yy"
 { yylhs.value.as < enum tchecker::sync_strength_t > () = tchecker::SYNC_STRONG; }
-#line 1165 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1165 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 34: // integer: "integer value"
@@ -1180,7 +1180,7 @@ namespace tchecker { namespace parsing { namespace system {
     yylhs.value.as < tchecker::integer_t > () = 0;
   }
 }
-#line 1184 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1184 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
   case 35: // uinteger: "integer value"
@@ -1199,11 +1199,11 @@ namespace tchecker { namespace parsing { namespace system {
     yylhs.value.as < unsigned int > () = 0;
   }
 }
-#line 1203 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1203 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
     break;
 
 
-#line 1207 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1207 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
 
             default:
               break;
@@ -1730,7 +1730,7 @@ namespace tchecker { namespace parsing { namespace system {
 
 #line 13 "system.yy"
 } } } // tchecker::parsing::system
-#line 1734 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.cc"
+#line 1734 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.cc"
 
 #line 454 "system.yy"
 

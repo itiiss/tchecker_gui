@@ -9,7 +9,13 @@ import {
   ListItemButton,
   Button,
   Slider,
-  Stack
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
 } from '@mui/material'
 import {
   PlayArrow as NextIcon,
@@ -30,6 +36,7 @@ const SimulatorView = () => {
     simulationTrace,
     tracePosition,
     clockValues,
+    currentZoneMatrix,
     processes,
     intVars,
     simulationLoading,
@@ -217,62 +224,126 @@ const SimulatorView = () => {
   )
 
   // [C] Variables & Clocks
-  const renderVariablesAndClocks = () => (
-    <Paper sx={{ height: '30%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
-        <Typography variant="subtitle1">Variables & Clocks</Typography>
-      </Box>
-      <Box sx={{ p: 2, flexGrow: 1, overflow: 'auto' }}>
-        {/* Variables Section */}
-        <Typography variant="subtitle2" gutterBottom>
-          Variables:
-        </Typography>
-        <Box sx={{ mb: 2 }}>
-          {intVars.length === 0 ? (
-            <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.8rem' }}>
-              No integer variables defined
-            </Typography>
-          ) : (
-            intVars.map((intVar) => (
-              <Typography
-                key={intVar.name}
-                variant="body2"
-                sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
-              >
-                {intVar.name} = {intVar.initial || 0}
-              </Typography>
-            ))
-          )}
-        </Box>
-
-        {/* Clock Constraints (Zone) Section */}
-        <Typography variant="subtitle2" gutterBottom>
-          Clock Constraints (Zone):
-        </Typography>
-        <Box
-          sx={{
-            backgroundColor: 'grey.50',
-            p: 1,
-            borderRadius: 1,
-            fontFamily: 'monospace',
-            fontSize: '0.75rem'
-          }}
-        >
-          {Object.keys(clockValues || {}).length === 0 ? (
-            <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
-              No clock constraints
-            </Typography>
-          ) : (
-            Object.entries(clockValues || {}).map(([clockName, value]) => (
+  const renderZoneMatrixTable = (matrix) => {
+    if (!matrix) {
+      if (Object.keys(clockValues || {}).length > 0) {
+        return (
+          <Box
+            sx={{
+              backgroundColor: 'grey.50',
+              p: 1,
+              borderRadius: 1,
+              fontFamily: 'monospace',
+              fontSize: '0.75rem'
+            }}
+          >
+            {Object.entries(clockValues || {}).map(([clockName, value]) => (
               <Typography key={clockName} variant="body2" sx={{ fontSize: '0.75rem' }}>
                 {clockName} = {value}
               </Typography>
-            ))
-          )}
+            ))}
+          </Box>
+        )
+      }
+
+      return (
+        <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+          Zone matrix unavailable
+        </Typography>
+      )
+    }
+
+    const formatCell = (cell, isDiagonal) => {
+      if (!cell) return '∞'
+      if (!Number.isFinite(cell.value)) return '∞'
+      if (isDiagonal) return '0'
+      const prefix = cell.strict ? '<' : '<='
+      return `${prefix}${cell.value}`
+    }
+
+    return (
+      <TableContainer component={Box} sx={{ maxHeight: 240, overflow: 'auto', borderRadius: 1 }}>
+        <Table size="small" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell
+                sx={{ fontFamily: 'monospace', fontSize: '0.75rem', fontWeight: 600 }}
+              ></TableCell>
+              {matrix.headers.map((header) => (
+                <TableCell
+                  key={`header-${header}`}
+                  align="center"
+                  sx={{ fontFamily: 'monospace', fontSize: '0.75rem', fontWeight: 600 }}
+                >
+                  {header}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {matrix.rows.map((row, rowIndex) => (
+              <TableRow key={`row-${row.label}`} hover>
+                <TableCell sx={{ fontFamily: 'monospace', fontSize: '0.75rem', fontWeight: 600 }}>
+                  {row.label}
+                </TableCell>
+                {row.values.map((cell, colIndex) => (
+                  <TableCell
+                    key={`cell-${row.label}-${matrix.headers[colIndex]}`}
+                    align="center"
+                    sx={{ fontFamily: 'monospace', fontSize: '0.75rem', px: 1 }}
+                  >
+                    {formatCell(cell, rowIndex === colIndex)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
+  }
+
+  const renderVariablesAndClocks = () => {
+    const currentTraceEntry = simulationTrace[tracePosition]
+    const zoneMatrix = currentTraceEntry?.zoneMatrix || currentZoneMatrix
+
+    return (
+      <Paper sx={{ height: '30%', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
+          <Typography variant="subtitle1">Variables & Clocks</Typography>
         </Box>
-      </Box>
-    </Paper>
-  )
+        <Box sx={{ p: 2, flexGrow: 1, overflow: 'auto' }}>
+          {/* Variables Section */}
+          <Typography variant="subtitle2" gutterBottom>
+            Variables:
+          </Typography>
+          <Box sx={{ mb: 2 }}>
+            {intVars.length === 0 ? (
+              <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.8rem' }}>
+                No integer variables defined
+              </Typography>
+            ) : (
+              intVars.map((intVar) => (
+                <Typography
+                  key={intVar.name}
+                  variant="body2"
+                  sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
+                >
+                  {intVar.name} = {intVar.initial || 0}
+                </Typography>
+              ))
+            )}
+          </Box>
+
+          {/* Zone Matrix Section */}
+          <Typography variant="subtitle2" gutterBottom>
+            Zone Matrix (DBM):
+          </Typography>
+          {renderZoneMatrixTable(zoneMatrix)}
+        </Box>
+      </Paper>
+    )
+  }
 
   // [D] Simulation Trace & [E] Control Panel
   const renderTraceAndControls = () => (

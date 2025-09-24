@@ -32,7 +32,7 @@
 
 
 /**
- ** \file /Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.hh
+ ** \file /Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.hh
  ** Define the tchecker::parsing::system::parser class.
  */
 
@@ -42,8 +42,8 @@
 // especially those whose name start with YY_ or yy_.  They are
 // private implementation details that can be changed or removed.
 
-#ifndef YY_SPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_SYSTEM_PARSER_SYSTEM_TAB_HH_INCLUDED
-# define YY_SPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_SYSTEM_PARSER_SYSTEM_TAB_HH_INCLUDED
+#ifndef YY_SPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_SYSTEM_PARSER_SYSTEM_TAB_HH_INCLUDED
+# define YY_SPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_SYSTEM_PARSER_SYSTEM_TAB_HH_INCLUDED
 // "%code requires" blocks.
 #line 22 "system.yy"
 
@@ -60,7 +60,7 @@
   #include "tchecker/parsing/declaration.hh"
   #include "tchecker/utils/log.hh"
 
-#line 64 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.hh"
+#line 64 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -209,7 +209,7 @@
 
 #line 13 "system.yy"
 namespace tchecker { namespace parsing { namespace system {
-#line 213 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.hh"
+#line 213 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.hh"
 
 
 
@@ -1882,9 +1882,9 @@ switch (yykind)
 
 #line 13 "system.yy"
 } } } // tchecker::parsing::system
-#line 1886 "/Users/zhaochen/Downloads/build/src/parsing/system_parser/system.tab.hh"
+#line 1886 "/Users/zz/Documents/ta/tchecker/build/src/parsing/system_parser/system.tab.hh"
 
 
 
 
-#endif // !YY_SPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_SYSTEM_PARSER_SYSTEM_TAB_HH_INCLUDED
+#endif // !YY_SPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_SYSTEM_PARSER_SYSTEM_TAB_HH_INCLUDED

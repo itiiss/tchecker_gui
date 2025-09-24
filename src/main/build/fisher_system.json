@@ -1,0 +1,778 @@
+{
+  "name" : "fischer_10_10",
+  "processes" : [
+    {
+      "pid" : "P1",
+      "locations" : [
+        {
+          "id" : "P1_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P1_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x1<=10"            
+          }
+        },
+        {
+          "id" : "P1_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P1_cs",
+          "attributes" : {
+            "labels" : "cs1",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P1_A",
+          "tgt" : "P1_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x1=0"            
+          }
+        },
+        {
+          "src" : "P1_req",
+          "tgt" : "P1_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x1<=10",
+            "do" : "x1=0;id=1"            
+          }
+        },
+        {
+          "src" : "P1_wait",
+          "tgt" : "P1_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x1=0"            
+          }
+        },
+        {
+          "src" : "P1_wait",
+          "tgt" : "P1_cs",
+          "attributes" : {
+            "provided" : "x1>10&&id==1",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P1_cs",
+          "tgt" : "P1_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P2",
+      "locations" : [
+        {
+          "id" : "P2_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P2_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x2<=10"            
+          }
+        },
+        {
+          "id" : "P2_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P2_cs",
+          "attributes" : {
+            "labels" : "cs2",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P2_A",
+          "tgt" : "P2_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x2=0"            
+          }
+        },
+        {
+          "src" : "P2_req",
+          "tgt" : "P2_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x2<=10",
+            "do" : "x2=0;id=2"            
+          }
+        },
+        {
+          "src" : "P2_wait",
+          "tgt" : "P2_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x2=0"            
+          }
+        },
+        {
+          "src" : "P2_wait",
+          "tgt" : "P2_cs",
+          "attributes" : {
+            "provided" : "x2>10&&id==2",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P2_cs",
+          "tgt" : "P2_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P3",
+      "locations" : [
+        {
+          "id" : "P3_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P3_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x3<=10"            
+          }
+        },
+        {
+          "id" : "P3_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P3_cs",
+          "attributes" : {
+            "labels" : "cs3",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P3_A",
+          "tgt" : "P3_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x3=0"            
+          }
+        },
+        {
+          "src" : "P3_req",
+          "tgt" : "P3_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x3<=10",
+            "do" : "x3=0;id=3"            
+          }
+        },
+        {
+          "src" : "P3_wait",
+          "tgt" : "P3_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x3=0"            
+          }
+        },
+        {
+          "src" : "P3_wait",
+          "tgt" : "P3_cs",
+          "attributes" : {
+            "provided" : "x3>10&&id==3",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P3_cs",
+          "tgt" : "P3_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P4",
+      "locations" : [
+        {
+          "id" : "P4_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P4_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x4<=10"            
+          }
+        },
+        {
+          "id" : "P4_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P4_cs",
+          "attributes" : {
+            "labels" : "cs4",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P4_A",
+          "tgt" : "P4_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x4=0"            
+          }
+        },
+        {
+          "src" : "P4_req",
+          "tgt" : "P4_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x4<=10",
+            "do" : "x4=0;id=4"            
+          }
+        },
+        {
+          "src" : "P4_wait",
+          "tgt" : "P4_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x4=0"            
+          }
+        },
+        {
+          "src" : "P4_wait",
+          "tgt" : "P4_cs",
+          "attributes" : {
+            "provided" : "x4>10&&id==4",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P4_cs",
+          "tgt" : "P4_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P5",
+      "locations" : [
+        {
+          "id" : "P5_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P5_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x5<=10"            
+          }
+        },
+        {
+          "id" : "P5_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P5_cs",
+          "attributes" : {
+            "labels" : "cs5",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P5_A",
+          "tgt" : "P5_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x5=0"            
+          }
+        },
+        {
+          "src" : "P5_req",
+          "tgt" : "P5_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x5<=10",
+            "do" : "x5=0;id=5"            
+          }
+        },
+        {
+          "src" : "P5_wait",
+          "tgt" : "P5_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x5=0"            
+          }
+        },
+        {
+          "src" : "P5_wait",
+          "tgt" : "P5_cs",
+          "attributes" : {
+            "provided" : "x5>10&&id==5",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P5_cs",
+          "tgt" : "P5_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P6",
+      "locations" : [
+        {
+          "id" : "P6_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P6_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x6<=10"            
+          }
+        },
+        {
+          "id" : "P6_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P6_cs",
+          "attributes" : {
+            "labels" : "cs6",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P6_A",
+          "tgt" : "P6_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x6=0"            
+          }
+        },
+        {
+          "src" : "P6_req",
+          "tgt" : "P6_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x6<=10",
+            "do" : "x6=0;id=6"            
+          }
+        },
+        {
+          "src" : "P6_wait",
+          "tgt" : "P6_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x6=0"            
+          }
+        },
+        {
+          "src" : "P6_wait",
+          "tgt" : "P6_cs",
+          "attributes" : {
+            "provided" : "x6>10&&id==6",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P6_cs",
+          "tgt" : "P6_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P7",
+      "locations" : [
+        {
+          "id" : "P7_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P7_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x7<=10"            
+          }
+        },
+        {
+          "id" : "P7_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P7_cs",
+          "attributes" : {
+            "labels" : "cs7",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P7_A",
+          "tgt" : "P7_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x7=0"            
+          }
+        },
+        {
+          "src" : "P7_req",
+          "tgt" : "P7_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x7<=10",
+            "do" : "x7=0;id=7"            
+          }
+        },
+        {
+          "src" : "P7_wait",
+          "tgt" : "P7_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x7=0"            
+          }
+        },
+        {
+          "src" : "P7_wait",
+          "tgt" : "P7_cs",
+          "attributes" : {
+            "provided" : "x7>10&&id==7",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P7_cs",
+          "tgt" : "P7_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P8",
+      "locations" : [
+        {
+          "id" : "P8_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P8_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x8<=10"            
+          }
+        },
+        {
+          "id" : "P8_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P8_cs",
+          "attributes" : {
+            "labels" : "cs8",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P8_A",
+          "tgt" : "P8_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x8=0"            
+          }
+        },
+        {
+          "src" : "P8_req",
+          "tgt" : "P8_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x8<=10",
+            "do" : "x8=0;id=8"            
+          }
+        },
+        {
+          "src" : "P8_wait",
+          "tgt" : "P8_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x8=0"            
+          }
+        },
+        {
+          "src" : "P8_wait",
+          "tgt" : "P8_cs",
+          "attributes" : {
+            "provided" : "x8>10&&id==8",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P8_cs",
+          "tgt" : "P8_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P9",
+      "locations" : [
+        {
+          "id" : "P9_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P9_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x9<=10"            
+          }
+        },
+        {
+          "id" : "P9_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P9_cs",
+          "attributes" : {
+            "labels" : "cs9",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P9_A",
+          "tgt" : "P9_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x9=0"            
+          }
+        },
+        {
+          "src" : "P9_req",
+          "tgt" : "P9_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x9<=10",
+            "do" : "x9=0;id=9"            
+          }
+        },
+        {
+          "src" : "P9_wait",
+          "tgt" : "P9_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x9=0"            
+          }
+        },
+        {
+          "src" : "P9_wait",
+          "tgt" : "P9_cs",
+          "attributes" : {
+            "provided" : "x9>10&&id==9",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P9_cs",
+          "tgt" : "P9_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    },
+    {
+      "pid" : "P10",
+      "locations" : [
+        {
+          "id" : "P10_A",
+          "attributes" : {
+            "label" : "A",
+            "initial" : ""            
+          }
+        },
+        {
+          "id" : "P10_req",
+          "attributes" : {
+            "label" : "req",
+            "invariant" : "x10<=10"            
+          }
+        },
+        {
+          "id" : "P10_wait",
+          "attributes" : {
+            "label" : "wait"            
+          }
+        },
+        {
+          "id" : "P10_cs",
+          "attributes" : {
+            "labels" : "cs10",
+            "label" : "cs"            
+          }
+        }
+      ],
+      "edges" : [
+        {
+          "src" : "P10_A",
+          "tgt" : "P10_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x10=0"            
+          }
+        },
+        {
+          "src" : "P10_req",
+          "tgt" : "P10_wait",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "x10<=10",
+            "do" : "x10=0;id=10"            
+          }
+        },
+        {
+          "src" : "P10_wait",
+          "tgt" : "P10_req",
+          "attributes" : {
+            "label" : "tau",
+            "provided" : "id==0",
+            "do" : "x10=0"            
+          }
+        },
+        {
+          "src" : "P10_wait",
+          "tgt" : "P10_cs",
+          "attributes" : {
+            "provided" : "x10>10&&id==10",
+            "label" : "tau"            
+          }
+        },
+        {
+          "src" : "P10_cs",
+          "tgt" : "P10_A",
+          "attributes" : {
+            "do" : "id=0",
+            "label" : "tau"            
+          }
+        }
+      ]
+    }
+  ],
+  "sync" : [
+  ]
+}
+

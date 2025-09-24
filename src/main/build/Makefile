@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles /Users/zhaochen/Downloads/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles /Users/zz/Documents/ta/tchecker/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -235,6 +235,19 @@ tck-simulate: cmake_check_build_system
 tck-simulate/fast:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/build
 .PHONY : tck-simulate/fast
+
+#=============================================================================
+# Target rules for targets named tck-matrix
+
+# Build rule for target.
+tck-matrix: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tck-matrix
+.PHONY : tck-matrix
+
+# fast build rule for target.
+tck-matrix/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-matrix.dir/build.make src/CMakeFiles/tck-matrix.dir/build
+.PHONY : tck-matrix/fast
 
 #=============================================================================
 # Target rules for targets named program_parsing_static
@@ -362,6 +375,7 @@ help:
 	@echo "... program_parsing_static"
 	@echo "... system_parsing_static"
 	@echo "... tck-liveness"
+	@echo "... tck-matrix"
 	@echo "... tck-reach"
 	@echo "... tck-simulate"
 	@echo "... tck-syntax"

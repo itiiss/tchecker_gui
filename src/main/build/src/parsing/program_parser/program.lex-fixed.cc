@@ -1,6 +1,6 @@
-#line 1 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.lex.cc"
+#line 1 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.lex.cc"
 
-#line 3 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.lex.cc"
+#line 3 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.lex.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -785,15 +785,15 @@ void pp_reset_locations()
 }
 
 using namespace tchecker::parsing;
-#line 788 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.lex.cc"
+#line 788 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.lex.cc"
 #define YY_NO_INPUT 1
 /*%option debug*/
 #line 55 "program.ll"
   // Code run each time a pattern is matched.
 	// move token's length wide
   #define YY_USER_ACTION  loc.columns(static_cast<int>(ppyyleng));
-#line 795 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.lex.cc"
-#line 796 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.lex.cc"
+#line 795 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.lex.cc"
+#line 796 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.lex.cc"
 
 #define INITIAL 0
 
@@ -1017,7 +1017,7 @@ YY_DECL
 	loc.step();
 
 
-#line 1020 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.lex.cc"
+#line 1020 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.lex.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1243,7 +1243,7 @@ YY_RULE_SETUP
 #line 106 "program.ll"
 ECHO;
 	YY_BREAK
-#line 1246 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.lex.cc"
+#line 1246 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.lex.cc"
 
 	case YY_END_OF_BUFFER:
 		{

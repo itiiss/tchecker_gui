@@ -8,10 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/zhaochen/Downloads/tchecker/src/tck-simulate/display.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.o.d"
-  "/Users/zhaochen/Downloads/tchecker/src/tck-simulate/graph.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.o.d"
-  "/Users/zhaochen/Downloads/tchecker/src/tck-simulate/simulate.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.o.d"
-  "/Users/zhaochen/Downloads/tchecker/src/tck-simulate/tck-simulate.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.o.d"
+  "/Users/zz/Documents/ta/tchecker/src/tck-simulate/display.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.o.d"
+  "/Users/zz/Documents/ta/tchecker/src/tck-simulate/graph.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.o.d"
+  "/Users/zz/Documents/ta/tchecker/src/tck-simulate/simulate.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.o.d"
+  "/Users/zz/Documents/ta/tchecker/src/tck-simulate/tck-simulate.cc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.o" "gcc" "src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

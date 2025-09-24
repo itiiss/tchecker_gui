@@ -94,7 +94,7 @@
 
   auto fake_statement = std::make_shared<fake_statement_t>();
 
-#line 98 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 98 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
 
 
 #ifndef YY_
@@ -187,7 +187,7 @@
 
 #line 13 "program.yy"
 namespace tchecker { namespace parsing { namespace program {
-#line 191 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 191 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
 
   /// Build a parser object.
   parser_t::parser_t (std::string const & program_context_yyarg, std::shared_ptr<tchecker::expression_t> & expr_yyarg, std::shared_ptr<tchecker::statement_t> & stmt_yyarg)
@@ -500,115 +500,115 @@ namespace tchecker { namespace parsing { namespace program {
       case symbol_kind::S_TOK_ID: // "identifier"
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < std::string > (); }
-#line 504 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 504 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_TOK_INTEGER: // "integer"
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < std::string > (); }
-#line 510 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 510 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_sequence_statement: // sequence_statement
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::statement_t> > ()->output(yyoutput); }
-#line 516 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 516 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_statement: // statement
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::statement_t> > ()->output(yyoutput); }
-#line 522 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 522 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_if_statement: // if_statement
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 528 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 528 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_loop_statement: // loop_statement
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 534 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 534 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_local_statement: // local_statement
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 540 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 540 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_simple_statement: // simple_statement
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 546 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 546 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_assignment: // assignment
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::statement_t> > ()->output(yyoutput); }
-#line 552 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 552 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_conjunctive_formula: // conjunctive_formula
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::expression_t> > ()->output(yyoutput); }
-#line 558 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 558 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_non_atomic_conjunctive_formula: // non_atomic_conjunctive_formula
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::expression_t> > ()->output(yyoutput); }
-#line 564 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 564 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_atomic_formula: // atomic_formula
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::expression_t> > ()->output(yyoutput); }
-#line 570 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 570 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_predicate_formula: // predicate_formula
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::expression_t> > ()->output(yyoutput); }
-#line 576 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 576 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_binary_formula: // binary_formula
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < std::shared_ptr<tchecker::expression_t> > (); }
-#line 582 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 582 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_predicate_operator: // predicate_operator
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < enum tchecker::binary_operator_t > (); }
-#line 588 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 588 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_term: // term
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::expression_t> > ()->output(yyoutput); }
-#line 594 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 594 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_lvalue_term: // lvalue_term
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::lvalue_expression_t> > ()->output(yyoutput); }
-#line 600 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 600 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_variable_term: // variable_term
 #line 165 "program.yy"
                  { yysym.value.template as < std::shared_ptr<tchecker::var_expression_t> > ()->output(yyoutput); }
-#line 606 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 606 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       case symbol_kind::S_integer: // integer
 #line 164 "program.yy"
                  { yyoutput << yysym.value.template as < tchecker::integer_t > (); }
-#line 612 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 612 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
         break;
 
       default:
@@ -732,7 +732,7 @@ namespace tchecker { namespace parsing { namespace program {
   old_error_count = tchecker::log_error_count();
 }
 
-#line 736 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 736 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
 
 
     /* Initialize the stack.  The initial state will be set in
@@ -908,18 +908,18 @@ namespace tchecker { namespace parsing { namespace program {
           switch (yyn)
             {
   case 2: // program: sequence_statement
-#line 184 "program.yy"
+#line 185 "program.yy"
 { expr = nullptr;
   if (tchecker::log_error_count() > old_error_count)
     stmt = nullptr;
   else
     stmt = yystack_[0].value.as < std::shared_ptr<tchecker::statement_t> > ();
 }
-#line 919 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 919 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 3: // program: conjunctive_formula
-#line 191 "program.yy"
+#line 192 "program.yy"
 {
   if (tchecker::log_error_count() > old_error_count)
     expr = nullptr;
@@ -927,17 +927,17 @@ namespace tchecker { namespace parsing { namespace program {
     expr = yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ();
   stmt = nullptr;
 }
-#line 931 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 931 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 6: // sequence_statement: statement opt_semicolon
-#line 207 "program.yy"
+#line 208 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = yystack_[1].value.as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 937 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 937 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 7: // sequence_statement: statement ";" sequence_statement
-#line 209 "program.yy"
+#line 210 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::sequence_statement_t>(yystack_[2].value.as < std::shared_ptr<tchecker::statement_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::statement_t> > ());
@@ -947,83 +947,83 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = fake_statement;
   }
 }
-#line 951 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 951 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 8: // statement: simple_statement
-#line 222 "program.yy"
+#line 223 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 957 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 957 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 9: // statement: if_statement
-#line 224 "program.yy"
+#line 225 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 963 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 963 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 10: // statement: loop_statement
-#line 226 "program.yy"
+#line 227 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 969 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 969 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 11: // if_statement: "if" conjunctive_formula "then" sequence_statement "end"
-#line 231 "program.yy"
+#line 232 "program.yy"
     {  yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::if_statement_t>(yystack_[3].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[1].value.as < std::shared_ptr<tchecker::statement_t> > (), std::make_shared<tchecker::nop_statement_t>()); }
-#line 975 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 975 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 12: // if_statement: "if" conjunctive_formula "then" sequence_statement "else" sequence_statement "end"
-#line 233 "program.yy"
+#line 234 "program.yy"
     {  yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::if_statement_t>(yystack_[5].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[3].value.as < std::shared_ptr<tchecker::statement_t> > (), yystack_[1].value.as < std::shared_ptr<tchecker::statement_t> > ()); }
-#line 981 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 981 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 13: // loop_statement: "while" conjunctive_formula "do" sequence_statement "end"
-#line 238 "program.yy"
+#line 239 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::while_statement_t>(yystack_[3].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[1].value.as < std::shared_ptr<tchecker::statement_t> > ()); }
-#line 987 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 987 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 14: // local_statement: "local" variable_term
-#line 243 "program.yy"
+#line 244 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::local_var_statement_t>(yystack_[0].value.as < std::shared_ptr<tchecker::var_expression_t> > ()); }
-#line 993 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 993 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 15: // local_statement: "local" variable_term "=" term
-#line 245 "program.yy"
+#line 246 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::local_var_statement_t>(yystack_[2].value.as < std::shared_ptr<tchecker::var_expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ()); }
-#line 999 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 999 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 16: // local_statement: "local" variable_term "[" term "]"
-#line 247 "program.yy"
+#line 248 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::local_array_statement_t>(yystack_[3].value.as < std::shared_ptr<tchecker::var_expression_t> > (), yystack_[1].value.as < std::shared_ptr<tchecker::expression_t> > ()); }
-#line 1005 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1005 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 17: // simple_statement: assignment
-#line 252 "program.yy"
+#line 253 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 1011 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1011 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 18: // simple_statement: "nop"
-#line 254 "program.yy"
+#line 255 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::nop_statement_t>(); }
-#line 1017 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1017 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 19: // simple_statement: local_statement
-#line 256 "program.yy"
+#line 257 "program.yy"
     { yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::statement_t> > (); }
-#line 1023 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1023 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 20: // assignment: lvalue_term "=" term
-#line 262 "program.yy"
+#line 263 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = std::make_shared<tchecker::assign_statement_t>(yystack_[2].value.as < std::shared_ptr<tchecker::lvalue_expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1033,23 +1033,23 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::statement_t> > () = fake_statement;
   }
 }
-#line 1037 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1037 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 21: // conjunctive_formula: atomic_formula
-#line 276 "program.yy"
+#line 277 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > (); }
-#line 1043 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1043 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 22: // conjunctive_formula: non_atomic_conjunctive_formula
-#line 278 "program.yy"
+#line 279 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > (); }
-#line 1049 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1049 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 23: // non_atomic_conjunctive_formula: "(" non_atomic_conjunctive_formula ")"
-#line 284 "program.yy"
+#line 285 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::par_expression_t>(yystack_[1].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1059,11 +1059,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1063 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1063 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 24: // non_atomic_conjunctive_formula: atomic_formula "&&" conjunctive_formula
-#line 294 "program.yy"
+#line 295 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::binary_expression_t>(tchecker::EXPR_OP_LAND, yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1073,23 +1073,23 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1077 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1077 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 25: // atomic_formula: term
-#line 308 "program.yy"
+#line 309 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > (); }
-#line 1083 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1083 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 26: // atomic_formula: predicate_formula
-#line 310 "program.yy"
+#line 311 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > (); }
-#line 1089 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1089 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 27: // atomic_formula: "!" atomic_formula
-#line 312 "program.yy"
+#line 313 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::unary_expression_t>(tchecker::EXPR_OP_LNOT, yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1099,11 +1099,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1103 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1103 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 28: // predicate_formula: "(" predicate_formula ")"
-#line 326 "program.yy"
+#line 327 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::par_expression_t>(yystack_[1].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1113,11 +1113,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1117 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1117 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 29: // predicate_formula: binary_formula predicate_operator term
-#line 336 "program.yy"
+#line 337 "program.yy"
 {
   try {
     auto left = std::dynamic_pointer_cast<tchecker::binary_expression_t>(yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1136,17 +1136,17 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1140 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1140 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 30: // predicate_formula: binary_formula
-#line 355 "program.yy"
+#line 356 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > (); }
-#line 1146 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1146 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 31: // binary_formula: term predicate_operator term
-#line 361 "program.yy"
+#line 362 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::binary_expression_t>(yystack_[1].value.as < enum tchecker::binary_operator_t > (), yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1156,47 +1156,47 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1160 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1160 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 32: // predicate_operator: "=="
-#line 374 "program.yy"
+#line 375 "program.yy"
           { yylhs.value.as < enum tchecker::binary_operator_t > () = tchecker::EXPR_OP_EQ; }
-#line 1166 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1166 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 33: // predicate_operator: "!="
-#line 375 "program.yy"
+#line 376 "program.yy"
           { yylhs.value.as < enum tchecker::binary_operator_t > () = tchecker::EXPR_OP_NEQ; }
-#line 1172 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1172 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 34: // predicate_operator: "<"
-#line 376 "program.yy"
+#line 377 "program.yy"
           { yylhs.value.as < enum tchecker::binary_operator_t > () = tchecker::EXPR_OP_LT; }
-#line 1178 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1178 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 35: // predicate_operator: "<="
-#line 377 "program.yy"
+#line 378 "program.yy"
           { yylhs.value.as < enum tchecker::binary_operator_t > () = tchecker::EXPR_OP_LE; }
-#line 1184 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1184 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 36: // predicate_operator: ">="
-#line 378 "program.yy"
+#line 379 "program.yy"
           { yylhs.value.as < enum tchecker::binary_operator_t > () = tchecker::EXPR_OP_GE; }
-#line 1190 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1190 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 37: // predicate_operator: ">"
-#line 379 "program.yy"
+#line 380 "program.yy"
           { yylhs.value.as < enum tchecker::binary_operator_t > () = tchecker::EXPR_OP_GT; }
-#line 1196 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1196 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 38: // term: integer
-#line 385 "program.yy"
+#line 386 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::int_expression_t>(yystack_[0].value.as < tchecker::integer_t > ());
@@ -1206,17 +1206,17 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1210 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1210 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 39: // term: lvalue_term
-#line 395 "program.yy"
+#line 396 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::lvalue_expression_t> > (); }
-#line 1216 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1216 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 40: // term: "(" term ")"
-#line 397 "program.yy"
+#line 398 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::par_expression_t>(yystack_[1].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1226,11 +1226,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1230 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1230 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 41: // term: "-" term
-#line 407 "program.yy"
+#line 408 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::unary_expression_t>(tchecker::EXPR_OP_NEG, yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1240,11 +1240,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1244 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1244 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 42: // term: term "+" term
-#line 417 "program.yy"
+#line 418 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::binary_expression_t>(tchecker::EXPR_OP_PLUS, yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1254,11 +1254,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1258 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1258 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 43: // term: term "-" term
-#line 427 "program.yy"
+#line 428 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::binary_expression_t>(tchecker::EXPR_OP_MINUS, yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1268,11 +1268,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1272 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1272 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 44: // term: term "*" term
-#line 437 "program.yy"
+#line 438 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::binary_expression_t>(tchecker::EXPR_OP_TIMES, yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1282,11 +1282,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1286 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1286 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 45: // term: term "/" term
-#line 447 "program.yy"
+#line 448 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::binary_expression_t>(tchecker::EXPR_OP_DIV, yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1296,11 +1296,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1300 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1300 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 46: // term: term "%" term
-#line 457 "program.yy"
+#line 458 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::binary_expression_t>(tchecker::EXPR_OP_MOD, yystack_[2].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[0].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1310,11 +1310,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1314 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1314 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 47: // term: "(" "if" conjunctive_formula "then" term "else" term ")"
-#line 467 "program.yy"
+#line 468 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = std::make_shared<tchecker::ite_expression_t>(yystack_[5].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[3].value.as < std::shared_ptr<tchecker::expression_t> > (), yystack_[1].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1324,17 +1324,17 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::expression_t> > () = fake_expression;
   }
 }
-#line 1328 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1328 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 48: // lvalue_term: variable_term
-#line 481 "program.yy"
+#line 482 "program.yy"
 { yylhs.value.as < std::shared_ptr<tchecker::lvalue_expression_t> > () = yystack_[0].value.as < std::shared_ptr<tchecker::var_expression_t> > (); }
-#line 1334 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1334 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 49: // lvalue_term: variable_term "[" term "]"
-#line 483 "program.yy"
+#line 484 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::lvalue_expression_t> > () = std::make_shared<tchecker::array_expression_t>(yystack_[3].value.as < std::shared_ptr<tchecker::var_expression_t> > (), yystack_[1].value.as < std::shared_ptr<tchecker::expression_t> > ());
@@ -1344,11 +1344,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::lvalue_expression_t> > () = fake_expression;
   }
 }
-#line 1348 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1348 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 50: // variable_term: "identifier"
-#line 497 "program.yy"
+#line 498 "program.yy"
 {
   try {
     yylhs.value.as < std::shared_ptr<tchecker::var_expression_t> > () = std::make_shared<tchecker::var_expression_t>(yystack_[0].value.as < std::string > ());
@@ -1358,11 +1358,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < std::shared_ptr<tchecker::var_expression_t> > () = fake_var_expression;
   }
 }
-#line 1362 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1362 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
   case 51: // integer: "integer"
-#line 511 "program.yy"
+#line 512 "program.yy"
 {
   try {
     long long l = std::stoll(yystack_[0].value.as < std::string > (), nullptr, 10);
@@ -1376,11 +1376,11 @@ namespace tchecker { namespace parsing { namespace program {
     yylhs.value.as < tchecker::integer_t > () = 0;
   }
 }
-#line 1380 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1380 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
     break;
 
 
-#line 1384 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1384 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
 
             default:
               break;
@@ -1889,12 +1889,12 @@ namespace tchecker { namespace parsing { namespace program {
   const short
   parser_t::yyrline_[] =
   {
-       0,   183,   183,   190,   201,   202,   206,   208,   221,   223,
-     225,   230,   232,   237,   242,   244,   246,   251,   253,   255,
-     261,   275,   277,   283,   293,   307,   309,   311,   325,   335,
-     354,   360,   374,   375,   376,   377,   378,   379,   384,   394,
-     396,   406,   416,   426,   436,   446,   456,   466,   480,   482,
-     496,   510
+       0,   184,   184,   191,   202,   203,   207,   209,   222,   224,
+     226,   231,   233,   238,   243,   245,   247,   252,   254,   256,
+     262,   276,   278,   284,   294,   308,   310,   312,   326,   336,
+     355,   361,   375,   376,   377,   378,   379,   380,   385,   395,
+     397,   407,   417,   427,   437,   447,   457,   467,   481,   483,
+     497,   511
   };
 
   void
@@ -1927,9 +1927,9 @@ namespace tchecker { namespace parsing { namespace program {
 
 #line 13 "program.yy"
 } } } // tchecker::parsing::program
-#line 1931 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.cc"
+#line 1931 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.cc"
 
-#line 527 "program.yy"
+#line 528 "program.yy"
 
 
 

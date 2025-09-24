@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/zhaochen/Downloads/tchecker/test/bugfixes/bug-007.cc" "test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.o" "gcc" "test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.o.d"
+  "/Users/zz/Documents/ta/tchecker/test/bugfixes/bug-007.cc" "test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.o" "gcc" "test/bugfixes/CMakeFiles/bug-007-bin.dir/bug-007.cc.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

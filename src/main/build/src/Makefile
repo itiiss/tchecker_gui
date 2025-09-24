@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,14 +142,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles /Users/zhaochen/Downloads/build/src//CMakeFiles/progress.marks
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhaochen/Downloads/build/CMakeFiles 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles /Users/zz/Documents/ta/tchecker/build/src//CMakeFiles/progress.marks
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zz/Documents/ta/tchecker/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/clean
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -158,22 +158,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/libtchecker_static.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/libtchecker_static.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/libtchecker_static.dir/rule
 .PHONY : src/CMakeFiles/libtchecker_static.dir/rule
 
 # Convenience name for target.
@@ -182,12 +182,12 @@ libtchecker_static: src/CMakeFiles/libtchecker_static.dir/rule
 
 # fast build rule for target.
 libtchecker_static/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/build
 .PHONY : libtchecker_static/fast
 
 # Convenience name for target.
 src/CMakeFiles/tck-liveness.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-liveness.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-liveness.dir/rule
 .PHONY : src/CMakeFiles/tck-liveness.dir/rule
 
 # Convenience name for target.
@@ -196,12 +196,12 @@ tck-liveness: src/CMakeFiles/tck-liveness.dir/rule
 
 # fast build rule for target.
 tck-liveness/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/build
 .PHONY : tck-liveness/fast
 
 # Convenience name for target.
 src/CMakeFiles/tck-reach.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-reach.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-reach.dir/rule
 .PHONY : src/CMakeFiles/tck-reach.dir/rule
 
 # Convenience name for target.
@@ -210,12 +210,12 @@ tck-reach: src/CMakeFiles/tck-reach.dir/rule
 
 # fast build rule for target.
 tck-reach/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/build
 .PHONY : tck-reach/fast
 
 # Convenience name for target.
 src/CMakeFiles/tck-syntax.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-syntax.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-syntax.dir/rule
 .PHONY : src/CMakeFiles/tck-syntax.dir/rule
 
 # Convenience name for target.
@@ -224,12 +224,12 @@ tck-syntax: src/CMakeFiles/tck-syntax.dir/rule
 
 # fast build rule for target.
 tck-syntax/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/build
 .PHONY : tck-syntax/fast
 
 # Convenience name for target.
 src/CMakeFiles/tck-simulate.dir/rule:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-simulate.dir/rule
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-simulate.dir/rule
 .PHONY : src/CMakeFiles/tck-simulate.dir/rule
 
 # Convenience name for target.
@@ -238,15 +238,29 @@ tck-simulate: src/CMakeFiles/tck-simulate.dir/rule
 
 # fast build rule for target.
 tck-simulate/fast:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/build
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/build
 .PHONY : tck-simulate/fast
+
+# Convenience name for target.
+src/CMakeFiles/tck-matrix.dir/rule:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tck-matrix.dir/rule
+.PHONY : src/CMakeFiles/tck-matrix.dir/rule
+
+# Convenience name for target.
+tck-matrix: src/CMakeFiles/tck-matrix.dir/rule
+.PHONY : tck-matrix
+
+# fast build rule for target.
+tck-matrix/fast:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-matrix.dir/build.make src/CMakeFiles/tck-matrix.dir/build
+.PHONY : tck-matrix/fast
 
 algorithms/couvreur_scc/graph.o: algorithms/couvreur_scc/graph.cc.o
 .PHONY : algorithms/couvreur_scc/graph.o
 
 # target to build an object file
 algorithms/couvreur_scc/graph.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/graph.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/graph.cc.o
 .PHONY : algorithms/couvreur_scc/graph.cc.o
 
 algorithms/couvreur_scc/graph.i: algorithms/couvreur_scc/graph.cc.i
@@ -254,7 +268,7 @@ algorithms/couvreur_scc/graph.i: algorithms/couvreur_scc/graph.cc.i
 
 # target to preprocess a source file
 algorithms/couvreur_scc/graph.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/graph.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/graph.cc.i
 .PHONY : algorithms/couvreur_scc/graph.cc.i
 
 algorithms/couvreur_scc/graph.s: algorithms/couvreur_scc/graph.cc.s
@@ -262,7 +276,7 @@ algorithms/couvreur_scc/graph.s: algorithms/couvreur_scc/graph.cc.s
 
 # target to generate assembly for a file
 algorithms/couvreur_scc/graph.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/graph.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/graph.cc.s
 .PHONY : algorithms/couvreur_scc/graph.cc.s
 
 algorithms/couvreur_scc/stats.o: algorithms/couvreur_scc/stats.cc.o
@@ -270,7 +284,7 @@ algorithms/couvreur_scc/stats.o: algorithms/couvreur_scc/stats.cc.o
 
 # target to build an object file
 algorithms/couvreur_scc/stats.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/stats.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/stats.cc.o
 .PHONY : algorithms/couvreur_scc/stats.cc.o
 
 algorithms/couvreur_scc/stats.i: algorithms/couvreur_scc/stats.cc.i
@@ -278,7 +292,7 @@ algorithms/couvreur_scc/stats.i: algorithms/couvreur_scc/stats.cc.i
 
 # target to preprocess a source file
 algorithms/couvreur_scc/stats.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/stats.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/stats.cc.i
 .PHONY : algorithms/couvreur_scc/stats.cc.i
 
 algorithms/couvreur_scc/stats.s: algorithms/couvreur_scc/stats.cc.s
@@ -286,7 +300,7 @@ algorithms/couvreur_scc/stats.s: algorithms/couvreur_scc/stats.cc.s
 
 # target to generate assembly for a file
 algorithms/couvreur_scc/stats.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/stats.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/couvreur_scc/stats.cc.s
 .PHONY : algorithms/couvreur_scc/stats.cc.s
 
 algorithms/covreach/stats.o: algorithms/covreach/stats.cc.o
@@ -294,7 +308,7 @@ algorithms/covreach/stats.o: algorithms/covreach/stats.cc.o
 
 # target to build an object file
 algorithms/covreach/stats.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/covreach/stats.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/covreach/stats.cc.o
 .PHONY : algorithms/covreach/stats.cc.o
 
 algorithms/covreach/stats.i: algorithms/covreach/stats.cc.i
@@ -302,7 +316,7 @@ algorithms/covreach/stats.i: algorithms/covreach/stats.cc.i
 
 # target to preprocess a source file
 algorithms/covreach/stats.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/covreach/stats.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/covreach/stats.cc.i
 .PHONY : algorithms/covreach/stats.cc.i
 
 algorithms/covreach/stats.s: algorithms/covreach/stats.cc.s
@@ -310,7 +324,7 @@ algorithms/covreach/stats.s: algorithms/covreach/stats.cc.s
 
 # target to generate assembly for a file
 algorithms/covreach/stats.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/covreach/stats.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/covreach/stats.cc.s
 .PHONY : algorithms/covreach/stats.cc.s
 
 algorithms/ndfs/graph.o: algorithms/ndfs/graph.cc.o
@@ -318,7 +332,7 @@ algorithms/ndfs/graph.o: algorithms/ndfs/graph.cc.o
 
 # target to build an object file
 algorithms/ndfs/graph.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/graph.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/graph.cc.o
 .PHONY : algorithms/ndfs/graph.cc.o
 
 algorithms/ndfs/graph.i: algorithms/ndfs/graph.cc.i
@@ -326,7 +340,7 @@ algorithms/ndfs/graph.i: algorithms/ndfs/graph.cc.i
 
 # target to preprocess a source file
 algorithms/ndfs/graph.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/graph.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/graph.cc.i
 .PHONY : algorithms/ndfs/graph.cc.i
 
 algorithms/ndfs/graph.s: algorithms/ndfs/graph.cc.s
@@ -334,7 +348,7 @@ algorithms/ndfs/graph.s: algorithms/ndfs/graph.cc.s
 
 # target to generate assembly for a file
 algorithms/ndfs/graph.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/graph.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/graph.cc.s
 .PHONY : algorithms/ndfs/graph.cc.s
 
 algorithms/ndfs/stats.o: algorithms/ndfs/stats.cc.o
@@ -342,7 +356,7 @@ algorithms/ndfs/stats.o: algorithms/ndfs/stats.cc.o
 
 # target to build an object file
 algorithms/ndfs/stats.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/stats.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/stats.cc.o
 .PHONY : algorithms/ndfs/stats.cc.o
 
 algorithms/ndfs/stats.i: algorithms/ndfs/stats.cc.i
@@ -350,7 +364,7 @@ algorithms/ndfs/stats.i: algorithms/ndfs/stats.cc.i
 
 # target to preprocess a source file
 algorithms/ndfs/stats.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/stats.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/stats.cc.i
 .PHONY : algorithms/ndfs/stats.cc.i
 
 algorithms/ndfs/stats.s: algorithms/ndfs/stats.cc.s
@@ -358,7 +372,7 @@ algorithms/ndfs/stats.s: algorithms/ndfs/stats.cc.s
 
 # target to generate assembly for a file
 algorithms/ndfs/stats.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/stats.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/ndfs/stats.cc.s
 .PHONY : algorithms/ndfs/stats.cc.s
 
 algorithms/reach/stats.o: algorithms/reach/stats.cc.o
@@ -366,7 +380,7 @@ algorithms/reach/stats.o: algorithms/reach/stats.cc.o
 
 # target to build an object file
 algorithms/reach/stats.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/reach/stats.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/reach/stats.cc.o
 .PHONY : algorithms/reach/stats.cc.o
 
 algorithms/reach/stats.i: algorithms/reach/stats.cc.i
@@ -374,7 +388,7 @@ algorithms/reach/stats.i: algorithms/reach/stats.cc.i
 
 # target to preprocess a source file
 algorithms/reach/stats.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/reach/stats.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/reach/stats.cc.i
 .PHONY : algorithms/reach/stats.cc.i
 
 algorithms/reach/stats.s: algorithms/reach/stats.cc.s
@@ -382,7 +396,7 @@ algorithms/reach/stats.s: algorithms/reach/stats.cc.s
 
 # target to generate assembly for a file
 algorithms/reach/stats.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/reach/stats.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/reach/stats.cc.s
 .PHONY : algorithms/reach/stats.cc.s
 
 algorithms/search_order.o: algorithms/search_order.cc.o
@@ -390,7 +404,7 @@ algorithms/search_order.o: algorithms/search_order.cc.o
 
 # target to build an object file
 algorithms/search_order.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/search_order.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/search_order.cc.o
 .PHONY : algorithms/search_order.cc.o
 
 algorithms/search_order.i: algorithms/search_order.cc.i
@@ -398,7 +412,7 @@ algorithms/search_order.i: algorithms/search_order.cc.i
 
 # target to preprocess a source file
 algorithms/search_order.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/search_order.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/search_order.cc.i
 .PHONY : algorithms/search_order.cc.i
 
 algorithms/search_order.s: algorithms/search_order.cc.s
@@ -406,7 +420,7 @@ algorithms/search_order.s: algorithms/search_order.cc.s
 
 # target to generate assembly for a file
 algorithms/search_order.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/search_order.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/search_order.cc.s
 .PHONY : algorithms/search_order.cc.s
 
 algorithms/stats.o: algorithms/stats.cc.o
@@ -414,7 +428,7 @@ algorithms/stats.o: algorithms/stats.cc.o
 
 # target to build an object file
 algorithms/stats.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/stats.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/stats.cc.o
 .PHONY : algorithms/stats.cc.o
 
 algorithms/stats.i: algorithms/stats.cc.i
@@ -422,7 +436,7 @@ algorithms/stats.i: algorithms/stats.cc.i
 
 # target to preprocess a source file
 algorithms/stats.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/stats.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/stats.cc.i
 .PHONY : algorithms/stats.cc.i
 
 algorithms/stats.s: algorithms/stats.cc.s
@@ -430,7 +444,7 @@ algorithms/stats.s: algorithms/stats.cc.s
 
 # target to generate assembly for a file
 algorithms/stats.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/stats.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/algorithms/stats.cc.s
 .PHONY : algorithms/stats.cc.s
 
 basictypes.o: basictypes.cc.o
@@ -438,7 +452,7 @@ basictypes.o: basictypes.cc.o
 
 # target to build an object file
 basictypes.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/basictypes.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/basictypes.cc.o
 .PHONY : basictypes.cc.o
 
 basictypes.i: basictypes.cc.i
@@ -446,7 +460,7 @@ basictypes.i: basictypes.cc.i
 
 # target to preprocess a source file
 basictypes.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/basictypes.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/basictypes.cc.i
 .PHONY : basictypes.cc.i
 
 basictypes.s: basictypes.cc.s
@@ -454,7 +468,7 @@ basictypes.s: basictypes.cc.s
 
 # target to generate assembly for a file
 basictypes.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/basictypes.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/basictypes.cc.s
 .PHONY : basictypes.cc.s
 
 clockbounds/clockbounds.o: clockbounds/clockbounds.cc.o
@@ -462,7 +476,7 @@ clockbounds/clockbounds.o: clockbounds/clockbounds.cc.o
 
 # target to build an object file
 clockbounds/clockbounds.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/clockbounds.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/clockbounds.cc.o
 .PHONY : clockbounds/clockbounds.cc.o
 
 clockbounds/clockbounds.i: clockbounds/clockbounds.cc.i
@@ -470,7 +484,7 @@ clockbounds/clockbounds.i: clockbounds/clockbounds.cc.i
 
 # target to preprocess a source file
 clockbounds/clockbounds.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/clockbounds.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/clockbounds.cc.i
 .PHONY : clockbounds/clockbounds.cc.i
 
 clockbounds/clockbounds.s: clockbounds/clockbounds.cc.s
@@ -478,7 +492,7 @@ clockbounds/clockbounds.s: clockbounds/clockbounds.cc.s
 
 # target to generate assembly for a file
 clockbounds/clockbounds.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/clockbounds.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/clockbounds.cc.s
 .PHONY : clockbounds/clockbounds.cc.s
 
 clockbounds/solver.o: clockbounds/solver.cc.o
@@ -486,7 +500,7 @@ clockbounds/solver.o: clockbounds/solver.cc.o
 
 # target to build an object file
 clockbounds/solver.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/solver.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/solver.cc.o
 .PHONY : clockbounds/solver.cc.o
 
 clockbounds/solver.i: clockbounds/solver.cc.i
@@ -494,7 +508,7 @@ clockbounds/solver.i: clockbounds/solver.cc.i
 
 # target to preprocess a source file
 clockbounds/solver.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/solver.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/solver.cc.i
 .PHONY : clockbounds/solver.cc.i
 
 clockbounds/solver.s: clockbounds/solver.cc.s
@@ -502,7 +516,7 @@ clockbounds/solver.s: clockbounds/solver.cc.s
 
 # target to generate assembly for a file
 clockbounds/solver.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/solver.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/clockbounds/solver.cc.s
 .PHONY : clockbounds/solver.cc.s
 
 dbm/db.o: dbm/db.cc.o
@@ -510,7 +524,7 @@ dbm/db.o: dbm/db.cc.o
 
 # target to build an object file
 dbm/db.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/db.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/db.cc.o
 .PHONY : dbm/db.cc.o
 
 dbm/db.i: dbm/db.cc.i
@@ -518,7 +532,7 @@ dbm/db.i: dbm/db.cc.i
 
 # target to preprocess a source file
 dbm/db.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/db.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/db.cc.i
 .PHONY : dbm/db.cc.i
 
 dbm/db.s: dbm/db.cc.s
@@ -526,7 +540,7 @@ dbm/db.s: dbm/db.cc.s
 
 # target to generate assembly for a file
 dbm/db.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/db.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/db.cc.s
 .PHONY : dbm/db.cc.s
 
 dbm/dbm.o: dbm/dbm.cc.o
@@ -534,7 +548,7 @@ dbm/dbm.o: dbm/dbm.cc.o
 
 # target to build an object file
 dbm/dbm.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/dbm.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/dbm.cc.o
 .PHONY : dbm/dbm.cc.o
 
 dbm/dbm.i: dbm/dbm.cc.i
@@ -542,7 +556,7 @@ dbm/dbm.i: dbm/dbm.cc.i
 
 # target to preprocess a source file
 dbm/dbm.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/dbm.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/dbm.cc.i
 .PHONY : dbm/dbm.cc.i
 
 dbm/dbm.s: dbm/dbm.cc.s
@@ -550,7 +564,7 @@ dbm/dbm.s: dbm/dbm.cc.s
 
 # target to generate assembly for a file
 dbm/dbm.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/dbm.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/dbm.cc.s
 .PHONY : dbm/dbm.cc.s
 
 dbm/refdbm.o: dbm/refdbm.cc.o
@@ -558,7 +572,7 @@ dbm/refdbm.o: dbm/refdbm.cc.o
 
 # target to build an object file
 dbm/refdbm.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/refdbm.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/refdbm.cc.o
 .PHONY : dbm/refdbm.cc.o
 
 dbm/refdbm.i: dbm/refdbm.cc.i
@@ -566,7 +580,7 @@ dbm/refdbm.i: dbm/refdbm.cc.i
 
 # target to preprocess a source file
 dbm/refdbm.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/refdbm.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/refdbm.cc.i
 .PHONY : dbm/refdbm.cc.i
 
 dbm/refdbm.s: dbm/refdbm.cc.s
@@ -574,7 +588,7 @@ dbm/refdbm.s: dbm/refdbm.cc.s
 
 # target to generate assembly for a file
 dbm/refdbm.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/refdbm.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/dbm/refdbm.cc.s
 .PHONY : dbm/refdbm.cc.s
 
 expression/expression.o: expression/expression.cc.o
@@ -582,7 +596,7 @@ expression/expression.o: expression/expression.cc.o
 
 # target to build an object file
 expression/expression.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/expression.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/expression.cc.o
 .PHONY : expression/expression.cc.o
 
 expression/expression.i: expression/expression.cc.i
@@ -590,7 +604,7 @@ expression/expression.i: expression/expression.cc.i
 
 # target to preprocess a source file
 expression/expression.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/expression.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/expression.cc.i
 .PHONY : expression/expression.cc.i
 
 expression/expression.s: expression/expression.cc.s
@@ -598,7 +612,7 @@ expression/expression.s: expression/expression.cc.s
 
 # target to generate assembly for a file
 expression/expression.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/expression.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/expression.cc.s
 .PHONY : expression/expression.cc.s
 
 expression/static_analysis.o: expression/static_analysis.cc.o
@@ -606,7 +620,7 @@ expression/static_analysis.o: expression/static_analysis.cc.o
 
 # target to build an object file
 expression/static_analysis.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/static_analysis.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/static_analysis.cc.o
 .PHONY : expression/static_analysis.cc.o
 
 expression/static_analysis.i: expression/static_analysis.cc.i
@@ -614,7 +628,7 @@ expression/static_analysis.i: expression/static_analysis.cc.i
 
 # target to preprocess a source file
 expression/static_analysis.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/static_analysis.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/static_analysis.cc.i
 .PHONY : expression/static_analysis.cc.i
 
 expression/static_analysis.s: expression/static_analysis.cc.s
@@ -622,7 +636,7 @@ expression/static_analysis.s: expression/static_analysis.cc.s
 
 # target to generate assembly for a file
 expression/static_analysis.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/static_analysis.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/static_analysis.cc.s
 .PHONY : expression/static_analysis.cc.s
 
 expression/type_inference.o: expression/type_inference.cc.o
@@ -630,7 +644,7 @@ expression/type_inference.o: expression/type_inference.cc.o
 
 # target to build an object file
 expression/type_inference.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/type_inference.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/type_inference.cc.o
 .PHONY : expression/type_inference.cc.o
 
 expression/type_inference.i: expression/type_inference.cc.i
@@ -638,7 +652,7 @@ expression/type_inference.i: expression/type_inference.cc.i
 
 # target to preprocess a source file
 expression/type_inference.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/type_inference.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/type_inference.cc.i
 .PHONY : expression/type_inference.cc.i
 
 expression/type_inference.s: expression/type_inference.cc.s
@@ -646,7 +660,7 @@ expression/type_inference.s: expression/type_inference.cc.s
 
 # target to generate assembly for a file
 expression/type_inference.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/type_inference.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/type_inference.cc.s
 .PHONY : expression/type_inference.cc.s
 
 expression/typechecking.o: expression/typechecking.cc.o
@@ -654,7 +668,7 @@ expression/typechecking.o: expression/typechecking.cc.o
 
 # target to build an object file
 expression/typechecking.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typechecking.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typechecking.cc.o
 .PHONY : expression/typechecking.cc.o
 
 expression/typechecking.i: expression/typechecking.cc.i
@@ -662,7 +676,7 @@ expression/typechecking.i: expression/typechecking.cc.i
 
 # target to preprocess a source file
 expression/typechecking.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typechecking.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typechecking.cc.i
 .PHONY : expression/typechecking.cc.i
 
 expression/typechecking.s: expression/typechecking.cc.s
@@ -670,7 +684,7 @@ expression/typechecking.s: expression/typechecking.cc.s
 
 # target to generate assembly for a file
 expression/typechecking.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typechecking.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typechecking.cc.s
 .PHONY : expression/typechecking.cc.s
 
 expression/typed_expression.o: expression/typed_expression.cc.o
@@ -678,7 +692,7 @@ expression/typed_expression.o: expression/typed_expression.cc.o
 
 # target to build an object file
 expression/typed_expression.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typed_expression.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typed_expression.cc.o
 .PHONY : expression/typed_expression.cc.o
 
 expression/typed_expression.i: expression/typed_expression.cc.i
@@ -686,7 +700,7 @@ expression/typed_expression.i: expression/typed_expression.cc.i
 
 # target to preprocess a source file
 expression/typed_expression.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typed_expression.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typed_expression.cc.i
 .PHONY : expression/typed_expression.cc.i
 
 expression/typed_expression.s: expression/typed_expression.cc.s
@@ -694,7 +708,7 @@ expression/typed_expression.s: expression/typed_expression.cc.s
 
 # target to generate assembly for a file
 expression/typed_expression.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typed_expression.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/expression/typed_expression.cc.s
 .PHONY : expression/typed_expression.cc.s
 
 fsm/fsm.o: fsm/fsm.cc.o
@@ -702,7 +716,7 @@ fsm/fsm.o: fsm/fsm.cc.o
 
 # target to build an object file
 fsm/fsm.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/fsm.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/fsm.cc.o
 .PHONY : fsm/fsm.cc.o
 
 fsm/fsm.i: fsm/fsm.cc.i
@@ -710,7 +724,7 @@ fsm/fsm.i: fsm/fsm.cc.i
 
 # target to preprocess a source file
 fsm/fsm.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/fsm.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/fsm.cc.i
 .PHONY : fsm/fsm.cc.i
 
 fsm/fsm.s: fsm/fsm.cc.s
@@ -718,7 +732,7 @@ fsm/fsm.s: fsm/fsm.cc.s
 
 # target to generate assembly for a file
 fsm/fsm.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/fsm.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/fsm.cc.s
 .PHONY : fsm/fsm.cc.s
 
 fsm/state.o: fsm/state.cc.o
@@ -726,7 +740,7 @@ fsm/state.o: fsm/state.cc.o
 
 # target to build an object file
 fsm/state.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/state.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/state.cc.o
 .PHONY : fsm/state.cc.o
 
 fsm/state.i: fsm/state.cc.i
@@ -734,7 +748,7 @@ fsm/state.i: fsm/state.cc.i
 
 # target to preprocess a source file
 fsm/state.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/state.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/state.cc.i
 .PHONY : fsm/state.cc.i
 
 fsm/state.s: fsm/state.cc.s
@@ -742,7 +756,7 @@ fsm/state.s: fsm/state.cc.s
 
 # target to generate assembly for a file
 fsm/state.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/state.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/state.cc.s
 .PHONY : fsm/state.cc.s
 
 fsm/transition.o: fsm/transition.cc.o
@@ -750,7 +764,7 @@ fsm/transition.o: fsm/transition.cc.o
 
 # target to build an object file
 fsm/transition.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/transition.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/transition.cc.o
 .PHONY : fsm/transition.cc.o
 
 fsm/transition.i: fsm/transition.cc.i
@@ -758,7 +772,7 @@ fsm/transition.i: fsm/transition.cc.i
 
 # target to preprocess a source file
 fsm/transition.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/transition.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/transition.cc.i
 .PHONY : fsm/transition.cc.i
 
 fsm/transition.s: fsm/transition.cc.s
@@ -766,7 +780,7 @@ fsm/transition.s: fsm/transition.cc.s
 
 # target to generate assembly for a file
 fsm/transition.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/transition.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/fsm/transition.cc.s
 .PHONY : fsm/transition.cc.s
 
 graph/edge.o: graph/edge.cc.o
@@ -774,7 +788,7 @@ graph/edge.o: graph/edge.cc.o
 
 # target to build an object file
 graph/edge.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/edge.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/edge.cc.o
 .PHONY : graph/edge.cc.o
 
 graph/edge.i: graph/edge.cc.i
@@ -782,7 +796,7 @@ graph/edge.i: graph/edge.cc.i
 
 # target to preprocess a source file
 graph/edge.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/edge.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/edge.cc.i
 .PHONY : graph/edge.cc.i
 
 graph/edge.s: graph/edge.cc.s
@@ -790,7 +804,7 @@ graph/edge.s: graph/edge.cc.s
 
 # target to generate assembly for a file
 graph/edge.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/edge.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/edge.cc.s
 .PHONY : graph/edge.cc.s
 
 graph/node.o: graph/node.cc.o
@@ -798,7 +812,7 @@ graph/node.o: graph/node.cc.o
 
 # target to build an object file
 graph/node.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/node.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/node.cc.o
 .PHONY : graph/node.cc.o
 
 graph/node.i: graph/node.cc.i
@@ -806,7 +820,7 @@ graph/node.i: graph/node.cc.i
 
 # target to preprocess a source file
 graph/node.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/node.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/node.cc.i
 .PHONY : graph/node.cc.i
 
 graph/node.s: graph/node.cc.s
@@ -814,7 +828,7 @@ graph/node.s: graph/node.cc.s
 
 # target to generate assembly for a file
 graph/node.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/node.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/node.cc.s
 .PHONY : graph/node.cc.s
 
 graph/output.o: graph/output.cc.o
@@ -822,7 +836,7 @@ graph/output.o: graph/output.cc.o
 
 # target to build an object file
 graph/output.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/output.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/output.cc.o
 .PHONY : graph/output.cc.o
 
 graph/output.i: graph/output.cc.i
@@ -830,7 +844,7 @@ graph/output.i: graph/output.cc.i
 
 # target to preprocess a source file
 graph/output.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/output.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/output.cc.i
 .PHONY : graph/output.cc.i
 
 graph/output.s: graph/output.cc.s
@@ -838,7 +852,7 @@ graph/output.s: graph/output.cc.s
 
 # target to generate assembly for a file
 graph/output.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/output.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/graph/output.cc.s
 .PHONY : graph/output.cc.s
 
 parsing/declaration.o: parsing/declaration.cc.o
@@ -846,7 +860,7 @@ parsing/declaration.o: parsing/declaration.cc.o
 
 # target to build an object file
 parsing/declaration.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/parsing/declaration.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/parsing/declaration.cc.o
 .PHONY : parsing/declaration.cc.o
 
 parsing/declaration.i: parsing/declaration.cc.i
@@ -854,7 +868,7 @@ parsing/declaration.i: parsing/declaration.cc.i
 
 # target to preprocess a source file
 parsing/declaration.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/parsing/declaration.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/parsing/declaration.cc.i
 .PHONY : parsing/declaration.cc.i
 
 parsing/declaration.s: parsing/declaration.cc.s
@@ -862,7 +876,7 @@ parsing/declaration.s: parsing/declaration.cc.s
 
 # target to generate assembly for a file
 parsing/declaration.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/parsing/declaration.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/parsing/declaration.cc.s
 .PHONY : parsing/declaration.cc.s
 
 refzg/path.o: refzg/path.cc.o
@@ -870,7 +884,7 @@ refzg/path.o: refzg/path.cc.o
 
 # target to build an object file
 refzg/path.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/path.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/path.cc.o
 .PHONY : refzg/path.cc.o
 
 refzg/path.i: refzg/path.cc.i
@@ -878,7 +892,7 @@ refzg/path.i: refzg/path.cc.i
 
 # target to preprocess a source file
 refzg/path.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/path.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/path.cc.i
 .PHONY : refzg/path.cc.i
 
 refzg/path.s: refzg/path.cc.s
@@ -886,7 +900,7 @@ refzg/path.s: refzg/path.cc.s
 
 # target to generate assembly for a file
 refzg/path.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/path.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/path.cc.s
 .PHONY : refzg/path.cc.s
 
 refzg/refzg.o: refzg/refzg.cc.o
@@ -894,7 +908,7 @@ refzg/refzg.o: refzg/refzg.cc.o
 
 # target to build an object file
 refzg/refzg.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/refzg.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/refzg.cc.o
 .PHONY : refzg/refzg.cc.o
 
 refzg/refzg.i: refzg/refzg.cc.i
@@ -902,7 +916,7 @@ refzg/refzg.i: refzg/refzg.cc.i
 
 # target to preprocess a source file
 refzg/refzg.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/refzg.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/refzg.cc.i
 .PHONY : refzg/refzg.cc.i
 
 refzg/refzg.s: refzg/refzg.cc.s
@@ -910,7 +924,7 @@ refzg/refzg.s: refzg/refzg.cc.s
 
 # target to generate assembly for a file
 refzg/refzg.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/refzg.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/refzg.cc.s
 .PHONY : refzg/refzg.cc.s
 
 refzg/semantics.o: refzg/semantics.cc.o
@@ -918,7 +932,7 @@ refzg/semantics.o: refzg/semantics.cc.o
 
 # target to build an object file
 refzg/semantics.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/semantics.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/semantics.cc.o
 .PHONY : refzg/semantics.cc.o
 
 refzg/semantics.i: refzg/semantics.cc.i
@@ -926,7 +940,7 @@ refzg/semantics.i: refzg/semantics.cc.i
 
 # target to preprocess a source file
 refzg/semantics.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/semantics.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/semantics.cc.i
 .PHONY : refzg/semantics.cc.i
 
 refzg/semantics.s: refzg/semantics.cc.s
@@ -934,7 +948,7 @@ refzg/semantics.s: refzg/semantics.cc.s
 
 # target to generate assembly for a file
 refzg/semantics.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/semantics.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/semantics.cc.s
 .PHONY : refzg/semantics.cc.s
 
 refzg/state.o: refzg/state.cc.o
@@ -942,7 +956,7 @@ refzg/state.o: refzg/state.cc.o
 
 # target to build an object file
 refzg/state.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/state.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/state.cc.o
 .PHONY : refzg/state.cc.o
 
 refzg/state.i: refzg/state.cc.i
@@ -950,7 +964,7 @@ refzg/state.i: refzg/state.cc.i
 
 # target to preprocess a source file
 refzg/state.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/state.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/state.cc.i
 .PHONY : refzg/state.cc.i
 
 refzg/state.s: refzg/state.cc.s
@@ -958,7 +972,7 @@ refzg/state.s: refzg/state.cc.s
 
 # target to generate assembly for a file
 refzg/state.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/state.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/state.cc.s
 .PHONY : refzg/state.cc.s
 
 refzg/transition.o: refzg/transition.cc.o
@@ -966,7 +980,7 @@ refzg/transition.o: refzg/transition.cc.o
 
 # target to build an object file
 refzg/transition.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/transition.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/transition.cc.o
 .PHONY : refzg/transition.cc.o
 
 refzg/transition.i: refzg/transition.cc.i
@@ -974,7 +988,7 @@ refzg/transition.i: refzg/transition.cc.i
 
 # target to preprocess a source file
 refzg/transition.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/transition.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/transition.cc.i
 .PHONY : refzg/transition.cc.i
 
 refzg/transition.s: refzg/transition.cc.s
@@ -982,7 +996,7 @@ refzg/transition.s: refzg/transition.cc.s
 
 # target to generate assembly for a file
 refzg/transition.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/transition.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/transition.cc.s
 .PHONY : refzg/transition.cc.s
 
 refzg/zone.o: refzg/zone.cc.o
@@ -990,7 +1004,7 @@ refzg/zone.o: refzg/zone.cc.o
 
 # target to build an object file
 refzg/zone.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/zone.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/zone.cc.o
 .PHONY : refzg/zone.cc.o
 
 refzg/zone.i: refzg/zone.cc.i
@@ -998,7 +1012,7 @@ refzg/zone.i: refzg/zone.cc.i
 
 # target to preprocess a source file
 refzg/zone.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/zone.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/zone.cc.i
 .PHONY : refzg/zone.cc.i
 
 refzg/zone.s: refzg/zone.cc.s
@@ -1006,7 +1020,7 @@ refzg/zone.s: refzg/zone.cc.s
 
 # target to generate assembly for a file
 refzg/zone.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/zone.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/refzg/zone.cc.s
 .PHONY : refzg/zone.cc.s
 
 statement/clock_updates.o: statement/clock_updates.cc.o
@@ -1014,7 +1028,7 @@ statement/clock_updates.o: statement/clock_updates.cc.o
 
 # target to build an object file
 statement/clock_updates.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/clock_updates.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/clock_updates.cc.o
 .PHONY : statement/clock_updates.cc.o
 
 statement/clock_updates.i: statement/clock_updates.cc.i
@@ -1022,7 +1036,7 @@ statement/clock_updates.i: statement/clock_updates.cc.i
 
 # target to preprocess a source file
 statement/clock_updates.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/clock_updates.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/clock_updates.cc.i
 .PHONY : statement/clock_updates.cc.i
 
 statement/clock_updates.s: statement/clock_updates.cc.s
@@ -1030,7 +1044,7 @@ statement/clock_updates.s: statement/clock_updates.cc.s
 
 # target to generate assembly for a file
 statement/clock_updates.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/clock_updates.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/clock_updates.cc.s
 .PHONY : statement/clock_updates.cc.s
 
 statement/statement.o: statement/statement.cc.o
@@ -1038,7 +1052,7 @@ statement/statement.o: statement/statement.cc.o
 
 # target to build an object file
 statement/statement.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/statement.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/statement.cc.o
 .PHONY : statement/statement.cc.o
 
 statement/statement.i: statement/statement.cc.i
@@ -1046,7 +1060,7 @@ statement/statement.i: statement/statement.cc.i
 
 # target to preprocess a source file
 statement/statement.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/statement.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/statement.cc.i
 .PHONY : statement/statement.cc.i
 
 statement/statement.s: statement/statement.cc.s
@@ -1054,7 +1068,7 @@ statement/statement.s: statement/statement.cc.s
 
 # target to generate assembly for a file
 statement/statement.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/statement.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/statement.cc.s
 .PHONY : statement/statement.cc.s
 
 statement/static_analysis.o: statement/static_analysis.cc.o
@@ -1062,7 +1076,7 @@ statement/static_analysis.o: statement/static_analysis.cc.o
 
 # target to build an object file
 statement/static_analysis.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/static_analysis.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/static_analysis.cc.o
 .PHONY : statement/static_analysis.cc.o
 
 statement/static_analysis.i: statement/static_analysis.cc.i
@@ -1070,7 +1084,7 @@ statement/static_analysis.i: statement/static_analysis.cc.i
 
 # target to preprocess a source file
 statement/static_analysis.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/static_analysis.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/static_analysis.cc.i
 .PHONY : statement/static_analysis.cc.i
 
 statement/static_analysis.s: statement/static_analysis.cc.s
@@ -1078,7 +1092,7 @@ statement/static_analysis.s: statement/static_analysis.cc.s
 
 # target to generate assembly for a file
 statement/static_analysis.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/static_analysis.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/static_analysis.cc.s
 .PHONY : statement/static_analysis.cc.s
 
 statement/type_inference.o: statement/type_inference.cc.o
@@ -1086,7 +1100,7 @@ statement/type_inference.o: statement/type_inference.cc.o
 
 # target to build an object file
 statement/type_inference.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/type_inference.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/type_inference.cc.o
 .PHONY : statement/type_inference.cc.o
 
 statement/type_inference.i: statement/type_inference.cc.i
@@ -1094,7 +1108,7 @@ statement/type_inference.i: statement/type_inference.cc.i
 
 # target to preprocess a source file
 statement/type_inference.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/type_inference.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/type_inference.cc.i
 .PHONY : statement/type_inference.cc.i
 
 statement/type_inference.s: statement/type_inference.cc.s
@@ -1102,7 +1116,7 @@ statement/type_inference.s: statement/type_inference.cc.s
 
 # target to generate assembly for a file
 statement/type_inference.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/type_inference.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/type_inference.cc.s
 .PHONY : statement/type_inference.cc.s
 
 statement/typechecking.o: statement/typechecking.cc.o
@@ -1110,7 +1124,7 @@ statement/typechecking.o: statement/typechecking.cc.o
 
 # target to build an object file
 statement/typechecking.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typechecking.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typechecking.cc.o
 .PHONY : statement/typechecking.cc.o
 
 statement/typechecking.i: statement/typechecking.cc.i
@@ -1118,7 +1132,7 @@ statement/typechecking.i: statement/typechecking.cc.i
 
 # target to preprocess a source file
 statement/typechecking.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typechecking.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typechecking.cc.i
 .PHONY : statement/typechecking.cc.i
 
 statement/typechecking.s: statement/typechecking.cc.s
@@ -1126,7 +1140,7 @@ statement/typechecking.s: statement/typechecking.cc.s
 
 # target to generate assembly for a file
 statement/typechecking.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typechecking.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typechecking.cc.s
 .PHONY : statement/typechecking.cc.s
 
 statement/typed_statement.o: statement/typed_statement.cc.o
@@ -1134,7 +1148,7 @@ statement/typed_statement.o: statement/typed_statement.cc.o
 
 # target to build an object file
 statement/typed_statement.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typed_statement.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typed_statement.cc.o
 .PHONY : statement/typed_statement.cc.o
 
 statement/typed_statement.i: statement/typed_statement.cc.i
@@ -1142,7 +1156,7 @@ statement/typed_statement.i: statement/typed_statement.cc.i
 
 # target to preprocess a source file
 statement/typed_statement.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typed_statement.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typed_statement.cc.i
 .PHONY : statement/typed_statement.cc.i
 
 statement/typed_statement.s: statement/typed_statement.cc.s
@@ -1150,7 +1164,7 @@ statement/typed_statement.s: statement/typed_statement.cc.s
 
 # target to generate assembly for a file
 statement/typed_statement.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typed_statement.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/statement/typed_statement.cc.s
 .PHONY : statement/typed_statement.cc.s
 
 syncprod/edges_iterators.o: syncprod/edges_iterators.cc.o
@@ -1158,7 +1172,7 @@ syncprod/edges_iterators.o: syncprod/edges_iterators.cc.o
 
 # target to build an object file
 syncprod/edges_iterators.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/edges_iterators.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/edges_iterators.cc.o
 .PHONY : syncprod/edges_iterators.cc.o
 
 syncprod/edges_iterators.i: syncprod/edges_iterators.cc.i
@@ -1166,7 +1180,7 @@ syncprod/edges_iterators.i: syncprod/edges_iterators.cc.i
 
 # target to preprocess a source file
 syncprod/edges_iterators.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/edges_iterators.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/edges_iterators.cc.i
 .PHONY : syncprod/edges_iterators.cc.i
 
 syncprod/edges_iterators.s: syncprod/edges_iterators.cc.s
@@ -1174,7 +1188,7 @@ syncprod/edges_iterators.s: syncprod/edges_iterators.cc.s
 
 # target to generate assembly for a file
 syncprod/edges_iterators.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/edges_iterators.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/edges_iterators.cc.s
 .PHONY : syncprod/edges_iterators.cc.s
 
 syncprod/label.o: syncprod/label.cc.o
@@ -1182,7 +1196,7 @@ syncprod/label.o: syncprod/label.cc.o
 
 # target to build an object file
 syncprod/label.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/label.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/label.cc.o
 .PHONY : syncprod/label.cc.o
 
 syncprod/label.i: syncprod/label.cc.i
@@ -1190,7 +1204,7 @@ syncprod/label.i: syncprod/label.cc.i
 
 # target to preprocess a source file
 syncprod/label.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/label.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/label.cc.i
 .PHONY : syncprod/label.cc.i
 
 syncprod/label.s: syncprod/label.cc.s
@@ -1198,7 +1212,7 @@ syncprod/label.s: syncprod/label.cc.s
 
 # target to generate assembly for a file
 syncprod/label.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/label.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/label.cc.s
 .PHONY : syncprod/label.cc.s
 
 syncprod/state.o: syncprod/state.cc.o
@@ -1206,7 +1220,7 @@ syncprod/state.o: syncprod/state.cc.o
 
 # target to build an object file
 syncprod/state.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/state.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/state.cc.o
 .PHONY : syncprod/state.cc.o
 
 syncprod/state.i: syncprod/state.cc.i
@@ -1214,7 +1228,7 @@ syncprod/state.i: syncprod/state.cc.i
 
 # target to preprocess a source file
 syncprod/state.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/state.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/state.cc.i
 .PHONY : syncprod/state.cc.i
 
 syncprod/state.s: syncprod/state.cc.s
@@ -1222,7 +1236,7 @@ syncprod/state.s: syncprod/state.cc.s
 
 # target to generate assembly for a file
 syncprod/state.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/state.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/state.cc.s
 .PHONY : syncprod/state.cc.s
 
 syncprod/syncprod.o: syncprod/syncprod.cc.o
@@ -1230,7 +1244,7 @@ syncprod/syncprod.o: syncprod/syncprod.cc.o
 
 # target to build an object file
 syncprod/syncprod.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/syncprod.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/syncprod.cc.o
 .PHONY : syncprod/syncprod.cc.o
 
 syncprod/syncprod.i: syncprod/syncprod.cc.i
@@ -1238,7 +1252,7 @@ syncprod/syncprod.i: syncprod/syncprod.cc.i
 
 # target to preprocess a source file
 syncprod/syncprod.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/syncprod.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/syncprod.cc.i
 .PHONY : syncprod/syncprod.cc.i
 
 syncprod/syncprod.s: syncprod/syncprod.cc.s
@@ -1246,7 +1260,7 @@ syncprod/syncprod.s: syncprod/syncprod.cc.s
 
 # target to generate assembly for a file
 syncprod/syncprod.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/syncprod.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/syncprod.cc.s
 .PHONY : syncprod/syncprod.cc.s
 
 syncprod/system.o: syncprod/system.cc.o
@@ -1254,7 +1268,7 @@ syncprod/system.o: syncprod/system.cc.o
 
 # target to build an object file
 syncprod/system.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/system.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/system.cc.o
 .PHONY : syncprod/system.cc.o
 
 syncprod/system.i: syncprod/system.cc.i
@@ -1262,7 +1276,7 @@ syncprod/system.i: syncprod/system.cc.i
 
 # target to preprocess a source file
 syncprod/system.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/system.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/system.cc.i
 .PHONY : syncprod/system.cc.i
 
 syncprod/system.s: syncprod/system.cc.s
@@ -1270,7 +1284,7 @@ syncprod/system.s: syncprod/system.cc.s
 
 # target to generate assembly for a file
 syncprod/system.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/system.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/system.cc.s
 .PHONY : syncprod/system.cc.s
 
 syncprod/transition.o: syncprod/transition.cc.o
@@ -1278,7 +1292,7 @@ syncprod/transition.o: syncprod/transition.cc.o
 
 # target to build an object file
 syncprod/transition.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/transition.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/transition.cc.o
 .PHONY : syncprod/transition.cc.o
 
 syncprod/transition.i: syncprod/transition.cc.i
@@ -1286,7 +1300,7 @@ syncprod/transition.i: syncprod/transition.cc.i
 
 # target to preprocess a source file
 syncprod/transition.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/transition.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/transition.cc.i
 .PHONY : syncprod/transition.cc.i
 
 syncprod/transition.s: syncprod/transition.cc.s
@@ -1294,7 +1308,7 @@ syncprod/transition.s: syncprod/transition.cc.s
 
 # target to generate assembly for a file
 syncprod/transition.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/transition.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/transition.cc.s
 .PHONY : syncprod/transition.cc.s
 
 syncprod/vedge.o: syncprod/vedge.cc.o
@@ -1302,7 +1316,7 @@ syncprod/vedge.o: syncprod/vedge.cc.o
 
 # target to build an object file
 syncprod/vedge.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vedge.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vedge.cc.o
 .PHONY : syncprod/vedge.cc.o
 
 syncprod/vedge.i: syncprod/vedge.cc.i
@@ -1310,7 +1324,7 @@ syncprod/vedge.i: syncprod/vedge.cc.i
 
 # target to preprocess a source file
 syncprod/vedge.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vedge.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vedge.cc.i
 .PHONY : syncprod/vedge.cc.i
 
 syncprod/vedge.s: syncprod/vedge.cc.s
@@ -1318,7 +1332,7 @@ syncprod/vedge.s: syncprod/vedge.cc.s
 
 # target to generate assembly for a file
 syncprod/vedge.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vedge.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vedge.cc.s
 .PHONY : syncprod/vedge.cc.s
 
 syncprod/vloc.o: syncprod/vloc.cc.o
@@ -1326,7 +1340,7 @@ syncprod/vloc.o: syncprod/vloc.cc.o
 
 # target to build an object file
 syncprod/vloc.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vloc.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vloc.cc.o
 .PHONY : syncprod/vloc.cc.o
 
 syncprod/vloc.i: syncprod/vloc.cc.i
@@ -1334,7 +1348,7 @@ syncprod/vloc.i: syncprod/vloc.cc.i
 
 # target to preprocess a source file
 syncprod/vloc.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vloc.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vloc.cc.i
 .PHONY : syncprod/vloc.cc.i
 
 syncprod/vloc.s: syncprod/vloc.cc.s
@@ -1342,7 +1356,7 @@ syncprod/vloc.s: syncprod/vloc.cc.s
 
 # target to generate assembly for a file
 syncprod/vloc.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vloc.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/syncprod/vloc.cc.s
 .PHONY : syncprod/vloc.cc.s
 
 system/attribute.o: system/attribute.cc.o
@@ -1350,7 +1364,7 @@ system/attribute.o: system/attribute.cc.o
 
 # target to build an object file
 system/attribute.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/attribute.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/attribute.cc.o
 .PHONY : system/attribute.cc.o
 
 system/attribute.i: system/attribute.cc.i
@@ -1358,7 +1372,7 @@ system/attribute.i: system/attribute.cc.i
 
 # target to preprocess a source file
 system/attribute.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/attribute.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/attribute.cc.i
 .PHONY : system/attribute.cc.i
 
 system/attribute.s: system/attribute.cc.s
@@ -1366,7 +1380,7 @@ system/attribute.s: system/attribute.cc.s
 
 # target to generate assembly for a file
 system/attribute.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/attribute.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/attribute.cc.s
 .PHONY : system/attribute.cc.s
 
 system/clock.o: system/clock.cc.o
@@ -1374,7 +1388,7 @@ system/clock.o: system/clock.cc.o
 
 # target to build an object file
 system/clock.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/clock.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/clock.cc.o
 .PHONY : system/clock.cc.o
 
 system/clock.i: system/clock.cc.i
@@ -1382,7 +1396,7 @@ system/clock.i: system/clock.cc.i
 
 # target to preprocess a source file
 system/clock.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/clock.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/clock.cc.i
 .PHONY : system/clock.cc.i
 
 system/clock.s: system/clock.cc.s
@@ -1390,7 +1404,7 @@ system/clock.s: system/clock.cc.s
 
 # target to generate assembly for a file
 system/clock.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/clock.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/clock.cc.s
 .PHONY : system/clock.cc.s
 
 system/edge.o: system/edge.cc.o
@@ -1398,7 +1412,7 @@ system/edge.o: system/edge.cc.o
 
 # target to build an object file
 system/edge.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/edge.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/edge.cc.o
 .PHONY : system/edge.cc.o
 
 system/edge.i: system/edge.cc.i
@@ -1406,7 +1420,7 @@ system/edge.i: system/edge.cc.i
 
 # target to preprocess a source file
 system/edge.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/edge.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/edge.cc.i
 .PHONY : system/edge.cc.i
 
 system/edge.s: system/edge.cc.s
@@ -1414,7 +1428,7 @@ system/edge.s: system/edge.cc.s
 
 # target to generate assembly for a file
 system/edge.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/edge.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/edge.cc.s
 .PHONY : system/edge.cc.s
 
 system/event.o: system/event.cc.o
@@ -1422,7 +1436,7 @@ system/event.o: system/event.cc.o
 
 # target to build an object file
 system/event.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/event.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/event.cc.o
 .PHONY : system/event.cc.o
 
 system/event.i: system/event.cc.i
@@ -1430,7 +1444,7 @@ system/event.i: system/event.cc.i
 
 # target to preprocess a source file
 system/event.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/event.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/event.cc.i
 .PHONY : system/event.cc.i
 
 system/event.s: system/event.cc.s
@@ -1438,7 +1452,7 @@ system/event.s: system/event.cc.s
 
 # target to generate assembly for a file
 system/event.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/event.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/event.cc.s
 .PHONY : system/event.cc.s
 
 system/intvar.o: system/intvar.cc.o
@@ -1446,7 +1460,7 @@ system/intvar.o: system/intvar.cc.o
 
 # target to build an object file
 system/intvar.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/intvar.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/intvar.cc.o
 .PHONY : system/intvar.cc.o
 
 system/intvar.i: system/intvar.cc.i
@@ -1454,7 +1468,7 @@ system/intvar.i: system/intvar.cc.i
 
 # target to preprocess a source file
 system/intvar.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/intvar.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/intvar.cc.i
 .PHONY : system/intvar.cc.i
 
 system/intvar.s: system/intvar.cc.s
@@ -1462,7 +1476,7 @@ system/intvar.s: system/intvar.cc.s
 
 # target to generate assembly for a file
 system/intvar.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/intvar.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/intvar.cc.s
 .PHONY : system/intvar.cc.s
 
 system/loc.o: system/loc.cc.o
@@ -1470,7 +1484,7 @@ system/loc.o: system/loc.cc.o
 
 # target to build an object file
 system/loc.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/loc.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/loc.cc.o
 .PHONY : system/loc.cc.o
 
 system/loc.i: system/loc.cc.i
@@ -1478,7 +1492,7 @@ system/loc.i: system/loc.cc.i
 
 # target to preprocess a source file
 system/loc.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/loc.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/loc.cc.i
 .PHONY : system/loc.cc.i
 
 system/loc.s: system/loc.cc.s
@@ -1486,7 +1500,7 @@ system/loc.s: system/loc.cc.s
 
 # target to generate assembly for a file
 system/loc.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/loc.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/loc.cc.s
 .PHONY : system/loc.cc.s
 
 system/output.o: system/output.cc.o
@@ -1494,7 +1508,7 @@ system/output.o: system/output.cc.o
 
 # target to build an object file
 system/output.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/output.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/output.cc.o
 .PHONY : system/output.cc.o
 
 system/output.i: system/output.cc.i
@@ -1502,7 +1516,7 @@ system/output.i: system/output.cc.i
 
 # target to preprocess a source file
 system/output.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/output.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/output.cc.i
 .PHONY : system/output.cc.i
 
 system/output.s: system/output.cc.s
@@ -1510,7 +1524,7 @@ system/output.s: system/output.cc.s
 
 # target to generate assembly for a file
 system/output.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/output.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/output.cc.s
 .PHONY : system/output.cc.s
 
 system/process.o: system/process.cc.o
@@ -1518,7 +1532,7 @@ system/process.o: system/process.cc.o
 
 # target to build an object file
 system/process.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/process.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/process.cc.o
 .PHONY : system/process.cc.o
 
 system/process.i: system/process.cc.i
@@ -1526,7 +1540,7 @@ system/process.i: system/process.cc.i
 
 # target to preprocess a source file
 system/process.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/process.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/process.cc.i
 .PHONY : system/process.cc.i
 
 system/process.s: system/process.cc.s
@@ -1534,7 +1548,7 @@ system/process.s: system/process.cc.s
 
 # target to generate assembly for a file
 system/process.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/process.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/process.cc.s
 .PHONY : system/process.cc.s
 
 system/static_analysis.o: system/static_analysis.cc.o
@@ -1542,7 +1556,7 @@ system/static_analysis.o: system/static_analysis.cc.o
 
 # target to build an object file
 system/static_analysis.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/static_analysis.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/static_analysis.cc.o
 .PHONY : system/static_analysis.cc.o
 
 system/static_analysis.i: system/static_analysis.cc.i
@@ -1550,7 +1564,7 @@ system/static_analysis.i: system/static_analysis.cc.i
 
 # target to preprocess a source file
 system/static_analysis.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/static_analysis.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/static_analysis.cc.i
 .PHONY : system/static_analysis.cc.i
 
 system/static_analysis.s: system/static_analysis.cc.s
@@ -1558,7 +1572,7 @@ system/static_analysis.s: system/static_analysis.cc.s
 
 # target to generate assembly for a file
 system/static_analysis.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/static_analysis.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/static_analysis.cc.s
 .PHONY : system/static_analysis.cc.s
 
 system/synchronization.o: system/synchronization.cc.o
@@ -1566,7 +1580,7 @@ system/synchronization.o: system/synchronization.cc.o
 
 # target to build an object file
 system/synchronization.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/synchronization.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/synchronization.cc.o
 .PHONY : system/synchronization.cc.o
 
 system/synchronization.i: system/synchronization.cc.i
@@ -1574,7 +1588,7 @@ system/synchronization.i: system/synchronization.cc.i
 
 # target to preprocess a source file
 system/synchronization.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/synchronization.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/synchronization.cc.i
 .PHONY : system/synchronization.cc.i
 
 system/synchronization.s: system/synchronization.cc.s
@@ -1582,7 +1596,7 @@ system/synchronization.s: system/synchronization.cc.s
 
 # target to generate assembly for a file
 system/synchronization.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/synchronization.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/synchronization.cc.s
 .PHONY : system/synchronization.cc.s
 
 system/system.o: system/system.cc.o
@@ -1590,7 +1604,7 @@ system/system.o: system/system.cc.o
 
 # target to build an object file
 system/system.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/system.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/system.cc.o
 .PHONY : system/system.cc.o
 
 system/system.i: system/system.cc.i
@@ -1598,7 +1612,7 @@ system/system.i: system/system.cc.i
 
 # target to preprocess a source file
 system/system.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/system.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/system.cc.i
 .PHONY : system/system.cc.i
 
 system/system.s: system/system.cc.s
@@ -1606,7 +1620,7 @@ system/system.s: system/system.cc.s
 
 # target to generate assembly for a file
 system/system.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/system.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/system/system.cc.s
 .PHONY : system/system.cc.s
 
 ta/state.o: ta/state.cc.o
@@ -1614,7 +1628,7 @@ ta/state.o: ta/state.cc.o
 
 # target to build an object file
 ta/state.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/state.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/state.cc.o
 .PHONY : ta/state.cc.o
 
 ta/state.i: ta/state.cc.i
@@ -1622,7 +1636,7 @@ ta/state.i: ta/state.cc.i
 
 # target to preprocess a source file
 ta/state.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/state.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/state.cc.i
 .PHONY : ta/state.cc.i
 
 ta/state.s: ta/state.cc.s
@@ -1630,7 +1644,7 @@ ta/state.s: ta/state.cc.s
 
 # target to generate assembly for a file
 ta/state.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/state.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/state.cc.s
 .PHONY : ta/state.cc.s
 
 ta/static_analysis.o: ta/static_analysis.cc.o
@@ -1638,7 +1652,7 @@ ta/static_analysis.o: ta/static_analysis.cc.o
 
 # target to build an object file
 ta/static_analysis.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/static_analysis.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/static_analysis.cc.o
 .PHONY : ta/static_analysis.cc.o
 
 ta/static_analysis.i: ta/static_analysis.cc.i
@@ -1646,7 +1660,7 @@ ta/static_analysis.i: ta/static_analysis.cc.i
 
 # target to preprocess a source file
 ta/static_analysis.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/static_analysis.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/static_analysis.cc.i
 .PHONY : ta/static_analysis.cc.i
 
 ta/static_analysis.s: ta/static_analysis.cc.s
@@ -1654,7 +1668,7 @@ ta/static_analysis.s: ta/static_analysis.cc.s
 
 # target to generate assembly for a file
 ta/static_analysis.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/static_analysis.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/static_analysis.cc.s
 .PHONY : ta/static_analysis.cc.s
 
 ta/system.o: ta/system.cc.o
@@ -1662,7 +1676,7 @@ ta/system.o: ta/system.cc.o
 
 # target to build an object file
 ta/system.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/system.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/system.cc.o
 .PHONY : ta/system.cc.o
 
 ta/system.i: ta/system.cc.i
@@ -1670,7 +1684,7 @@ ta/system.i: ta/system.cc.i
 
 # target to preprocess a source file
 ta/system.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/system.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/system.cc.i
 .PHONY : ta/system.cc.i
 
 ta/system.s: ta/system.cc.s
@@ -1678,7 +1692,7 @@ ta/system.s: ta/system.cc.s
 
 # target to generate assembly for a file
 ta/system.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/system.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/system.cc.s
 .PHONY : ta/system.cc.s
 
 ta/ta.o: ta/ta.cc.o
@@ -1686,7 +1700,7 @@ ta/ta.o: ta/ta.cc.o
 
 # target to build an object file
 ta/ta.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/ta.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/ta.cc.o
 .PHONY : ta/ta.cc.o
 
 ta/ta.i: ta/ta.cc.i
@@ -1694,7 +1708,7 @@ ta/ta.i: ta/ta.cc.i
 
 # target to preprocess a source file
 ta/ta.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/ta.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/ta.cc.i
 .PHONY : ta/ta.cc.i
 
 ta/ta.s: ta/ta.cc.s
@@ -1702,7 +1716,7 @@ ta/ta.s: ta/ta.cc.s
 
 # target to generate assembly for a file
 ta/ta.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/ta.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/ta.cc.s
 .PHONY : ta/ta.cc.s
 
 ta/transition.o: ta/transition.cc.o
@@ -1710,7 +1724,7 @@ ta/transition.o: ta/transition.cc.o
 
 # target to build an object file
 ta/transition.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/transition.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/transition.cc.o
 .PHONY : ta/transition.cc.o
 
 ta/transition.i: ta/transition.cc.i
@@ -1718,7 +1732,7 @@ ta/transition.i: ta/transition.cc.i
 
 # target to preprocess a source file
 ta/transition.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/transition.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/transition.cc.i
 .PHONY : ta/transition.cc.i
 
 ta/transition.s: ta/transition.cc.s
@@ -1726,7 +1740,7 @@ ta/transition.s: ta/transition.cc.s
 
 # target to generate assembly for a file
 ta/transition.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/transition.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/ta/transition.cc.s
 .PHONY : ta/transition.cc.s
 
 tck-liveness/tck-liveness.o: tck-liveness/tck-liveness.cc.o
@@ -1734,7 +1748,7 @@ tck-liveness/tck-liveness.o: tck-liveness/tck-liveness.cc.o
 
 # target to build an object file
 tck-liveness/tck-liveness.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/tck-liveness.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/tck-liveness.cc.o
 .PHONY : tck-liveness/tck-liveness.cc.o
 
 tck-liveness/tck-liveness.i: tck-liveness/tck-liveness.cc.i
@@ -1742,7 +1756,7 @@ tck-liveness/tck-liveness.i: tck-liveness/tck-liveness.cc.i
 
 # target to preprocess a source file
 tck-liveness/tck-liveness.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/tck-liveness.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/tck-liveness.cc.i
 .PHONY : tck-liveness/tck-liveness.cc.i
 
 tck-liveness/tck-liveness.s: tck-liveness/tck-liveness.cc.s
@@ -1750,7 +1764,7 @@ tck-liveness/tck-liveness.s: tck-liveness/tck-liveness.cc.s
 
 # target to generate assembly for a file
 tck-liveness/tck-liveness.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/tck-liveness.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/tck-liveness.cc.s
 .PHONY : tck-liveness/tck-liveness.cc.s
 
 tck-liveness/zg-couvscc.o: tck-liveness/zg-couvscc.cc.o
@@ -1758,7 +1772,7 @@ tck-liveness/zg-couvscc.o: tck-liveness/zg-couvscc.cc.o
 
 # target to build an object file
 tck-liveness/zg-couvscc.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-couvscc.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-couvscc.cc.o
 .PHONY : tck-liveness/zg-couvscc.cc.o
 
 tck-liveness/zg-couvscc.i: tck-liveness/zg-couvscc.cc.i
@@ -1766,7 +1780,7 @@ tck-liveness/zg-couvscc.i: tck-liveness/zg-couvscc.cc.i
 
 # target to preprocess a source file
 tck-liveness/zg-couvscc.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-couvscc.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-couvscc.cc.i
 .PHONY : tck-liveness/zg-couvscc.cc.i
 
 tck-liveness/zg-couvscc.s: tck-liveness/zg-couvscc.cc.s
@@ -1774,7 +1788,7 @@ tck-liveness/zg-couvscc.s: tck-liveness/zg-couvscc.cc.s
 
 # target to generate assembly for a file
 tck-liveness/zg-couvscc.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-couvscc.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-couvscc.cc.s
 .PHONY : tck-liveness/zg-couvscc.cc.s
 
 tck-liveness/zg-ndfs.o: tck-liveness/zg-ndfs.cc.o
@@ -1782,7 +1796,7 @@ tck-liveness/zg-ndfs.o: tck-liveness/zg-ndfs.cc.o
 
 # target to build an object file
 tck-liveness/zg-ndfs.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-ndfs.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-ndfs.cc.o
 .PHONY : tck-liveness/zg-ndfs.cc.o
 
 tck-liveness/zg-ndfs.i: tck-liveness/zg-ndfs.cc.i
@@ -1790,7 +1804,7 @@ tck-liveness/zg-ndfs.i: tck-liveness/zg-ndfs.cc.i
 
 # target to preprocess a source file
 tck-liveness/zg-ndfs.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-ndfs.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-ndfs.cc.i
 .PHONY : tck-liveness/zg-ndfs.cc.i
 
 tck-liveness/zg-ndfs.s: tck-liveness/zg-ndfs.cc.s
@@ -1798,15 +1812,39 @@ tck-liveness/zg-ndfs.s: tck-liveness/zg-ndfs.cc.s
 
 # target to generate assembly for a file
 tck-liveness/zg-ndfs.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-ndfs.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-liveness.dir/build.make src/CMakeFiles/tck-liveness.dir/tck-liveness/zg-ndfs.cc.s
 .PHONY : tck-liveness/zg-ndfs.cc.s
+
+tck-matrix/tck-matrix.o: tck-matrix/tck-matrix.cc.o
+.PHONY : tck-matrix/tck-matrix.o
+
+# target to build an object file
+tck-matrix/tck-matrix.cc.o:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-matrix.dir/build.make src/CMakeFiles/tck-matrix.dir/tck-matrix/tck-matrix.cc.o
+.PHONY : tck-matrix/tck-matrix.cc.o
+
+tck-matrix/tck-matrix.i: tck-matrix/tck-matrix.cc.i
+.PHONY : tck-matrix/tck-matrix.i
+
+# target to preprocess a source file
+tck-matrix/tck-matrix.cc.i:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-matrix.dir/build.make src/CMakeFiles/tck-matrix.dir/tck-matrix/tck-matrix.cc.i
+.PHONY : tck-matrix/tck-matrix.cc.i
+
+tck-matrix/tck-matrix.s: tck-matrix/tck-matrix.cc.s
+.PHONY : tck-matrix/tck-matrix.s
+
+# target to generate assembly for a file
+tck-matrix/tck-matrix.cc.s:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-matrix.dir/build.make src/CMakeFiles/tck-matrix.dir/tck-matrix/tck-matrix.cc.s
+.PHONY : tck-matrix/tck-matrix.cc.s
 
 tck-reach/concur19.o: tck-reach/concur19.cc.o
 .PHONY : tck-reach/concur19.o
 
 # target to build an object file
 tck-reach/concur19.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.o
 .PHONY : tck-reach/concur19.cc.o
 
 tck-reach/concur19.i: tck-reach/concur19.cc.i
@@ -1814,7 +1852,7 @@ tck-reach/concur19.i: tck-reach/concur19.cc.i
 
 # target to preprocess a source file
 tck-reach/concur19.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.i
 .PHONY : tck-reach/concur19.cc.i
 
 tck-reach/concur19.s: tck-reach/concur19.cc.s
@@ -1822,7 +1860,7 @@ tck-reach/concur19.s: tck-reach/concur19.cc.s
 
 # target to generate assembly for a file
 tck-reach/concur19.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.s
 .PHONY : tck-reach/concur19.cc.s
 
 tck-reach/tck-reach.o: tck-reach/tck-reach.cc.o
@@ -1830,7 +1868,7 @@ tck-reach/tck-reach.o: tck-reach/tck-reach.cc.o
 
 # target to build an object file
 tck-reach/tck-reach.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/tck-reach.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/tck-reach.cc.o
 .PHONY : tck-reach/tck-reach.cc.o
 
 tck-reach/tck-reach.i: tck-reach/tck-reach.cc.i
@@ -1838,7 +1876,7 @@ tck-reach/tck-reach.i: tck-reach/tck-reach.cc.i
 
 # target to preprocess a source file
 tck-reach/tck-reach.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/tck-reach.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/tck-reach.cc.i
 .PHONY : tck-reach/tck-reach.cc.i
 
 tck-reach/tck-reach.s: tck-reach/tck-reach.cc.s
@@ -1846,7 +1884,7 @@ tck-reach/tck-reach.s: tck-reach/tck-reach.cc.s
 
 # target to generate assembly for a file
 tck-reach/tck-reach.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/tck-reach.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/tck-reach.cc.s
 .PHONY : tck-reach/tck-reach.cc.s
 
 tck-reach/zg-aLU-covreach.o: tck-reach/zg-aLU-covreach.cc.o
@@ -1854,7 +1892,7 @@ tck-reach/zg-aLU-covreach.o: tck-reach/zg-aLU-covreach.cc.o
 
 # target to build an object file
 tck-reach/zg-aLU-covreach.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-aLU-covreach.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-aLU-covreach.cc.o
 .PHONY : tck-reach/zg-aLU-covreach.cc.o
 
 tck-reach/zg-aLU-covreach.i: tck-reach/zg-aLU-covreach.cc.i
@@ -1862,7 +1900,7 @@ tck-reach/zg-aLU-covreach.i: tck-reach/zg-aLU-covreach.cc.i
 
 # target to preprocess a source file
 tck-reach/zg-aLU-covreach.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-aLU-covreach.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-aLU-covreach.cc.i
 .PHONY : tck-reach/zg-aLU-covreach.cc.i
 
 tck-reach/zg-aLU-covreach.s: tck-reach/zg-aLU-covreach.cc.s
@@ -1870,7 +1908,7 @@ tck-reach/zg-aLU-covreach.s: tck-reach/zg-aLU-covreach.cc.s
 
 # target to generate assembly for a file
 tck-reach/zg-aLU-covreach.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-aLU-covreach.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-aLU-covreach.cc.s
 .PHONY : tck-reach/zg-aLU-covreach.cc.s
 
 tck-reach/zg-covreach.o: tck-reach/zg-covreach.cc.o
@@ -1878,7 +1916,7 @@ tck-reach/zg-covreach.o: tck-reach/zg-covreach.cc.o
 
 # target to build an object file
 tck-reach/zg-covreach.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-covreach.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-covreach.cc.o
 .PHONY : tck-reach/zg-covreach.cc.o
 
 tck-reach/zg-covreach.i: tck-reach/zg-covreach.cc.i
@@ -1886,7 +1924,7 @@ tck-reach/zg-covreach.i: tck-reach/zg-covreach.cc.i
 
 # target to preprocess a source file
 tck-reach/zg-covreach.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-covreach.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-covreach.cc.i
 .PHONY : tck-reach/zg-covreach.cc.i
 
 tck-reach/zg-covreach.s: tck-reach/zg-covreach.cc.s
@@ -1894,7 +1932,7 @@ tck-reach/zg-covreach.s: tck-reach/zg-covreach.cc.s
 
 # target to generate assembly for a file
 tck-reach/zg-covreach.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-covreach.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-covreach.cc.s
 .PHONY : tck-reach/zg-covreach.cc.s
 
 tck-reach/zg-reach.o: tck-reach/zg-reach.cc.o
@@ -1902,7 +1940,7 @@ tck-reach/zg-reach.o: tck-reach/zg-reach.cc.o
 
 # target to build an object file
 tck-reach/zg-reach.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-reach.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-reach.cc.o
 .PHONY : tck-reach/zg-reach.cc.o
 
 tck-reach/zg-reach.i: tck-reach/zg-reach.cc.i
@@ -1910,7 +1948,7 @@ tck-reach/zg-reach.i: tck-reach/zg-reach.cc.i
 
 # target to preprocess a source file
 tck-reach/zg-reach.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-reach.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-reach.cc.i
 .PHONY : tck-reach/zg-reach.cc.i
 
 tck-reach/zg-reach.s: tck-reach/zg-reach.cc.s
@@ -1918,7 +1956,7 @@ tck-reach/zg-reach.s: tck-reach/zg-reach.cc.s
 
 # target to generate assembly for a file
 tck-reach/zg-reach.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-reach.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-reach.dir/build.make src/CMakeFiles/tck-reach.dir/tck-reach/zg-reach.cc.s
 .PHONY : tck-reach/zg-reach.cc.s
 
 tck-simulate/display.o: tck-simulate/display.cc.o
@@ -1926,7 +1964,7 @@ tck-simulate/display.o: tck-simulate/display.cc.o
 
 # target to build an object file
 tck-simulate/display.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.o
 .PHONY : tck-simulate/display.cc.o
 
 tck-simulate/display.i: tck-simulate/display.cc.i
@@ -1934,7 +1972,7 @@ tck-simulate/display.i: tck-simulate/display.cc.i
 
 # target to preprocess a source file
 tck-simulate/display.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.i
 .PHONY : tck-simulate/display.cc.i
 
 tck-simulate/display.s: tck-simulate/display.cc.s
@@ -1942,7 +1980,7 @@ tck-simulate/display.s: tck-simulate/display.cc.s
 
 # target to generate assembly for a file
 tck-simulate/display.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/display.cc.s
 .PHONY : tck-simulate/display.cc.s
 
 tck-simulate/graph.o: tck-simulate/graph.cc.o
@@ -1950,7 +1988,7 @@ tck-simulate/graph.o: tck-simulate/graph.cc.o
 
 # target to build an object file
 tck-simulate/graph.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.o
 .PHONY : tck-simulate/graph.cc.o
 
 tck-simulate/graph.i: tck-simulate/graph.cc.i
@@ -1958,7 +1996,7 @@ tck-simulate/graph.i: tck-simulate/graph.cc.i
 
 # target to preprocess a source file
 tck-simulate/graph.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.i
 .PHONY : tck-simulate/graph.cc.i
 
 tck-simulate/graph.s: tck-simulate/graph.cc.s
@@ -1966,7 +2004,7 @@ tck-simulate/graph.s: tck-simulate/graph.cc.s
 
 # target to generate assembly for a file
 tck-simulate/graph.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/graph.cc.s
 .PHONY : tck-simulate/graph.cc.s
 
 tck-simulate/simulate.o: tck-simulate/simulate.cc.o
@@ -1974,7 +2012,7 @@ tck-simulate/simulate.o: tck-simulate/simulate.cc.o
 
 # target to build an object file
 tck-simulate/simulate.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.o
 .PHONY : tck-simulate/simulate.cc.o
 
 tck-simulate/simulate.i: tck-simulate/simulate.cc.i
@@ -1982,7 +2020,7 @@ tck-simulate/simulate.i: tck-simulate/simulate.cc.i
 
 # target to preprocess a source file
 tck-simulate/simulate.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.i
 .PHONY : tck-simulate/simulate.cc.i
 
 tck-simulate/simulate.s: tck-simulate/simulate.cc.s
@@ -1990,7 +2028,7 @@ tck-simulate/simulate.s: tck-simulate/simulate.cc.s
 
 # target to generate assembly for a file
 tck-simulate/simulate.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/simulate.cc.s
 .PHONY : tck-simulate/simulate.cc.s
 
 tck-simulate/tck-simulate.o: tck-simulate/tck-simulate.cc.o
@@ -1998,7 +2036,7 @@ tck-simulate/tck-simulate.o: tck-simulate/tck-simulate.cc.o
 
 # target to build an object file
 tck-simulate/tck-simulate.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.o
 .PHONY : tck-simulate/tck-simulate.cc.o
 
 tck-simulate/tck-simulate.i: tck-simulate/tck-simulate.cc.i
@@ -2006,7 +2044,7 @@ tck-simulate/tck-simulate.i: tck-simulate/tck-simulate.cc.i
 
 # target to preprocess a source file
 tck-simulate/tck-simulate.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.i
 .PHONY : tck-simulate/tck-simulate.cc.i
 
 tck-simulate/tck-simulate.s: tck-simulate/tck-simulate.cc.s
@@ -2014,7 +2052,7 @@ tck-simulate/tck-simulate.s: tck-simulate/tck-simulate.cc.s
 
 # target to generate assembly for a file
 tck-simulate/tck-simulate.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-simulate.dir/build.make src/CMakeFiles/tck-simulate.dir/tck-simulate/tck-simulate.cc.s
 .PHONY : tck-simulate/tck-simulate.cc.s
 
 tck-syntax/syntax-check.o: tck-syntax/syntax-check.cc.o
@@ -2022,7 +2060,7 @@ tck-syntax/syntax-check.o: tck-syntax/syntax-check.cc.o
 
 # target to build an object file
 tck-syntax/syntax-check.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.o
 .PHONY : tck-syntax/syntax-check.cc.o
 
 tck-syntax/syntax-check.i: tck-syntax/syntax-check.cc.i
@@ -2030,7 +2068,7 @@ tck-syntax/syntax-check.i: tck-syntax/syntax-check.cc.i
 
 # target to preprocess a source file
 tck-syntax/syntax-check.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.i
 .PHONY : tck-syntax/syntax-check.cc.i
 
 tck-syntax/syntax-check.s: tck-syntax/syntax-check.cc.s
@@ -2038,7 +2076,7 @@ tck-syntax/syntax-check.s: tck-syntax/syntax-check.cc.s
 
 # target to generate assembly for a file
 tck-syntax/syntax-check.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/syntax-check.cc.s
 .PHONY : tck-syntax/syntax-check.cc.s
 
 tck-syntax/tck-syntax.o: tck-syntax/tck-syntax.cc.o
@@ -2046,7 +2084,7 @@ tck-syntax/tck-syntax.o: tck-syntax/tck-syntax.cc.o
 
 # target to build an object file
 tck-syntax/tck-syntax.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.o
 .PHONY : tck-syntax/tck-syntax.cc.o
 
 tck-syntax/tck-syntax.i: tck-syntax/tck-syntax.cc.i
@@ -2054,7 +2092,7 @@ tck-syntax/tck-syntax.i: tck-syntax/tck-syntax.cc.i
 
 # target to preprocess a source file
 tck-syntax/tck-syntax.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.i
 .PHONY : tck-syntax/tck-syntax.cc.i
 
 tck-syntax/tck-syntax.s: tck-syntax/tck-syntax.cc.s
@@ -2062,7 +2100,7 @@ tck-syntax/tck-syntax.s: tck-syntax/tck-syntax.cc.s
 
 # target to generate assembly for a file
 tck-syntax/tck-syntax.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tck-syntax.dir/build.make src/CMakeFiles/tck-syntax.dir/tck-syntax/tck-syntax.cc.s
 .PHONY : tck-syntax/tck-syntax.cc.s
 
 utils/bitset.o: utils/bitset.cc.o
@@ -2070,7 +2108,7 @@ utils/bitset.o: utils/bitset.cc.o
 
 # target to build an object file
 utils/bitset.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/bitset.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/bitset.cc.o
 .PHONY : utils/bitset.cc.o
 
 utils/bitset.i: utils/bitset.cc.i
@@ -2078,7 +2116,7 @@ utils/bitset.i: utils/bitset.cc.i
 
 # target to preprocess a source file
 utils/bitset.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/bitset.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/bitset.cc.i
 .PHONY : utils/bitset.cc.i
 
 utils/bitset.s: utils/bitset.cc.s
@@ -2086,7 +2124,7 @@ utils/bitset.s: utils/bitset.cc.s
 
 # target to generate assembly for a file
 utils/bitset.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/bitset.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/bitset.cc.s
 .PHONY : utils/bitset.cc.s
 
 utils/hashtable.o: utils/hashtable.cc.o
@@ -2094,7 +2132,7 @@ utils/hashtable.o: utils/hashtable.cc.o
 
 # target to build an object file
 utils/hashtable.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/hashtable.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/hashtable.cc.o
 .PHONY : utils/hashtable.cc.o
 
 utils/hashtable.i: utils/hashtable.cc.i
@@ -2102,7 +2140,7 @@ utils/hashtable.i: utils/hashtable.cc.i
 
 # target to preprocess a source file
 utils/hashtable.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/hashtable.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/hashtable.cc.i
 .PHONY : utils/hashtable.cc.i
 
 utils/hashtable.s: utils/hashtable.cc.s
@@ -2110,7 +2148,7 @@ utils/hashtable.s: utils/hashtable.cc.s
 
 # target to generate assembly for a file
 utils/hashtable.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/hashtable.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/hashtable.cc.s
 .PHONY : utils/hashtable.cc.s
 
 utils/iterator.o: utils/iterator.cc.o
@@ -2118,7 +2156,7 @@ utils/iterator.o: utils/iterator.cc.o
 
 # target to build an object file
 utils/iterator.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/iterator.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/iterator.cc.o
 .PHONY : utils/iterator.cc.o
 
 utils/iterator.i: utils/iterator.cc.i
@@ -2126,7 +2164,7 @@ utils/iterator.i: utils/iterator.cc.i
 
 # target to preprocess a source file
 utils/iterator.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/iterator.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/iterator.cc.i
 .PHONY : utils/iterator.cc.i
 
 utils/iterator.s: utils/iterator.cc.s
@@ -2134,7 +2172,7 @@ utils/iterator.s: utils/iterator.cc.s
 
 # target to generate assembly for a file
 utils/iterator.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/iterator.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/iterator.cc.s
 .PHONY : utils/iterator.cc.s
 
 utils/log.o: utils/log.cc.o
@@ -2142,7 +2180,7 @@ utils/log.o: utils/log.cc.o
 
 # target to build an object file
 utils/log.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/log.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/log.cc.o
 .PHONY : utils/log.cc.o
 
 utils/log.i: utils/log.cc.i
@@ -2150,7 +2188,7 @@ utils/log.i: utils/log.cc.i
 
 # target to preprocess a source file
 utils/log.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/log.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/log.cc.i
 .PHONY : utils/log.cc.i
 
 utils/log.s: utils/log.cc.s
@@ -2158,15 +2196,39 @@ utils/log.s: utils/log.cc.s
 
 # target to generate assembly for a file
 utils/log.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/log.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/log.cc.s
 .PHONY : utils/log.cc.s
+
+utils/matrix_visualizer.o: utils/matrix_visualizer.cc.o
+.PHONY : utils/matrix_visualizer.o
+
+# target to build an object file
+utils/matrix_visualizer.cc.o:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/matrix_visualizer.cc.o
+.PHONY : utils/matrix_visualizer.cc.o
+
+utils/matrix_visualizer.i: utils/matrix_visualizer.cc.i
+.PHONY : utils/matrix_visualizer.i
+
+# target to preprocess a source file
+utils/matrix_visualizer.cc.i:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/matrix_visualizer.cc.i
+.PHONY : utils/matrix_visualizer.cc.i
+
+utils/matrix_visualizer.s: utils/matrix_visualizer.cc.s
+.PHONY : utils/matrix_visualizer.s
+
+# target to generate assembly for a file
+utils/matrix_visualizer.cc.s:
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/matrix_visualizer.cc.s
+.PHONY : utils/matrix_visualizer.cc.s
 
 utils/string.o: utils/string.cc.o
 .PHONY : utils/string.o
 
 # target to build an object file
 utils/string.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/string.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/string.cc.o
 .PHONY : utils/string.cc.o
 
 utils/string.i: utils/string.cc.i
@@ -2174,7 +2236,7 @@ utils/string.i: utils/string.cc.i
 
 # target to preprocess a source file
 utils/string.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/string.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/string.cc.i
 .PHONY : utils/string.cc.i
 
 utils/string.s: utils/string.cc.s
@@ -2182,7 +2244,7 @@ utils/string.s: utils/string.cc.s
 
 # target to generate assembly for a file
 utils/string.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/string.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/utils/string.cc.s
 .PHONY : utils/string.cc.s
 
 variables/access.o: variables/access.cc.o
@@ -2190,7 +2252,7 @@ variables/access.o: variables/access.cc.o
 
 # target to build an object file
 variables/access.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/access.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/access.cc.o
 .PHONY : variables/access.cc.o
 
 variables/access.i: variables/access.cc.i
@@ -2198,7 +2260,7 @@ variables/access.i: variables/access.cc.i
 
 # target to preprocess a source file
 variables/access.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/access.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/access.cc.i
 .PHONY : variables/access.cc.i
 
 variables/access.s: variables/access.cc.s
@@ -2206,7 +2268,7 @@ variables/access.s: variables/access.cc.s
 
 # target to generate assembly for a file
 variables/access.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/access.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/access.cc.s
 .PHONY : variables/access.cc.s
 
 variables/clocks.o: variables/clocks.cc.o
@@ -2214,7 +2276,7 @@ variables/clocks.o: variables/clocks.cc.o
 
 # target to build an object file
 variables/clocks.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/clocks.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/clocks.cc.o
 .PHONY : variables/clocks.cc.o
 
 variables/clocks.i: variables/clocks.cc.i
@@ -2222,7 +2284,7 @@ variables/clocks.i: variables/clocks.cc.i
 
 # target to preprocess a source file
 variables/clocks.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/clocks.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/clocks.cc.i
 .PHONY : variables/clocks.cc.i
 
 variables/clocks.s: variables/clocks.cc.s
@@ -2230,7 +2292,7 @@ variables/clocks.s: variables/clocks.cc.s
 
 # target to generate assembly for a file
 variables/clocks.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/clocks.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/clocks.cc.s
 .PHONY : variables/clocks.cc.s
 
 variables/intvars.o: variables/intvars.cc.o
@@ -2238,7 +2300,7 @@ variables/intvars.o: variables/intvars.cc.o
 
 # target to build an object file
 variables/intvars.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/intvars.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/intvars.cc.o
 .PHONY : variables/intvars.cc.o
 
 variables/intvars.i: variables/intvars.cc.i
@@ -2246,7 +2308,7 @@ variables/intvars.i: variables/intvars.cc.i
 
 # target to preprocess a source file
 variables/intvars.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/intvars.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/intvars.cc.i
 .PHONY : variables/intvars.cc.i
 
 variables/intvars.s: variables/intvars.cc.s
@@ -2254,7 +2316,7 @@ variables/intvars.s: variables/intvars.cc.s
 
 # target to generate assembly for a file
 variables/intvars.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/intvars.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/intvars.cc.s
 .PHONY : variables/intvars.cc.s
 
 variables/static_analysis.o: variables/static_analysis.cc.o
@@ -2262,7 +2324,7 @@ variables/static_analysis.o: variables/static_analysis.cc.o
 
 # target to build an object file
 variables/static_analysis.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/static_analysis.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/static_analysis.cc.o
 .PHONY : variables/static_analysis.cc.o
 
 variables/static_analysis.i: variables/static_analysis.cc.i
@@ -2270,7 +2332,7 @@ variables/static_analysis.i: variables/static_analysis.cc.i
 
 # target to preprocess a source file
 variables/static_analysis.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/static_analysis.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/static_analysis.cc.i
 .PHONY : variables/static_analysis.cc.i
 
 variables/static_analysis.s: variables/static_analysis.cc.s
@@ -2278,7 +2340,7 @@ variables/static_analysis.s: variables/static_analysis.cc.s
 
 # target to generate assembly for a file
 variables/static_analysis.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/static_analysis.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/static_analysis.cc.s
 .PHONY : variables/static_analysis.cc.s
 
 variables/variables.o: variables/variables.cc.o
@@ -2286,7 +2348,7 @@ variables/variables.o: variables/variables.cc.o
 
 # target to build an object file
 variables/variables.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/variables.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/variables.cc.o
 .PHONY : variables/variables.cc.o
 
 variables/variables.i: variables/variables.cc.i
@@ -2294,7 +2356,7 @@ variables/variables.i: variables/variables.cc.i
 
 # target to preprocess a source file
 variables/variables.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/variables.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/variables.cc.i
 .PHONY : variables/variables.cc.i
 
 variables/variables.s: variables/variables.cc.s
@@ -2302,7 +2364,7 @@ variables/variables.s: variables/variables.cc.s
 
 # target to generate assembly for a file
 variables/variables.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/variables.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/variables/variables.cc.s
 .PHONY : variables/variables.cc.s
 
 vm/compilers.o: vm/compilers.cc.o
@@ -2310,7 +2372,7 @@ vm/compilers.o: vm/compilers.cc.o
 
 # target to build an object file
 vm/compilers.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/compilers.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/compilers.cc.o
 .PHONY : vm/compilers.cc.o
 
 vm/compilers.i: vm/compilers.cc.i
@@ -2318,7 +2380,7 @@ vm/compilers.i: vm/compilers.cc.i
 
 # target to preprocess a source file
 vm/compilers.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/compilers.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/compilers.cc.i
 .PHONY : vm/compilers.cc.i
 
 vm/compilers.s: vm/compilers.cc.s
@@ -2326,7 +2388,7 @@ vm/compilers.s: vm/compilers.cc.s
 
 # target to generate assembly for a file
 vm/compilers.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/compilers.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/compilers.cc.s
 .PHONY : vm/compilers.cc.s
 
 vm/vm.o: vm/vm.cc.o
@@ -2334,7 +2396,7 @@ vm/vm.o: vm/vm.cc.o
 
 # target to build an object file
 vm/vm.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/vm.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/vm.cc.o
 .PHONY : vm/vm.cc.o
 
 vm/vm.i: vm/vm.cc.i
@@ -2342,7 +2404,7 @@ vm/vm.i: vm/vm.cc.i
 
 # target to preprocess a source file
 vm/vm.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/vm.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/vm.cc.i
 .PHONY : vm/vm.cc.i
 
 vm/vm.s: vm/vm.cc.s
@@ -2350,7 +2412,7 @@ vm/vm.s: vm/vm.cc.s
 
 # target to generate assembly for a file
 vm/vm.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/vm.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/vm/vm.cc.s
 .PHONY : vm/vm.cc.s
 
 waiting/waiting.o: waiting/waiting.cc.o
@@ -2358,7 +2420,7 @@ waiting/waiting.o: waiting/waiting.cc.o
 
 # target to build an object file
 waiting/waiting.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/waiting/waiting.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/waiting/waiting.cc.o
 .PHONY : waiting/waiting.cc.o
 
 waiting/waiting.i: waiting/waiting.cc.i
@@ -2366,7 +2428,7 @@ waiting/waiting.i: waiting/waiting.cc.i
 
 # target to preprocess a source file
 waiting/waiting.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/waiting/waiting.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/waiting/waiting.cc.i
 .PHONY : waiting/waiting.cc.i
 
 waiting/waiting.s: waiting/waiting.cc.s
@@ -2374,7 +2436,7 @@ waiting/waiting.s: waiting/waiting.cc.s
 
 # target to generate assembly for a file
 waiting/waiting.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/waiting/waiting.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/waiting/waiting.cc.s
 .PHONY : waiting/waiting.cc.s
 
 zg/extrapolation.o: zg/extrapolation.cc.o
@@ -2382,7 +2444,7 @@ zg/extrapolation.o: zg/extrapolation.cc.o
 
 # target to build an object file
 zg/extrapolation.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.o
 .PHONY : zg/extrapolation.cc.o
 
 zg/extrapolation.i: zg/extrapolation.cc.i
@@ -2390,7 +2452,7 @@ zg/extrapolation.i: zg/extrapolation.cc.i
 
 # target to preprocess a source file
 zg/extrapolation.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.i
 .PHONY : zg/extrapolation.cc.i
 
 zg/extrapolation.s: zg/extrapolation.cc.s
@@ -2398,7 +2460,7 @@ zg/extrapolation.s: zg/extrapolation.cc.s
 
 # target to generate assembly for a file
 zg/extrapolation.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.s
 .PHONY : zg/extrapolation.cc.s
 
 zg/path.o: zg/path.cc.o
@@ -2406,7 +2468,7 @@ zg/path.o: zg/path.cc.o
 
 # target to build an object file
 zg/path.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/path.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/path.cc.o
 .PHONY : zg/path.cc.o
 
 zg/path.i: zg/path.cc.i
@@ -2414,7 +2476,7 @@ zg/path.i: zg/path.cc.i
 
 # target to preprocess a source file
 zg/path.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/path.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/path.cc.i
 .PHONY : zg/path.cc.i
 
 zg/path.s: zg/path.cc.s
@@ -2422,7 +2484,7 @@ zg/path.s: zg/path.cc.s
 
 # target to generate assembly for a file
 zg/path.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/path.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/path.cc.s
 .PHONY : zg/path.cc.s
 
 zg/semantics.o: zg/semantics.cc.o
@@ -2430,7 +2492,7 @@ zg/semantics.o: zg/semantics.cc.o
 
 # target to build an object file
 zg/semantics.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/semantics.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/semantics.cc.o
 .PHONY : zg/semantics.cc.o
 
 zg/semantics.i: zg/semantics.cc.i
@@ -2438,7 +2500,7 @@ zg/semantics.i: zg/semantics.cc.i
 
 # target to preprocess a source file
 zg/semantics.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/semantics.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/semantics.cc.i
 .PHONY : zg/semantics.cc.i
 
 zg/semantics.s: zg/semantics.cc.s
@@ -2446,7 +2508,7 @@ zg/semantics.s: zg/semantics.cc.s
 
 # target to generate assembly for a file
 zg/semantics.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/semantics.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/semantics.cc.s
 .PHONY : zg/semantics.cc.s
 
 zg/state.o: zg/state.cc.o
@@ -2454,7 +2516,7 @@ zg/state.o: zg/state.cc.o
 
 # target to build an object file
 zg/state.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/state.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/state.cc.o
 .PHONY : zg/state.cc.o
 
 zg/state.i: zg/state.cc.i
@@ -2462,7 +2524,7 @@ zg/state.i: zg/state.cc.i
 
 # target to preprocess a source file
 zg/state.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/state.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/state.cc.i
 .PHONY : zg/state.cc.i
 
 zg/state.s: zg/state.cc.s
@@ -2470,7 +2532,7 @@ zg/state.s: zg/state.cc.s
 
 # target to generate assembly for a file
 zg/state.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/state.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/state.cc.s
 .PHONY : zg/state.cc.s
 
 zg/transition.o: zg/transition.cc.o
@@ -2478,7 +2540,7 @@ zg/transition.o: zg/transition.cc.o
 
 # target to build an object file
 zg/transition.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/transition.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/transition.cc.o
 .PHONY : zg/transition.cc.o
 
 zg/transition.i: zg/transition.cc.i
@@ -2486,7 +2548,7 @@ zg/transition.i: zg/transition.cc.i
 
 # target to preprocess a source file
 zg/transition.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/transition.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/transition.cc.i
 .PHONY : zg/transition.cc.i
 
 zg/transition.s: zg/transition.cc.s
@@ -2494,7 +2556,7 @@ zg/transition.s: zg/transition.cc.s
 
 # target to generate assembly for a file
 zg/transition.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/transition.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/transition.cc.s
 .PHONY : zg/transition.cc.s
 
 zg/zg.o: zg/zg.cc.o
@@ -2502,7 +2564,7 @@ zg/zg.o: zg/zg.cc.o
 
 # target to build an object file
 zg/zg.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zg.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zg.cc.o
 .PHONY : zg/zg.cc.o
 
 zg/zg.i: zg/zg.cc.i
@@ -2510,7 +2572,7 @@ zg/zg.i: zg/zg.cc.i
 
 # target to preprocess a source file
 zg/zg.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zg.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zg.cc.i
 .PHONY : zg/zg.cc.i
 
 zg/zg.s: zg/zg.cc.s
@@ -2518,7 +2580,7 @@ zg/zg.s: zg/zg.cc.s
 
 # target to generate assembly for a file
 zg/zg.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zg.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zg.cc.s
 .PHONY : zg/zg.cc.s
 
 zg/zone.o: zg/zone.cc.o
@@ -2526,7 +2588,7 @@ zg/zone.o: zg/zone.cc.o
 
 # target to build an object file
 zg/zone.cc.o:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.o
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.o
 .PHONY : zg/zone.cc.o
 
 zg/zone.i: zg/zone.cc.i
@@ -2534,7 +2596,7 @@ zg/zone.i: zg/zone.cc.i
 
 # target to preprocess a source file
 zg/zone.cc.i:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.i
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.i
 .PHONY : zg/zone.cc.i
 
 zg/zone.s: zg/zone.cc.s
@@ -2542,7 +2604,7 @@ zg/zone.s: zg/zone.cc.s
 
 # target to generate assembly for a file
 zg/zone.cc.s:
-	cd /Users/zhaochen/Downloads/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.s
+	cd /Users/zz/Documents/ta/tchecker/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/libtchecker_static.dir/build.make src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.s
 .PHONY : zg/zone.cc.s
 
 # Help Target
@@ -2560,6 +2622,7 @@ help:
 	@echo "... test"
 	@echo "... libtchecker_static"
 	@echo "... tck-liveness"
+	@echo "... tck-matrix"
 	@echo "... tck-reach"
 	@echo "... tck-simulate"
 	@echo "... tck-syntax"
@@ -2758,6 +2821,9 @@ help:
 	@echo "... tck-liveness/zg-ndfs.o"
 	@echo "... tck-liveness/zg-ndfs.i"
 	@echo "... tck-liveness/zg-ndfs.s"
+	@echo "... tck-matrix/tck-matrix.o"
+	@echo "... tck-matrix/tck-matrix.i"
+	@echo "... tck-matrix/tck-matrix.s"
 	@echo "... tck-reach/concur19.o"
 	@echo "... tck-reach/concur19.i"
 	@echo "... tck-reach/concur19.s"
@@ -2803,6 +2869,9 @@ help:
 	@echo "... utils/log.o"
 	@echo "... utils/log.i"
 	@echo "... utils/log.s"
+	@echo "... utils/matrix_visualizer.o"
+	@echo "... utils/matrix_visualizer.i"
+	@echo "... utils/matrix_visualizer.s"
 	@echo "... utils/string.o"
 	@echo "... utils/string.i"
 	@echo "... utils/string.s"
@@ -2862,6 +2931,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 # Utility rule file for save-algos.
 
@@ -67,8 +67,8 @@ include test/algos/CMakeFiles/save-algos.dir/compiler_depend.make
 include test/algos/CMakeFiles/save-algos.dir/progress.make
 
 test/algos/CMakeFiles/save-algos:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Saving results as expected ones from test/algos"
-	cd /Users/zhaochen/Downloads/build/test/algos && /Users/zhaochen/Downloads/tchecker/test/save-results.sh /Users/zhaochen/Downloads/build/test/algos/save_tests.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Saving results as expected ones from test/algos"
+	cd /Users/zz/Documents/ta/tchecker/build/test/algos && /Users/zz/Documents/ta/tchecker/test/save-results.sh /Users/zz/Documents/ta/tchecker/build/test/algos/save_tests.txt
 
 test/algos/CMakeFiles/save-algos.dir/codegen:
 .PHONY : test/algos/CMakeFiles/save-algos.dir/codegen
@@ -82,10 +82,10 @@ test/algos/CMakeFiles/save-algos.dir/build: save-algos
 .PHONY : test/algos/CMakeFiles/save-algos.dir/build
 
 test/algos/CMakeFiles/save-algos.dir/clean:
-	cd /Users/zhaochen/Downloads/build/test/algos && $(CMAKE_COMMAND) -P CMakeFiles/save-algos.dir/cmake_clean.cmake
+	cd /Users/zz/Documents/ta/tchecker/build/test/algos && $(CMAKE_COMMAND) -P CMakeFiles/save-algos.dir/cmake_clean.cmake
 .PHONY : test/algos/CMakeFiles/save-algos.dir/clean
 
 test/algos/CMakeFiles/save-algos.dir/depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zhaochen/Downloads/tchecker /Users/zhaochen/Downloads/tchecker/test/algos /Users/zhaochen/Downloads/build /Users/zhaochen/Downloads/build/test/algos /Users/zhaochen/Downloads/build/test/algos/CMakeFiles/save-algos.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zz/Documents/ta/tchecker /Users/zz/Documents/ta/tchecker/test/algos /Users/zz/Documents/ta/tchecker/build /Users/zz/Documents/ta/tchecker/build/test/algos /Users/zz/Documents/ta/tchecker/build/test/algos/CMakeFiles/save-algos.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : test/algos/CMakeFiles/save-algos.dir/depend
 

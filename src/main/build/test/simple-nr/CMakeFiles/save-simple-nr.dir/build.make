@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 # Utility rule file for save-simple-nr.
 
@@ -67,8 +67,8 @@ include test/simple-nr/CMakeFiles/save-simple-nr.dir/compiler_depend.make
 include test/simple-nr/CMakeFiles/save-simple-nr.dir/progress.make
 
 test/simple-nr/CMakeFiles/save-simple-nr:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Saving results as expected ones from test/simple-nr"
-	cd /Users/zhaochen/Downloads/build/test/simple-nr && /Users/zhaochen/Downloads/tchecker/test/save-results.sh /Users/zhaochen/Downloads/build/test/simple-nr/save_tests.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Saving results as expected ones from test/simple-nr"
+	cd /Users/zz/Documents/ta/tchecker/build/test/simple-nr && /Users/zz/Documents/ta/tchecker/test/save-results.sh /Users/zz/Documents/ta/tchecker/build/test/simple-nr/save_tests.txt
 
 test/simple-nr/CMakeFiles/save-simple-nr.dir/codegen:
 .PHONY : test/simple-nr/CMakeFiles/save-simple-nr.dir/codegen
@@ -82,10 +82,10 @@ test/simple-nr/CMakeFiles/save-simple-nr.dir/build: save-simple-nr
 .PHONY : test/simple-nr/CMakeFiles/save-simple-nr.dir/build
 
 test/simple-nr/CMakeFiles/save-simple-nr.dir/clean:
-	cd /Users/zhaochen/Downloads/build/test/simple-nr && $(CMAKE_COMMAND) -P CMakeFiles/save-simple-nr.dir/cmake_clean.cmake
+	cd /Users/zz/Documents/ta/tchecker/build/test/simple-nr && $(CMAKE_COMMAND) -P CMakeFiles/save-simple-nr.dir/cmake_clean.cmake
 .PHONY : test/simple-nr/CMakeFiles/save-simple-nr.dir/clean
 
 test/simple-nr/CMakeFiles/save-simple-nr.dir/depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zhaochen/Downloads/tchecker /Users/zhaochen/Downloads/tchecker/test/simple-nr /Users/zhaochen/Downloads/build /Users/zhaochen/Downloads/build/test/simple-nr /Users/zhaochen/Downloads/build/test/simple-nr/CMakeFiles/save-simple-nr.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zz/Documents/ta/tchecker /Users/zz/Documents/ta/tchecker/test/simple-nr /Users/zz/Documents/ta/tchecker/build /Users/zz/Documents/ta/tchecker/build/test/simple-nr /Users/zz/Documents/ta/tchecker/build/test/simple-nr/CMakeFiles/save-simple-nr.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : test/simple-nr/CMakeFiles/save-simple-nr.dir/depend
 

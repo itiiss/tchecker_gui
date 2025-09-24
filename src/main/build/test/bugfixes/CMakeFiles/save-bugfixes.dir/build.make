@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhaochen/Downloads/tchecker
+CMAKE_SOURCE_DIR = /Users/zz/Documents/ta/tchecker
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhaochen/Downloads/build
+CMAKE_BINARY_DIR = /Users/zz/Documents/ta/tchecker/build
 
 # Utility rule file for save-bugfixes.
 
@@ -67,8 +67,8 @@ include test/bugfixes/CMakeFiles/save-bugfixes.dir/compiler_depend.make
 include test/bugfixes/CMakeFiles/save-bugfixes.dir/progress.make
 
 test/bugfixes/CMakeFiles/save-bugfixes:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zhaochen/Downloads/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Saving results as expected ones from test/bugfixes"
-	cd /Users/zhaochen/Downloads/build/test/bugfixes && /Users/zhaochen/Downloads/tchecker/test/save-results.sh /Users/zhaochen/Downloads/build/test/bugfixes/save_tests.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/zz/Documents/ta/tchecker/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Saving results as expected ones from test/bugfixes"
+	cd /Users/zz/Documents/ta/tchecker/build/test/bugfixes && /Users/zz/Documents/ta/tchecker/test/save-results.sh /Users/zz/Documents/ta/tchecker/build/test/bugfixes/save_tests.txt
 
 test/bugfixes/CMakeFiles/save-bugfixes.dir/codegen:
 .PHONY : test/bugfixes/CMakeFiles/save-bugfixes.dir/codegen
@@ -82,10 +82,10 @@ test/bugfixes/CMakeFiles/save-bugfixes.dir/build: save-bugfixes
 .PHONY : test/bugfixes/CMakeFiles/save-bugfixes.dir/build
 
 test/bugfixes/CMakeFiles/save-bugfixes.dir/clean:
-	cd /Users/zhaochen/Downloads/build/test/bugfixes && $(CMAKE_COMMAND) -P CMakeFiles/save-bugfixes.dir/cmake_clean.cmake
+	cd /Users/zz/Documents/ta/tchecker/build/test/bugfixes && $(CMAKE_COMMAND) -P CMakeFiles/save-bugfixes.dir/cmake_clean.cmake
 .PHONY : test/bugfixes/CMakeFiles/save-bugfixes.dir/clean
 
 test/bugfixes/CMakeFiles/save-bugfixes.dir/depend:
-	cd /Users/zhaochen/Downloads/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zhaochen/Downloads/tchecker /Users/zhaochen/Downloads/tchecker/test/bugfixes /Users/zhaochen/Downloads/build /Users/zhaochen/Downloads/build/test/bugfixes /Users/zhaochen/Downloads/build/test/bugfixes/CMakeFiles/save-bugfixes.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/zz/Documents/ta/tchecker/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/zz/Documents/ta/tchecker /Users/zz/Documents/ta/tchecker/test/bugfixes /Users/zz/Documents/ta/tchecker/build /Users/zz/Documents/ta/tchecker/build/test/bugfixes /Users/zz/Documents/ta/tchecker/build/test/bugfixes/CMakeFiles/save-bugfixes.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : test/bugfixes/CMakeFiles/save-bugfixes.dir/depend
 

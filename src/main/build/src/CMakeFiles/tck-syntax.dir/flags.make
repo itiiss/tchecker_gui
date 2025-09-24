@@ -4,9 +4,9 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DBOOST_CONTAINER_NO_LIB -DBOOST_JSON_NO_LIB
 
-CXX_INCLUDES = -I/Users/zhaochen/Downloads/tchecker/src/../include -I/Users/zhaochen/Downloads/build/src/../include -isystem /opt/homebrew/include
+CXX_INCLUDES = -I/Users/zz/Documents/ta/tchecker/src/../include -I/Users/zz/Documents/ta/tchecker/build/src/../include -isystem /opt/homebrew/include
 
-CXX_FLAGSarm64 =  -Wall -O3 -DNDEBUG -DNDEBUG -O2 -flto -fstrict-vtable-pointers -std=gnu++17 -arch arm64
+CXX_FLAGSarm64 =  -Wall -std=gnu++17 -arch arm64
 
-CXX_FLAGS =  -Wall -O3 -DNDEBUG -DNDEBUG -O2 -flto -fstrict-vtable-pointers -std=gnu++17 -arch arm64
+CXX_FLAGS =  -Wall -std=gnu++17 -arch arm64
 

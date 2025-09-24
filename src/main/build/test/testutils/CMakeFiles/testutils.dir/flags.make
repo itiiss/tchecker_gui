@@ -4,9 +4,9 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/Users/zhaochen/Downloads/tchecker/src/../include -I/Users/zhaochen/Downloads/build/src/../include -I/opt/homebrew/include -I/Users/zhaochen/Downloads/tchecker/test
+CXX_INCLUDES = -I/Users/zz/Documents/ta/tchecker/src/../include -I/Users/zz/Documents/ta/tchecker/build/src/../include -I/opt/homebrew/include -I/Users/zz/Documents/ta/tchecker/test
 
-CXX_FLAGSarm64 =  -Wall -Wextra -Wconversion -O3 -DNDEBUG -DNDEBUG -O2 -flto -fstrict-vtable-pointers -std=gnu++17 -arch arm64
+CXX_FLAGSarm64 =  -Wall -Wextra -Wconversion -std=gnu++17 -arch arm64
 
-CXX_FLAGS =  -Wall -Wextra -Wconversion -O3 -DNDEBUG -DNDEBUG -O2 -flto -fstrict-vtable-pointers -std=gnu++17 -arch arm64
+CXX_FLAGS =  -Wall -Wextra -Wconversion -std=gnu++17 -arch arm64
 

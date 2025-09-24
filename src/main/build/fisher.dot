@@ -1,0 +1,129 @@
+digraph fischer_10_10 {
+  subgraph cluster_P1 {
+    label="P1";
+    P1_A[label="A", initial=""];
+    P1_req[label="req", invariant="x1<=10"];
+    P1_wait[label="wait"];
+    P1_cs[labels="cs1", label="cs"];
+    P1_A -> P1_req[label="tau", provided="id==0", do="x1=0"];
+    P1_req -> P1_wait[label="tau", provided="x1<=10", do="x1=0;id=1"];
+    P1_wait -> P1_req[label="tau", provided="id==0", do="x1=0"];
+    P1_wait -> P1_cs[provided="x1>10&&id==1", label="tau"];
+    P1_cs -> P1_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P2 {
+    label="P2";
+    P2_A[label="A", initial=""];
+    P2_req[label="req", invariant="x2<=10"];
+    P2_wait[label="wait"];
+    P2_cs[labels="cs2", label="cs"];
+    P2_A -> P2_req[label="tau", provided="id==0", do="x2=0"];
+    P2_req -> P2_wait[label="tau", provided="x2<=10", do="x2=0;id=2"];
+    P2_wait -> P2_req[label="tau", provided="id==0", do="x2=0"];
+    P2_wait -> P2_cs[provided="x2>10&&id==2", label="tau"];
+    P2_cs -> P2_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P3 {
+    label="P3";
+    P3_A[label="A", initial=""];
+    P3_req[label="req", invariant="x3<=10"];
+    P3_wait[label="wait"];
+    P3_cs[labels="cs3", label="cs"];
+    P3_A -> P3_req[label="tau", provided="id==0", do="x3=0"];
+    P3_req -> P3_wait[label="tau", provided="x3<=10", do="x3=0;id=3"];
+    P3_wait -> P3_req[label="tau", provided="id==0", do="x3=0"];
+    P3_wait -> P3_cs[provided="x3>10&&id==3", label="tau"];
+    P3_cs -> P3_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P4 {
+    label="P4";
+    P4_A[label="A", initial=""];
+    P4_req[label="req", invariant="x4<=10"];
+    P4_wait[label="wait"];
+    P4_cs[labels="cs4", label="cs"];
+    P4_A -> P4_req[label="tau", provided="id==0", do="x4=0"];
+    P4_req -> P4_wait[label="tau", provided="x4<=10", do="x4=0;id=4"];
+    P4_wait -> P4_req[label="tau", provided="id==0", do="x4=0"];
+    P4_wait -> P4_cs[provided="x4>10&&id==4", label="tau"];
+    P4_cs -> P4_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P5 {
+    label="P5";
+    P5_A[label="A", initial=""];
+    P5_req[label="req", invariant="x5<=10"];
+    P5_wait[label="wait"];
+    P5_cs[labels="cs5", label="cs"];
+    P5_A -> P5_req[label="tau", provided="id==0", do="x5=0"];
+    P5_req -> P5_wait[label="tau", provided="x5<=10", do="x5=0;id=5"];
+    P5_wait -> P5_req[label="tau", provided="id==0", do="x5=0"];
+    P5_wait -> P5_cs[provided="x5>10&&id==5", label="tau"];
+    P5_cs -> P5_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P6 {
+    label="P6";
+    P6_A[label="A", initial=""];
+    P6_req[label="req", invariant="x6<=10"];
+    P6_wait[label="wait"];
+    P6_cs[labels="cs6", label="cs"];
+    P6_A -> P6_req[label="tau", provided="id==0", do="x6=0"];
+    P6_req -> P6_wait[label="tau", provided="x6<=10", do="x6=0;id=6"];
+    P6_wait -> P6_req[label="tau", provided="id==0", do="x6=0"];
+    P6_wait -> P6_cs[provided="x6>10&&id==6", label="tau"];
+    P6_cs -> P6_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P7 {
+    label="P7";
+    P7_A[label="A", initial=""];
+    P7_req[label="req", invariant="x7<=10"];
+    P7_wait[label="wait"];
+    P7_cs[labels="cs7", label="cs"];
+    P7_A -> P7_req[label="tau", provided="id==0", do="x7=0"];
+    P7_req -> P7_wait[label="tau", provided="x7<=10", do="x7=0;id=7"];
+    P7_wait -> P7_req[label="tau", provided="id==0", do="x7=0"];
+    P7_wait -> P7_cs[provided="x7>10&&id==7", label="tau"];
+    P7_cs -> P7_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P8 {
+    label="P8";
+    P8_A[label="A", initial=""];
+    P8_req[label="req", invariant="x8<=10"];
+    P8_wait[label="wait"];
+    P8_cs[labels="cs8", label="cs"];
+    P8_A -> P8_req[label="tau", provided="id==0", do="x8=0"];
+    P8_req -> P8_wait[label="tau", provided="x8<=10", do="x8=0;id=8"];
+    P8_wait -> P8_req[label="tau", provided="id==0", do="x8=0"];
+    P8_wait -> P8_cs[provided="x8>10&&id==8", label="tau"];
+    P8_cs -> P8_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P9 {
+    label="P9";
+    P9_A[label="A", initial=""];
+    P9_req[label="req", invariant="x9<=10"];
+    P9_wait[label="wait"];
+    P9_cs[labels="cs9", label="cs"];
+    P9_A -> P9_req[label="tau", provided="id==0", do="x9=0"];
+    P9_req -> P9_wait[label="tau", provided="x9<=10", do="x9=0;id=9"];
+    P9_wait -> P9_req[label="tau", provided="id==0", do="x9=0"];
+    P9_wait -> P9_cs[provided="x9>10&&id==9", label="tau"];
+    P9_cs -> P9_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_P10 {
+    label="P10";
+    P10_A[label="A", initial=""];
+    P10_req[label="req", invariant="x10<=10"];
+    P10_wait[label="wait"];
+    P10_cs[labels="cs10", label="cs"];
+    P10_A -> P10_req[label="tau", provided="id==0", do="x10=0"];
+    P10_req -> P10_wait[label="tau", provided="x10<=10", do="x10=0;id=10"];
+    P10_wait -> P10_req[label="tau", provided="id==0", do="x10=0"];
+    P10_wait -> P10_cs[provided="x10>10&&id==10", label="tau"];
+    P10_cs -> P10_A[do="id=0", label="tau"];
+  }
+  subgraph cluster_synchronizations {
+    label="Synchronizations";
+    node[shape="none"];
+    "
+    ";
+  }
+}
+

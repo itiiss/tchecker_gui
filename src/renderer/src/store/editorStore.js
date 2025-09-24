@@ -6,7 +6,7 @@ const useEditorStore = create((set, get) => ({
   clocks: [
     { name: 'x1', size: 1 }, // Process P1 clock
     { name: 'x2', size: 1 }, // Process P2 clock
-    { name: 'x3', size: 1 }  // Process P3 clock
+    { name: 'x3', size: 1 } // Process P3 clock
   ],
   intVars: [
     { name: 'id', size: 1, min: 0, max: 10, initial: 0 } // Shared variable for mutual exclusion
@@ -396,6 +396,7 @@ const useEditorStore = create((set, get) => ({
   simulationTrace: [], // History of states and transitions
   tracePosition: 0, // Current position in trace
   clockValues: {}, // Current clock valuations
+  currentZoneMatrix: null,
 
   setSystemName: (name) => set({ systemName: name }),
   setClocks: (clocks) => set({ clocks }),
@@ -567,7 +568,6 @@ const useEditorStore = create((set, get) => ({
   setSimulationLoading: (loading) => set({ simulationLoading: loading }),
   setSimulationError: (error) => set({ simulationError: error }),
 
-
   // Simulator control functions
   initializeSimulator: async () => {
     console.log('=== Starting simulator initialization ===')
@@ -588,6 +588,7 @@ const useEditorStore = create((set, get) => ({
         // Parse the result from tck-simulate
         const initialStateData = result.initialState
         const availableTransitions = result.availableTransitions
+        const initialZoneMatrix = initialStateData?.zoneMatrix || null
 
         console.log('Initial state data from backend:', initialStateData)
         console.log('Available transitions from backend:', availableTransitions)
@@ -602,12 +603,14 @@ const useEditorStore = create((set, get) => ({
         set({
           simulatorInitialized: true,
           currentState,
+          currentZoneMatrix: initialZoneMatrix,
           enabledTransitions,
           simulationTrace: [
             {
               state: currentState,
               transition: null,
               backendState: initialStateData,
+              zoneMatrix: initialZoneMatrix,
               enabledTransitions: enabledTransitions // 缓存来自tck-simulate的转换
             }
           ],
@@ -625,7 +628,8 @@ const useEditorStore = create((set, get) => ({
       set({
         simulationError: error.message,
         simulationLoading: false,
-        simulatorInitialized: false
+        simulatorInitialized: false,
+        currentZoneMatrix: null
       })
     }
   },
@@ -642,8 +646,8 @@ const useEditorStore = create((set, get) => ({
     }
 
     // 在执行过程中清空可用转换，防止重复点击
-    set({ 
-      simulationLoading: true, 
+    set({
+      simulationLoading: true,
       simulationError: null,
       enabledTransitions: [] // 立即清空，防止重复执行
     })
@@ -653,14 +657,29 @@ const useEditorStore = create((set, get) => ({
       const modelData = get().convertModelDataForBackend()
       const currentBackendState = state.simulationTrace[state.tracePosition]?.backendState
 
-      console.log('Executing transition:', transitionId, 'from state:', currentBackendState?.attributes?.vloc)
+      console.log(
+        'Executing transition:',
+        transitionId,
+        'from state:',
+        currentBackendState?.attributes?.vloc
+      )
 
       // Call backend to execute transition
       const { ipcRenderer } = window.require('electron')
+      const transitionDescriptor = {
+        id: transition.id,
+        vedge: transition.vedge,
+        sourceLocation: transition.sourceLocation,
+        targetLocation: transition.targetLocation,
+        sourceVloc: transition.sourceVloc,
+        targetVloc: transition.targetVloc,
+        edgeData: transition.edgeData
+      }
+
       const result = await ipcRenderer.invoke(
         'execute-transition',
         modelData,
-        transitionId,
+        transitionDescriptor,
         currentBackendState
       )
 
@@ -668,8 +687,12 @@ const useEditorStore = create((set, get) => ({
         // Parse the new state and transitions
         const newState = get().parseBackendState(result.newState)
         const newEnabledTransitions = get().parseBackendTransitions(result.availableTransitions)
+        const zoneMatrix = result.newState?.zoneMatrix || null
 
-        console.log('Transition executed successfully. New state:', result.newState?.attributes?.vloc)
+        console.log(
+          'Transition executed successfully. New state:',
+          result.newState?.attributes?.vloc
+        )
         console.log('New available transitions count:', newEnabledTransitions.length)
 
         // Add to trace
@@ -677,6 +700,7 @@ const useEditorStore = create((set, get) => ({
           state: newState,
           transition: transition,
           backendState: result.newState,
+          zoneMatrix,
           enabledTransitions: newEnabledTransitions // 缓存来自tck-simulate的转换
         }
 
@@ -684,6 +708,7 @@ const useEditorStore = create((set, get) => ({
 
         set({
           currentState: newState,
+          currentZoneMatrix: zoneMatrix,
           enabledTransitions: newEnabledTransitions,
           simulationTrace: newTrace,
           tracePosition: newTrace.length - 1,
@@ -695,7 +720,8 @@ const useEditorStore = create((set, get) => ({
         set({
           simulationError: result.error,
           simulationLoading: false,
-          enabledTransitions: state.enabledTransitions // 恢复原来的转换
+          enabledTransitions: state.enabledTransitions,
+          currentZoneMatrix: state.currentZoneMatrix // 恢复原来的转换
         })
       }
     } catch (error) {
@@ -704,7 +730,8 @@ const useEditorStore = create((set, get) => ({
       set({
         simulationError: error.message,
         simulationLoading: false,
-        enabledTransitions: state.enabledTransitions // 恢复原来的转换
+        enabledTransitions: state.enabledTransitions,
+        currentZoneMatrix: state.currentZoneMatrix // 恢复原来的转换
       })
     }
   },
@@ -727,6 +754,7 @@ const useEditorStore = create((set, get) => ({
       set({
         currentState: traceEntry.state,
         clockValues: traceEntry.clocks,
+        currentZoneMatrix: traceEntry.zoneMatrix ?? state.currentZoneMatrix ?? null,
         enabledTransitions: traceEntry.enabledTransitions || [], // 使用缓存的转换
         tracePosition: newPosition
       })
@@ -747,6 +775,7 @@ const useEditorStore = create((set, get) => ({
       set({
         currentState: traceEntry.state,
         clockValues: traceEntry.clocks,
+        currentZoneMatrix: traceEntry.zoneMatrix ?? state.currentZoneMatrix ?? null,
         enabledTransitions: traceEntry.enabledTransitions || [], // 使用缓存的转换
         tracePosition: newPosition
       })
@@ -771,6 +800,7 @@ const useEditorStore = create((set, get) => ({
       set({
         currentState: traceEntry.state,
         clockValues: traceEntry.clocks,
+        currentZoneMatrix: traceEntry.zoneMatrix ?? state.currentZoneMatrix ?? null,
         enabledTransitions: traceEntry.enabledTransitions || [], // 使用缓存的转换
         tracePosition: position
       })
@@ -836,7 +866,7 @@ const useEditorStore = create((set, get) => ({
     try {
       const { ipcRenderer } = window.require('electron')
       const result = await ipcRenderer.invoke('load-model')
-      
+
       if (result.success && result.modelData) {
         const modelData = result.modelData
         set({
@@ -873,10 +903,10 @@ const useEditorStore = create((set, get) => ({
     try {
       const state = get()
       const modelData = state.convertModelDataForBackend()
-      
+
       const { ipcRenderer } = window.require('electron')
       const result = await ipcRenderer.invoke('generate-tck-preview', modelData)
-      
+
       if (result.success) {
         return { success: true, tckContent: result.tckContent, syntaxResult: result.syntaxResult }
       } else {
@@ -1025,6 +1055,9 @@ const useEditorStore = create((set, get) => ({
         targetLocation: edge.target || '',
         guard: '', // DOT格式不直接提供guard信息
         action: '', // DOT格式不直接提供action信息
+        vedge: vedge,
+        sourceVloc: edge.attributes?.sourceVloc || '',
+        targetVloc: edge.attributes?.targetVloc || '',
         edgeData: edge
       }
 

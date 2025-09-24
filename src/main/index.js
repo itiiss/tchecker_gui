@@ -95,7 +95,7 @@ ipcMain.handle('generate-tck-preview', async (event, modelData) => {
     const appPath = app.getAppPath()
     const tckGeneratorPath = join(appPath, 'src/main/utils/tck-generator.js')
     console.log('Loading TCK generator from path:', tckGeneratorPath)
-    
+
     const { generateTckFromJSON } = require(tckGeneratorPath)
     const tckContent = generateTckFromJSON(modelData)
 
@@ -142,11 +142,7 @@ ipcMain.handle('generate-tck-preview', async (event, modelData) => {
         syntaxResult = await new Promise((resolve) => {
           execFile(syntaxCommand, [tempFilePath], (error, stdout, stderr) => {
             const isSuccess = !error
-            const exitCode = !error
-              ? 0
-              : typeof error.code === 'number'
-                ? error.code
-                : -1
+            const exitCode = !error ? 0 : typeof error.code === 'number' ? error.code : -1
 
             resolve({
               passed: isSuccess,
@@ -253,19 +249,22 @@ app.whenReady().then(() => {
   })
 
   // IPC handler for executing transition
-  ipcMain.handle('execute-transition', async (event, modelData, transitionId, currentState) => {
-    try {
-      console.log('Received execute transition request:', { transitionId, currentState })
-      const appPath = app.getAppPath()
-      const simulationManagerPath = join(appPath, 'src/main/utils/simulation-manager.js')
-      const { executeTransition } = require(simulationManagerPath)
-      const result = await executeTransition(modelData, transitionId, currentState)
-      return result
-    } catch (error) {
-      console.error('Execute transition error:', error)
-      throw error
+  ipcMain.handle(
+    'execute-transition',
+    async (event, modelData, transitionDescriptor, currentState) => {
+      try {
+        console.log('Received execute transition request:', { transitionDescriptor, currentState })
+        const appPath = app.getAppPath()
+        const simulationManagerPath = join(appPath, 'src/main/utils/simulation-manager.js')
+        const { executeTransition } = require(simulationManagerPath)
+        const result = await executeTransition(modelData, transitionDescriptor, currentState)
+        return result
+      } catch (error) {
+        console.error('Execute transition error:', error)
+        throw error
+      }
     }
-  })
+  )
 
   // IPC handler for resetting simulator
   ipcMain.handle('reset-simulator', async (event, modelData) => {
@@ -291,7 +290,10 @@ app.whenReady().then(() => {
   )
   console.log('save-model handler registered:', ipcMain.listenerCount('save-model') > 0)
   console.log('load-model handler registered:', ipcMain.listenerCount('load-model') > 0)
-  console.log('generate-tck-preview handler registered:', ipcMain.listenerCount('generate-tck-preview') > 0)
+  console.log(
+    'generate-tck-preview handler registered:',
+    ipcMain.listenerCount('generate-tck-preview') > 0
+  )
 
   createWindow()
 

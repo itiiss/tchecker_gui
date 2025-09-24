@@ -32,7 +32,7 @@
 
 
 /**
- ** \file /Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.hh
+ ** \file /Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.hh
  ** Define the tchecker::parsing::program::parser class.
  */
 
@@ -42,8 +42,8 @@
 // especially those whose name start with YY_ or yy_.  They are
 // private implementation details that can be changed or removed.
 
-#ifndef YY_PPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_PROGRAM_PARSER_PROGRAM_TAB_HH_INCLUDED
-# define YY_PPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_PROGRAM_PARSER_PROGRAM_TAB_HH_INCLUDED
+#ifndef YY_PPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_PROGRAM_PARSER_PROGRAM_TAB_HH_INCLUDED
+# define YY_PPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_PROGRAM_PARSER_PROGRAM_TAB_HH_INCLUDED
 // "%code requires" blocks.
 #line 22 "program.yy"
 
@@ -60,7 +60,7 @@
   #include "tchecker/utils/log.hh"
   #include "tchecker/basictypes.hh"
 
-#line 64 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.hh"
+#line 64 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.hh"
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -209,7 +209,7 @@
 
 #line 13 "program.yy"
 namespace tchecker { namespace parsing { namespace program {
-#line 213 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.hh"
+#line 213 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.hh"
 
 
 
@@ -2112,9 +2112,9 @@ switch (yykind)
 
 #line 13 "program.yy"
 } } } // tchecker::parsing::program
-#line 2116 "/Users/zhaochen/Downloads/build/src/parsing/program_parser/program.tab.hh"
+#line 2116 "/Users/zz/Documents/ta/tchecker/build/src/parsing/program_parser/program.tab.hh"
 
 
 
 
-#endif // !YY_PPYY_USERS_ZHAOCHEN_DOWNLOADS_BUILD_SRC_PARSING_PROGRAM_PARSER_PROGRAM_TAB_HH_INCLUDED
+#endif // !YY_PPYY_USERS_ZZ_DOCUMENTS_TA_TCHECKER_BUILD_SRC_PARSING_PROGRAM_PARSER_PROGRAM_TAB_HH_INCLUDED
