@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Box,
   Typography,
@@ -9,28 +9,14 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Paper,
-  Divider,
   Alert,
   CircularProgress,
-  TextField,
-  Tabs,
-  Tab
+  Chip
 } from '@mui/material'
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  PlayArrow as PlayArrowIcon,
-  AccountTree as GraphIcon,
-  Timeline as TraceIcon,
-  Description as OutputIcon
-} from '@mui/icons-material'
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, PlayArrow as PlayArrowIcon } from '@mui/icons-material'
 import useEditorStore from '../store/editorStore'
 import PropertyForm from './PropertyForm'
-import DotGraphViewer from './DotGraphViewer'
-import TraceViewer from './TraceViewer'
-import ReachabilityTraceViewer from './ReachabilityTraceViewer'
-import ExecutionTraceViewer from './ExecutionTraceViewer'
+import VerificationGraph from './VerificationGraph'
 
 const VerifierTab = () => {
   const { processes } = useEditorStore()
@@ -41,15 +27,13 @@ const VerifierTab = () => {
   const [isVerifying, setIsVerifying] = useState(false)
   const [verificationResult, setVerificationResult] = useState(null)
   const [verificationError, setVerificationError] = useState(null)
-  const [resultTab, setResultTab] = useState('output') // 'output', 'graph', 'trace'
 
-  // Extract all labels
-  const getAllLabels = () => {
+  const allLabels = useMemo(() => {
     const labels = new Set()
-    Object.values(processes).forEach(process => {
-      process.nodes?.forEach(node => {
-        if (node.data.labels && Array.isArray(node.data.labels)) {
-          node.data.labels.forEach(label => {
+    Object.values(processes).forEach((process) => {
+      process.nodes?.forEach((node) => {
+        if (Array.isArray(node.data.labels)) {
+          node.data.labels.forEach((label) => {
             if (label && label.trim()) {
               labels.add(label.trim())
             }
@@ -58,6 +42,35 @@ const VerifierTab = () => {
       })
     })
     return Array.from(labels)
+  }, [processes])
+
+  const typeSuffixMap = {
+    reachability: 'Reachability',
+    safety: 'Safety',
+    'deadlock-free': 'DeadlockFree'
+  }
+
+  const buildPropertyName = (type, targetLabel) => {
+    const suffix = typeSuffixMap[type] || 'Property'
+    if (type === 'deadlock-free') {
+      return suffix
+    }
+    const baseLabel = targetLabel && targetLabel.trim() ? targetLabel.trim() : 'Property'
+    return `${baseLabel}_${suffix}`
+  }
+
+  const ensureUniqueName = (baseName, ignoreId = null) => {
+    let name = baseName
+    let counter = 2
+    const isDuplicate = (candidate) =>
+      properties.some((property) => property.name === candidate && property.id !== ignoreId)
+
+    while (isDuplicate(name)) {
+      name = `${baseName}_${counter}`
+      counter += 1
+    }
+
+    return name
   }
 
   const handleAddProperty = () => {
@@ -71,23 +84,42 @@ const VerifierTab = () => {
   }
 
   const handleDeleteProperty = (propertyId) => {
-    setProperties(properties.filter(p => p.id !== propertyId))
+    setProperties((prev) => prev.filter((p) => p.id !== propertyId))
     if (selectedProperty?.id === propertyId) {
       setSelectedProperty(null)
     }
   }
 
-  const handleSaveProperty = (property) => {
+  const handleSaveProperty = ({ type, targetLabel }) => {
+    const baseName = buildPropertyName(type, targetLabel)
+    const name = ensureUniqueName(baseName, editingProperty?.id || null)
+
     if (editingProperty) {
-      // Edit existing property
-      setProperties(properties.map(p => 
-        p.id === editingProperty.id ? { ...property, id: editingProperty.id } : p
-      ))
+      const updatedProperty = {
+        ...editingProperty,
+        type,
+        targetLabel,
+        name
+      }
+
+      setProperties((prev) =>
+        prev.map((p) => (p.id === editingProperty.id ? updatedProperty : p))
+      )
+
+      if (selectedProperty?.id === editingProperty.id) {
+        setSelectedProperty(updatedProperty)
+      }
     } else {
-      // Add new property
-      const newProperty = { ...property, id: Date.now().toString() }
-      setProperties([...properties, newProperty])
+      const newProperty = {
+        id: Date.now().toString(),
+        type,
+        targetLabel,
+        name
+      }
+      setProperties((prev) => [...prev, newProperty])
+      setSelectedProperty(newProperty)
     }
+
     setShowPropertyForm(false)
     setEditingProperty(null)
   }
@@ -114,14 +146,6 @@ const VerifierTab = () => {
 
       if (result.success) {
         setVerificationResult(result)
-        // Auto-select tab based on available content
-        if (result.dotGraph) {
-          setResultTab('graph')
-        } else if (result.counterExample) {
-          setResultTab('trace')
-        } else {
-          setResultTab('output')
-        }
       } else {
         // Handle different types of errors
         if (result.isModelError) {
@@ -328,101 +352,75 @@ const VerifierTab = () => {
           )}
 
           {verificationResult && (
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              <Alert 
-                severity={getVerificationStatusColor(verificationResult)} 
-                sx={{ mb: 2, flexShrink: 0 }}
-              >
-                <Typography variant="h6">
-                  {getVerificationStatusText(verificationResult)}
-                </Typography>
-                <Typography variant="body2">
-                  Property: {selectedProperty.name}
-                </Typography>
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, minHeight: 0 }}>
+              <Alert severity={getVerificationStatusColor(verificationResult)} sx={{ flexShrink: 0 }}>
+                <Typography variant="h6">{getVerificationStatusText(verificationResult)}</Typography>
+                <Typography variant="body2">Property: {selectedProperty.name}</Typography>
               </Alert>
 
-              {/* Result View Tabs */}
-              <Tabs 
-                value={resultTab} 
-                onChange={(e, newValue) => setResultTab(newValue)}
-                sx={{ borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}
-              >
-                <Tab 
-                  icon={<OutputIcon />} 
-                  label="Detailed Output" 
-                  value="output" 
-                  iconPosition="start"
-                />
-                {verificationResult.dotGraph && verificationResult.dotGraph.trim() && (
-                  <Tab 
-                    icon={<GraphIcon />} 
-                    label="State Graph" 
-                    value="graph" 
-                    iconPosition="start"
-                  />
-                )}
-                <Tab 
-                  icon={<TraceIcon />} 
-                  label="Execution Trace" 
-                  value="trace" 
-                  iconPosition="start"
-                />
-              </Tabs>
-
-              {/* Tab Content */}
-              <Box sx={{ flex: 1, minHeight: 0, overflow: 'hidden', pt: 2 }}>
-                {resultTab === 'output' && (
-                  <TextField
-                    multiline
-                    value={verificationResult.output || ''}
-                    variant="outlined"
-                    fullWidth
-                    InputProps={{
-                      readOnly: true,
-                      sx: { 
-                        fontFamily: 'monospace',
-                        fontSize: '0.875rem',
-                        height: '100%',
-                        width: '100%',
-                        '& .MuiInputBase-input': {
-                          overflow: 'auto',
-                          height: '100% !important',
-                          width: '100% !important'
-                        }
-                      }
-                    }}
-                    sx={{ 
-                      height: '100%',
-                      width: '100%',
-                      '& .MuiInputBase-root': {
-                        height: '100%',
-                        width: '100%'
-                      },
-                      '& .MuiOutlinedInput-root': {
-                        height: '100%',
-                        width: '100%'
-                      }
-                    }}
-                  />
-                )}
-
-                {resultTab === 'graph' && verificationResult.dotGraph && verificationResult.dotGraph.trim() && (
-                  <DotGraphViewer 
-                    dotContent={verificationResult.dotGraph}
-                    title="Verification State Space"
-                  />
-                )}
-
-                {resultTab === 'trace' && (
-                  <Box sx={{ height: '100%', overflow: 'hidden' }}>
-                    <ExecutionTraceViewer
-                      verificationResult={verificationResult}
-                      selectedProperty={selectedProperty}
-                      title="Execution Trace Analysis"
-                    />
+              {verificationResult.reachabilityInfo && (
+                <Paper variant="outlined" sx={{ p: 2 }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Statistics
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                    {Object.entries(verificationResult.reachabilityInfo)
+                      .filter(([_, value]) => value !== undefined && value !== null && value !== '')
+                      .map(([key, value]) => (
+                        <Chip key={key} label={`${key}: ${value}`} variant="outlined" />
+                      ))}
                   </Box>
-                )}
-              </Box>
+                </Paper>
+              )}
+
+              {verificationResult.dotGraph && verificationResult.dotGraph.trim() && (
+                <Paper variant="outlined" sx={{ p: 2, minHeight: 360 }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    State Space
+                  </Typography>
+                  <VerificationGraph dotText={verificationResult.dotGraph} height={380} />
+                </Paper>
+              )}
+
+              {verificationResult.counterExample && (
+                <Paper variant="outlined" sx={{ p: 2 }}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Execution Trace
+                  </Typography>
+                  <Box
+                    component="pre"
+                    sx={{
+                      m: 0,
+                      fontFamily: 'monospace',
+                      fontSize: '0.875rem',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word'
+                    }}
+                  >
+                    {verificationResult.counterExample}
+                  </Box>
+                </Paper>
+              )}
+
+              <Paper variant="outlined" sx={{ p: 2, flex: verificationResult.counterExample ? '0' : 1 }}>
+                <Typography variant="subtitle1" gutterBottom>
+                  Detailed Output
+                </Typography>
+                <Box
+                  component="pre"
+                  sx={{
+                    m: 0,
+                    fontFamily: 'monospace',
+                    fontSize: '0.875rem',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word',
+                    maxHeight: 360,
+                    overflow: 'auto'
+                  }}
+                >
+                  {verificationResult.output || ''}
+                </Box>
+              </Paper>
             </Box>
           )}
         </Paper>
@@ -433,7 +431,7 @@ const VerifierTab = () => {
         <PropertyForm
           open={showPropertyForm}
           property={editingProperty}
-          availableLabels={getAllLabels()}
+          availableLabels={allLabels}
           onSave={handleSaveProperty}
           onClose={() => {
             setShowPropertyForm(false)

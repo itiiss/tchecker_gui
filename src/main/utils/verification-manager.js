@@ -1,4 +1,5 @@
-const fs = require('fs').promises
+const fsNative = require('fs')
+const fs = fsNative.promises
 const path = require('path')
 const { spawn } = require('child_process')
 const { generateTckFromJSON } = require('./tck-generator')
@@ -7,6 +8,116 @@ const { generateTckFromJSON } = require('./tck-generator')
  * Verification Property Manager
  * Uses tck-reach tool for formal verification
  */
+
+function resolveAppBasePath() {
+  try {
+    const { app } = require('electron')
+    if (app && typeof app.getAppPath === 'function') {
+      return app.getAppPath()
+    }
+  } catch {
+    // Ignore and use fallback path
+  }
+  return path.join(__dirname, '..', '..')
+}
+
+async function ensureExecutable(filePath) {
+  if (!filePath) return false
+
+  try {
+    const stats = await fs.stat(filePath)
+    if (!stats.isFile()) {
+      return false
+    }
+    await fs.access(filePath, fsNative.constants.X_OK)
+    return true
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return false
+    }
+    if (error.code === 'EACCES') {
+      try {
+        await fs.chmod(filePath, 0o755)
+        await fs.access(filePath, fsNative.constants.X_OK)
+        return true
+      } catch (chmodError) {
+        console.warn(`Failed to set executable permissions on ${filePath}:`, chmodError.message)
+        return false
+      }
+    }
+    throw error
+  }
+}
+
+async function resolveExecutableCandidates(executableName, envVariable) {
+  const appBase = resolveAppBasePath()
+  const envPath = process.env[envVariable]
+
+  const candidates = [
+    path.join(appBase, 'src/main/build/src', executableName),
+    path.join(appBase, 'main/build/src', executableName),
+    path.join(appBase, 'resources', executableName),
+    process.resourcesPath ? path.join(process.resourcesPath, executableName) : null,
+    envPath
+  ].filter(Boolean)
+
+  const accessible = []
+  const seen = new Set()
+
+  for (const candidate of candidates) {
+    if (seen.has(candidate)) continue
+    seen.add(candidate)
+    try {
+      if (await ensureExecutable(candidate)) {
+        accessible.push(candidate)
+      }
+    } catch (error) {
+      if (error.code && error.code !== 'ENOENT') {
+        console.warn(`Executable candidate unusable (${candidate}): ${error.message}`)
+      }
+    }
+  }
+
+  if (accessible.length === 0) {
+    throw new Error(
+      `Unable to locate executable ${executableName}. Set ${envVariable} or keep binary in src/main/build/src.`
+    )
+  }
+
+  return accessible
+}
+
+async function resolveTckReachCandidates() {
+  return resolveExecutableCandidates('tck-reach', 'TCK_REACH_PATH')
+}
+
+function extractDotGraph(text) {
+  if (!text) return ''
+  const startIndex = text.indexOf('digraph')
+  if (startIndex === -1) {
+    return ''
+  }
+
+  let braceDepth = 0
+  let foundOpening = false
+
+  for (let i = startIndex; i < text.length; i += 1) {
+    const char = text[i]
+    if (char === '{') {
+      braceDepth += 1
+      foundOpening = true
+    } else if (char === '}') {
+      if (foundOpening) {
+        braceDepth -= 1
+        if (braceDepth === 0) {
+          return text.slice(startIndex, i + 1).trim()
+        }
+      }
+    }
+  }
+
+  return ''
+}
 
 /**
  * Generate tck-reach command parameters based on property configuration
@@ -139,6 +250,9 @@ async function verifyProperty(verificationRequest) {
 
   const tempTckFile = path.join(__dirname, `verify_${Date.now()}.tck`)
   const tempOutputFile = path.join(__dirname, `verify_output_${Date.now()}.txt`)
+  let stdout = ''
+  let stderrOutput = ''
+  let exitCode = 0
 
   try {
     // 1. Generate TCK file
@@ -151,8 +265,8 @@ async function verifyProperty(verificationRequest) {
     const config = getVerificationConfig(property)
     console.log('验证配置:', config)
 
-    // 3. 构建 tck-reach 命令
-    const tckReachPath = '/Users/zhaochen/Documents/tchecker_gui/src/main/build/src/tck-reach'
+    // 3. 构建 tck-reach 命令候选
+    const reachCandidates = await resolveTckReachCandidates()
     const args = [
       '-a',
       config.algorithm,
@@ -172,51 +286,67 @@ async function verifyProperty(verificationRequest) {
     // 添加输入文件
     args.push(tempTckFile)
 
-    console.log('执行命令:', tckReachPath, args.join(' '))
+    console.log('可用 tck-reach 路径候选:', reachCandidates)
 
-    // 4. 执行 tck-reach
-    let stdout = '',
-      stderr = '',
-      exitCode = 0
-    try {
-      const result = await new Promise((resolve, reject) => {
-        const child = spawn(tckReachPath, args)
-        let stdoutData = ''
-        let stderrData = ''
+    // 4. 按候选顺序执行 tck-reach
+    let commandUsed = null
+    let lastSpawnError = null
 
-        child.stdout.on('data', (data) => {
-          stdoutData += data.toString()
-        })
+    for (const candidatePath of reachCandidates) {
+      console.log('执行命令:', candidatePath, args.join(' '))
+      try {
+        const result = await new Promise((resolve, reject) => {
+          const child = spawn(candidatePath, args)
+          let stdoutData = ''
+          let stderrData = ''
 
-        child.stderr.on('data', (data) => {
-          stderrData += data.toString()
-        })
-
-        child.on('close', (code) => {
-          resolve({
-            stdout: stdoutData,
-            stderr: stderrData,
-            exitCode: code
+          child.stdout.on('data', (data) => {
+            stdoutData += data.toString()
           })
+
+          child.stderr.on('data', (data) => {
+            stderrData += data.toString()
+          })
+
+          child.on('close', (code) => {
+            resolve({
+              stdout: stdoutData,
+              stderr: stderrData,
+              exitCode: code
+            })
+          })
+
+          child.on('error', reject)
         })
 
-        child.on('error', reject)
-      })
+        stdout = result.stdout
+        stderrOutput = result.stderr
+        exitCode = result.exitCode
+        commandUsed = candidatePath
+        break
+      } catch (spawnError) {
+        lastSpawnError = spawnError
+        console.warn(
+          `Failed to execute ${candidatePath}: ${spawnError.message}. Trying next candidate if available.`
+        )
+      }
+    }
 
-      stdout = result.stdout
-      stderr = result.stderr
-      exitCode = result.exitCode
-    } catch (spawnError) {
-      throw new Error(`Failed to execute tck-reach: ${spawnError.message}`)
+    if (!commandUsed) {
+      throw new Error(
+        lastSpawnError
+          ? `Failed to execute tck-reach: ${lastSpawnError.message}`
+          : 'Failed to execute tck-reach: no executable candidates available'
+      )
     }
 
     console.log('=== tck-reach 执行结果 ===')
     console.log('退出码:', exitCode)
     console.log('stdout 内容:')
     console.log(stdout)
-    if (stderr) {
+    if (stderrOutput) {
       console.log('stderr 内容:')
-      console.log(stderr)
+      console.log(stderrOutput)
     }
 
     // 5. 读取输出文件（如果存在）
@@ -235,14 +365,14 @@ async function verifyProperty(verificationRequest) {
     }
 
     // 6. 检查是否有模型错误
-    if (stderr && stderr.includes('ERROR:')) {
-      console.error('模型验证错误:', stderr)
+    if (stderrOutput && stderrOutput.includes('ERROR:')) {
+      console.error('模型验证错误:', stderrOutput)
       return {
         success: false,
-        error: stderr,
+        error: stderrOutput,
         isModelError: true,
-        modelErrorDetails: stderr,
-        output: stderr
+        modelErrorDetails: stderrOutput,
+        output: stderrOutput
       }
     }
 
@@ -252,14 +382,14 @@ async function verifyProperty(verificationRequest) {
     console.log('Combined output for parsing:', combinedOutput)
     console.log('Extracting reachability info from:', stdout || outputFileContent || 'no output')
 
-    const result = parseVerificationResult(combinedOutput, stderr, exitCode, property)
+    const result = parseVerificationResult(combinedOutput, stderrOutput, exitCode, property)
 
     // Ensure reachabilityInfo is correctly extracted
     result.reachabilityInfo = extractReachabilityInfo(stdout || outputFileContent || combinedOutput)
     console.log('Extracted reachabilityInfo:', result.reachabilityInfo)
 
     // 添加DOT内容和原始输出到结果中
-    result.dotGraph = dotContent
+    result.dotGraph = dotContent || extractDotGraph(combinedOutput)
     result.rawStdout = stdout
     result.certificateOutput = outputFileContent
 
@@ -279,8 +409,8 @@ async function verifyProperty(verificationRequest) {
       isModelError:
         error.message.includes('out-of-bounds') ||
         error.message.includes('ERROR:') ||
-        stderr.includes('ERROR:'),
-      modelErrorDetails: stderr || error.message
+        (stderrOutput && stderrOutput.includes('ERROR:')),
+      modelErrorDetails: stderrOutput || error.message
     }
   } finally {
     // 7. 清理临时文件
