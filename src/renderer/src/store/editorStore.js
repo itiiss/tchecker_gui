@@ -1032,8 +1032,13 @@ const useEditorStore = create((set, get) => ({
     return backendTransitions.map((edge, index) => {
       // DOT格式：{id, source, target, attributes: {vedge: "<process@event>"}}
       const vedge = edge.attributes?.vedge || ''
+      const guard = edge.attributes?.guard || edge.attributes?.provided || ''
+      const action = edge.attributes?.reset || edge.attributes?.do || ''
+      const sourceInvariant = edge.attributes?.srcInvariant || ''
+      const targetInvariant = edge.attributes?.tgtInvariant || ''
+      const sync = edge.attributes?.sync || ''
 
-      let processName = 'unknown'
+      let processName = edge.attributes?.processName || 'unknown'
       let event = ''
 
       if (vedge) {
@@ -1047,14 +1052,27 @@ const useEditorStore = create((set, get) => ({
         }
       }
 
+      if (!event.trim()) {
+        if (edge.attributes?.event) {
+          event = edge.attributes.event
+        } else if (sync) {
+          event = sync
+        } else {
+          event = 'tau'
+        }
+      }
+
       const parsedTransition = {
         id: edge.id || `${edge.source}_to_${edge.target}_${index}`,
         processName: processName.trim(),
         event: event.trim(),
         sourceLocation: edge.source || '',
         targetLocation: edge.target || '',
-        guard: '', // DOT格式不直接提供guard信息
-        action: '', // DOT格式不直接提供action信息
+        guard: guard,
+        action: action,
+        sourceInvariant,
+        targetInvariant,
+        sync,
         vedge: vedge,
         sourceVloc: edge.attributes?.sourceVloc || '',
         targetVloc: edge.attributes?.targetVloc || '',

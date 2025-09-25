@@ -101,9 +101,6 @@ const DeclarationsView = () => {
           </ListItem>
         ))}
       </List>
-      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
-        所有时钟的大小固定为 1。
-      </Typography>
       <Button startIcon={<AddIcon />} onClick={handleAddClock}>
         Add Clock
       </Button>
@@ -147,9 +144,6 @@ const DeclarationsView = () => {
           </ListItem>
         ))}
       </List>
-      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
-        整数变量的大小固定为 1。
-      </Typography>
       <Button startIcon={<AddIcon />} onClick={handleAddIntVar}>
         Add Integer Variable
       </Button>
@@ -160,11 +154,11 @@ const DeclarationsView = () => {
           title={
             <>
               <Typography variant="caption" component="span">
-                示例：P1!alpha, P2?alpha
+                Example: P1!alpha, P2?alpha
               </Typography>
               <br />
               <Typography variant="caption" component="span">
-                使用逗号分隔多个进程约束
+                Use commas to separate multiple process constraints
               </Typography>
             </>
           }

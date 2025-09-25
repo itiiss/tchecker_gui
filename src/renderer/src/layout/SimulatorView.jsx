@@ -265,7 +265,7 @@ const SimulatorView = () => {
               }}
             >
               <ListItemText
-                primary={`${transition.processName}@${transition.event || 'τ'}`}
+                primary={`${transition.processName}@${transition.event}`}
                 // secondary={`${transition.sourceLocation} → ${transition.targetLocation}${transition.guard !== 'true' ? ` [${transition.guard}]` : ''}`}
               />
             </ListItemButton>
@@ -549,7 +549,7 @@ const SimulatorView = () => {
                   .map(([, loc]) => loc)
                   .join(', ')})`
               : entry.transition
-                ? `Sync: ${entry.transition.processName}@${entry.transition.event || 'τ'}`
+                ? `Sync: ${entry.transition.processName}@${entry.transition.event }`
                 : `State: (${Object.entries(entry.state)
                     .map(([, loc]) => loc)
                     .join(', ')})`}

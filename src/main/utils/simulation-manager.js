@@ -1,9 +1,11 @@
 const fs = require('fs')
 const fsPromises = fs.promises
 const path = require('path')
+const os = require('os')
 const { spawn } = require('child_process')
 const { generateTckFromJSON } = require('./tck-generator')
-const { parseDot } = require('./dot-parser')
+
+let activeSession = null
 
 function resolveAppBasePath() {
   try {
@@ -15,24 +17,6 @@ function resolveAppBasePath() {
     // ignore and use fallback
   }
   return path.join(__dirname, '..', '..')
-}
-
-function annotateEdges(parsedJson, edges) {
-  if (!Array.isArray(edges)) return []
-  const nodeById = new Map((parsedJson.nodes || []).map((node) => [node.id, node.attributes || {}]))
-
-  return edges.map((edge) => {
-    const sourceAttr = nodeById.get(edge.source) || {}
-    const targetAttr = nodeById.get(edge.target) || {}
-    return {
-      ...edge,
-      attributes: {
-        ...(edge.attributes || {}),
-        sourceVloc: sourceAttr.vloc || '',
-        targetVloc: targetAttr.vloc || ''
-      }
-    }
-  })
 }
 
 async function ensureExecutable(filePath) {
@@ -201,8 +185,8 @@ function processConstraint(matrix, headersMap, rawConstraint) {
     .replace(/==/g, ' == ')
     .replace(/<=/g, ' <= ')
     .replace(/>=/g, ' >= ')
-    .replace(/</g, ' < ')
-    .replace(/>/g, ' > ')
+    .replace(/<(?!=)/g, ' < ')
+    .replace(/>(?!=)/g, ' > ')
     .split(/\s+/)
     .filter(Boolean)
 
@@ -246,101 +230,6 @@ function computeZoneMatrix(zoneString, clocks) {
   return { headers, rows }
 }
 
-function normalizeZoneExpression(expr) {
-  if (!expr) return ''
-  return expr.replace(/\s+/g, '')
-}
-
-function parseMatrixCellString(token) {
-  const valueStr = token.trim()
-  if (!valueStr) {
-    return { value: Number.POSITIVE_INFINITY, strict: false }
-  }
-  if (valueStr.toLowerCase().includes('inf')) {
-    return {
-      value: Number.POSITIVE_INFINITY,
-      strict: valueStr.startsWith('<') && !valueStr.startsWith('<=')
-    }
-  }
-  const strict = valueStr.startsWith('<') && !valueStr.startsWith('<=')
-  const numericPart = valueStr.replace(/<=|</, '')
-  const parsed = parseFloat(numericPart)
-  if (Number.isNaN(parsed)) {
-    return { value: Number.POSITIVE_INFINITY, strict }
-  }
-  return { value: parsed, strict }
-}
-
-function parseTckMatrixOutput(output) {
-  const zoneMatrixMap = new Map()
-  if (!output) return zoneMatrixMap
-  const lines = output.split(/\r?\n/)
-  let currentZone = null
-  let headers = []
-  let rows = []
-  let collecting = false
-
-  const flush = () => {
-    if (!currentZone || headers.length === 0 || rows.length === 0) {
-      return
-    }
-    const zoneKey = normalizeZoneExpression(currentZone)
-    const normalizedRows = rows.map((row) => ({
-      label: row.label,
-      values: row.values.map((cell) => ({ ...cell }))
-    }))
-    zoneMatrixMap.set(zoneKey, { headers, rows: normalizedRows })
-  }
-
-  lines.forEach((line) => {
-    if (line.includes('Constraints:')) {
-      flush()
-      const match = line.match(/Constraints:\s*\((.*)\)/)
-      currentZone = match ? match[1].trim() : null
-      headers = []
-      rows = []
-      collecting = false
-      return
-    }
-
-    if (!currentZone) {
-      return
-    }
-
-    if (/^\s*\|/.test(line)) {
-      const parts = line.split('|')
-      headers = parts[1]?.trim().split(/\s+/).filter(Boolean) || []
-      collecting = headers.length > 0
-      return
-    }
-
-    if (collecting && /^\s*-+\+/.test(line)) {
-      return
-    }
-
-    if (collecting && line.includes('|')) {
-      const [labelPart, cellsPart] = line.split('|')
-      const label = labelPart.trim()
-      const values = (cellsPart || '')
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean)
-        .map((token) => parseMatrixCellString(token))
-      rows.push({ label, values })
-      return
-    }
-
-    if (collecting && !line.trim()) {
-      flush()
-      currentZone = null
-      collecting = false
-    }
-  })
-
-  flush()
-  return zoneMatrixMap
-}
-
 async function resolveTckSimulatePath() {
   const envPath = process.env.TCK_SIMULATE_PATH
   const appBase = resolveAppBasePath()
@@ -377,108 +266,316 @@ async function resolveTckSimulatePath() {
   )
 }
 
-async function runTckSimulate(args) {
-  const command = await resolveTckSimulatePath()
+function hasPrompt(buffer) {
+  if (!buffer) return false
+  const normalized = buffer.replace(/\r/g, '')
+  const trimmedEnd = normalized.replace(/\s+$/, '')
+  return /Select[^\n]*\?$/.test(trimmedEnd)
+}
+
+function checkSessionBuffer(session) {
+  if (!session.pending) return
+  if (session.error) {
+    const { reject } = session.pending
+    session.pending = null
+    reject(session.error)
+    return
+  }
+
+  if (hasPrompt(session.buffer)) {
+    const { resolve } = session.pending
+    const output = session.buffer
+    session.buffer = ''
+    session.pending = null
+    resolve(output)
+  }
+}
+
+function waitForPrompt(session) {
+  if (session.closed && !session.buffer) {
+    return Promise.reject(new Error('tck-simulate process has terminated'))
+  }
+
+  if (session.pending) {
+    return Promise.reject(new Error('Another prompt wait is already pending'))
+  }
 
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args)
-    let stderrData = ''
-
-    child.stderr.on('data', (data) => {
-      stderrData += data.toString()
-    })
-
-    child.on('close', (code) => {
-      if (code === 0) {
-        resolve()
-      } else {
-        reject(new Error(`tck-simulate exited with code ${code}:\n${stderrData}`))
-      }
-    })
-
-    child.on('error', (error) => {
-      reject(new Error(`Failed to launch tck-simulate: ${error.message}`))
-    })
+    session.pending = { resolve, reject }
+    checkSessionBuffer(session)
   })
 }
 
-async function simulateAndParse(tempTckFile, tempDotFile, depth) {
-  const runArgs = [tempTckFile, '-t', '-r', String(depth), '-o', tempDotFile]
-  await runTckSimulate(runArgs)
-  const dotContent = await fsPromises.readFile(tempDotFile, 'utf8')
-  const parsedJson = parseDot(dotContent)
-  parsedJson.edges = annotateEdges(parsedJson, parsedJson.edges || [])
-  return parsedJson
+function parseStateLines(lines) {
+  const attributes = {}
+  lines.forEach((rawLine) => {
+    const cleanLine = rawLine.replace(/^\s+/, '')
+    if (!cleanLine) return
+    const match = cleanLine.match(/^([A-Za-z_]+):\s*(.*)$/)
+    if (match) {
+      attributes[match[1]] = match[2].trim()
+    }
+  })
+  return attributes
 }
 
-async function resolveTckMatrixPath() {
-  const envPath = process.env.TCK_MATRIX_PATH
-  const appBase = resolveAppBasePath()
-  const candidates = [
-    envPath,
-    path.join(appBase, 'src/main/build/src/tck-matrix'),
-    path.join(appBase, 'main/build/src/tck-matrix'),
-    path.join(appBase, 'resources', 'tck-matrix'),
-    process.resourcesPath ? path.join(process.resourcesPath, 'tck-matrix') : null
-  ].filter(Boolean)
+function parseSuccessorMeta(line) {
+  const cleanLine = line.replace(/\t/g, ' ').trim()
+  const indexMatch = cleanLine.match(/^(\d+)\)/)
+  if (!indexMatch) {
+    return { index: null, fields: {} }
+  }
 
-  for (const candidate of candidates) {
+  const index = Number.parseInt(indexMatch[1], 10)
+  const rest = cleanLine.slice(indexMatch[0].length).trim()
+  const fields = {}
+  const fieldRegex = /([A-Za-z_]+):\s*([^]*?)(?=\s*[A-Za-z_]+:|$)/g
+  let match
+  while ((match = fieldRegex.exec(rest)) !== null) {
+    fields[match[1]] = match[2].trim()
+  }
+
+  return { index, fields }
+}
+
+function parseSuccessorsSection(section) {
+  const normalized = section.replace(/\r/g, '')
+  const lines = normalized.split('\n')
+  const entries = []
+  let current = null
+
+  lines.forEach((line) => {
+    const trimmed = line.trim()
+    if (!trimmed) return
+
+    if (/^\d+\)/.test(trimmed)) {
+      if (current) {
+        entries.push(current)
+      }
+      current = { meta: line, detailLines: [] }
+      return
+    }
+
+    if (current) {
+      current.detailLines.push(line)
+    }
+  })
+
+  if (current) {
+    entries.push(current)
+  }
+
+  return entries.map((entry) => {
+    const { index, fields } = parseSuccessorMeta(entry.meta)
+    const state = parseStateLines(entry.detailLines || [])
+    return { index, fields, state }
+  })
+}
+
+function parseVlocLocations(vlocString) {
+  if (!vlocString) return []
+  return vlocString
+    .replace(/[<>]/g, '')
+    .split(',')
+    .map((loc) => loc.trim())
+    .filter(Boolean)
+}
+
+function buildTransitionsFromSuccessors(session, currentState, successors) {
+  const map = new Map()
+  const stepIndex = session.stepIndex
+  const currentLocations = parseVlocLocations(currentState.attributes?.vloc || '')
+
+  const transitions = successors
+    .filter((successor) => Number.isInteger(successor.index))
+    .map((successor) => {
+      const transitionId = `transition_${stepIndex}_${successor.index}`
+      const targetId = `${currentState.id}_succ_${successor.index}`
+      const vedge = successor.fields.vedge || ''
+      const successorLocations = parseVlocLocations(successor.state?.vloc || '')
+      const changedProcesses = session.processNames
+        .map((name, index) => ({ name, index }))
+        .filter(({ index }) => successorLocations[index] && successorLocations[index] !== currentLocations[index])
+        .map(({ name }) => name)
+      const processName = changedProcesses.length > 0 ? changedProcesses.join(', ') : ''
+      const attributes = {
+        vedge,
+        sourceVloc: currentState.attributes?.vloc || '',
+        targetVloc: successor.state?.vloc || '',
+        guard: successor.fields.guard || '',
+        reset: successor.fields.reset || '',
+        sync: successor.fields.sync || '',
+        srcInvariant: successor.fields.src_invariant || '',
+        tgtInvariant: successor.fields.tgt_invariant || '',
+        intval: successor.state?.intval || '',
+        labels: successor.state?.labels || '',
+        zone: successor.state?.zone || '',
+        processName
+      }
+
+      map.set(transitionId, {
+        index: successor.index,
+        vedge,
+        targetVloc: attributes.targetVloc,
+        raw: successor
+      })
+
+      return {
+        id: transitionId,
+        source: currentState.id,
+        target: targetId,
+        attributes
+      }
+    })
+
+  session.transitionMap = map
+  session.stepIndex += 1
+
+  return transitions
+}
+
+function parseInteractiveStep(session, output) {
+  const normalized = output.replace(/\r/g, '')
+  const promptIndex = normalized.lastIndexOf('Select ')
+  const body = promptIndex >= 0 ? normalized.slice(0, promptIndex).trimEnd() : normalized.trim()
+
+  const currentSplit = body.split('--- Current state:')
+  if (currentSplit.length < 2) {
+    throw new Error('Unable to parse current state from tck-simulate output')
+  }
+
+  const afterCurrent = currentSplit[1]
+  const [stateSection, successorsSection = ''] = afterCurrent.split('--- Successors:')
+  const stateLines = stateSection
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+
+  const stateAttributes = parseStateLines(stateLines)
+  const zoneString = stateAttributes.zone || ''
+  const stateId = `state_${session.stateCounter++}`
+  const currentState = {
+    id: stateId,
+    attributes: stateAttributes,
+    zoneMatrix: computeZoneMatrix(zoneString, session.modelJson.clocks || [])
+  }
+
+  const successors = parseSuccessorsSection(successorsSection)
+  const transitions = buildTransitionsFromSuccessors(session, currentState, successors)
+
+  return { currentState, transitions }
+}
+
+function extractSelectBounds(output) {
+  const match = output.match(/Select\s+(\d+)(?:-(\d+))?/)
+  if (!match) {
+    return null
+  }
+  const min = Number.parseInt(match[1], 10)
+  const max = match[2] ? Number.parseInt(match[2], 10) : min
+  return { min, max }
+}
+
+function waitForChildExit(child, timeoutMs = 500) {
+  return new Promise((resolve) => {
+    let settled = false
+
+    const done = () => {
+      if (!settled) {
+        settled = true
+        resolve()
+      }
+    }
+
+    child.once('close', done)
+    setTimeout(done, timeoutMs)
+  })
+}
+
+async function cleanupActiveSession() {
+  if (!activeSession) return
+
+  const session = activeSession
+  activeSession = null
+
+  try {
+    if (session.child && !session.closed) {
+      try {
+        session.child.stdin.write('q\n')
+      } catch (error) {
+        console.warn('Failed to send quit to tck-simulate:', error.message)
+      }
+
+      await waitForChildExit(session.child)
+
+      if (!session.closed) {
+        session.child.kill('SIGTERM')
+      }
+    }
+  } catch (error) {
+    console.warn('Error while terminating tck-simulate:', error.message)
+  }
+
+  if (session.tempDir) {
     try {
-      const ok = await ensureExecutable(candidate)
-      if (ok) {
-        return candidate
-      }
+      await fsPromises.rm(session.tempDir, { recursive: true, force: true })
     } catch (error) {
-      if (error.code === 'ENOENT') {
-        continue
-      }
-      console.warn(`tck-matrix candidate unusable (${candidate}): ${error.message}`)
+      console.warn('Failed to remove temporary simulation directory:', error.message)
     }
   }
-
-  throw new Error(
-    'Unable to locate executable tck-matrix. Set TCK_MATRIX_PATH or keep binary in src/main/build/src.'
-  )
 }
 
-async function runTckMatrix(args) {
-  const command = await resolveTckMatrixPath()
+async function startInteractiveSession(modelJson) {
+  const tempDir = await fsPromises.mkdtemp(path.join(os.tmpdir(), 'tchecker-gui-'))
+  const tempTckFile = path.join(tempDir, 'model.tck')
+  const tckContent = generateTckFromJSON(modelJson)
+  await fsPromises.writeFile(tempTckFile, tckContent, 'utf8')
 
-  return new Promise((resolve, reject) => {
-    const child = spawn(command, args)
-    let stdoutData = ''
-    let stderrData = ''
+  const command = await resolveTckSimulatePath()
+  const child = spawn(command, [tempTckFile])
+  child.stdin.setDefaultEncoding('utf8')
 
-    child.stdout.on('data', (data) => {
-      stdoutData += data.toString()
-    })
-
-    child.stderr.on('data', (data) => {
-      stderrData += data.toString()
-    })
-
-    child.on('close', (code) => {
-      if (code === 0) {
-        resolve(stdoutData)
-      } else {
-        reject(new Error(`tck-matrix exited with code ${code}:\n${stderrData}`))
-      }
-    })
-
-    child.on('error', (error) => {
-      reject(new Error(`Failed to launch tck-matrix: ${error.message}`))
-    })
-  })
-}
-
-async function buildZoneMatrixMap(tempTckFile, depth) {
-  try {
-    const output = await runTckMatrix(['-d', '-s', String(depth), tempTckFile])
-    return parseTckMatrixOutput(output)
-  } catch (error) {
-    console.warn('tck-matrix execution failed:', error.message)
-    return new Map()
+  const session = {
+    child,
+    buffer: '',
+    pending: null,
+    error: null,
+    closed: false,
+    tempDir,
+    tckFile: tempTckFile,
+    modelJson,
+    processNames: Object.keys(modelJson.processes || {}),
+    stateCounter: 0,
+    stepIndex: 0,
+    transitionMap: new Map(),
+    stderr: ''
   }
+
+  child.stdout.setEncoding('utf8')
+  child.stdout.on('data', (data) => {
+    session.buffer += data
+    checkSessionBuffer(session)
+  })
+
+  child.stderr.setEncoding('utf8')
+  child.stderr.on('data', (data) => {
+    session.stderr += data
+  })
+
+  child.on('error', (error) => {
+    session.error = error
+    checkSessionBuffer(session)
+  })
+
+  child.on('close', (code) => {
+    session.closed = true
+    if (code !== 0 && !session.error) {
+      session.error = new Error(`tck-simulate exited with code ${code}`)
+    }
+    checkSessionBuffer(session)
+  })
+
+  return session
 }
 
 /**
@@ -488,64 +585,41 @@ async function buildZoneMatrixMap(tempTckFile, depth) {
  */
 async function initializeSimulator(modelJson) {
   console.log('=== Backend: initializeSimulator called ===')
-  console.log('Model JSON received:', JSON.stringify(modelJson, null, 2))
+  console.log('Model JSON received for system:', modelJson?.systemName)
 
-  const tempTckFile = path.join(__dirname, 'temp_model.tck')
-  const tempDotFile = path.join(__dirname, 'init_output.dot')
+  await cleanupActiveSession()
 
   try {
-    // 1. 从 JSON 生成 TCK 文件内容
-    const tckContent = generateTckFromJSON(modelJson)
-    console.log('Generated TCK content:')
-    console.log(tckContent)
-    await fsPromises.writeFile(tempTckFile, tckContent, 'utf8')
+    const session = await startInteractiveSession(modelJson)
+    activeSession = session
 
-    // 2. 执行 tck-simulate 获取初始状态和转换 (生成少量步骤)
-    const parsedJson = await simulateAndParse(tempTckFile, tempDotFile, 3)
-    console.log('Parsed DOT JSON:', JSON.stringify(parsedJson, null, 2))
-
-    const zoneMatrixMap = await buildZoneMatrixMap(tempTckFile, 50)
-
-    // 找到初始状态节点
-    const initialNode =
-      parsedJson.nodes?.find(
-        (node) => node.attributes?.initial === 'true' || node.attributes?.initial === true
-      ) || parsedJson.nodes?.[0]
-
-    // 只返回从初始状态出发的转换
-    const availableTransitions =
-      parsedJson.edges?.filter((edge) => edge.source === initialNode?.id) || []
-    const initialZoneMatrix =
-      zoneMatrixMap.get(normalizeZoneExpression(initialNode?.attributes?.zone || '')) ||
-      computeZoneMatrix(initialNode?.attributes?.zone || '', modelJson.clocks || [])
-    const initialState = {
-      ...initialNode,
-      zoneMatrix: initialZoneMatrix
+    const initialPrompt = await waitForPrompt(session)
+    const bounds = extractSelectBounds(initialPrompt)
+    if (!bounds || bounds.min > 0) {
+      throw new Error('Unexpected initial state prompt from tck-simulate')
     }
 
-    console.log('Initial state:', initialNode)
-    console.log('Available transitions:', availableTransitions)
+    session.child.stdin.write('0\n')
+
+    const firstStepOutput = await waitForPrompt(session)
+    const { currentState, transitions } = parseInteractiveStep(session, firstStepOutput)
+
+    session.currentState = currentState
+
+    console.log('Initial state vloc:', currentState.attributes?.vloc)
+    console.log('Initial transitions count:', transitions.length)
 
     return {
       success: true,
-      initialState,
-      availableTransitions: availableTransitions
+      initialState: currentState,
+      availableTransitions: transitions
     }
   } catch (error) {
     console.error('initializeSimulator error:', error)
+    await cleanupActiveSession()
     return {
       success: false,
       error: error.message
-    }
-  } finally {
-    // 清理临时文件
-    try {
-      await fsPromises.unlink(tempTckFile)
-      await fsPromises.unlink(tempDotFile)
-    } catch (err) {
-      if (err.code !== 'ENOENT') {
-        console.error('Error cleaning up temporary files:', err)
-      }
     }
   }
 }
@@ -559,138 +633,88 @@ async function initializeSimulator(modelJson) {
  */
 async function executeTransition(modelJson, requestedTransition, currentState) {
   console.log('=== Backend: executeTransition called ===')
-  console.log('Requested transition:', requestedTransition)
-  console.log('Current state:', JSON.stringify(currentState, null, 2))
+  console.log(
+    'Requested transition:',
+    requestedTransition?.id || 'unknown',
+    requestedTransition?.vedge || ''
+  )
+  console.log('Current state vloc:', currentState?.attributes?.vloc)
 
-  const tempTckFile = path.join(__dirname, 'temp_model.tck')
-  const tempDotFile = path.join(__dirname, 'step_output.dot')
+  if (!activeSession) {
+    return {
+      success: false,
+      error: 'Simulator session is not initialized'
+    }
+  }
+
+  const session = activeSession
+
+  if (
+    modelJson &&
+    JSON.stringify(modelJson.systemName) !== JSON.stringify(session.modelJson.systemName)
+  ) {
+    console.warn('executeTransition received a model that differs from the active session')
+  }
+
+  const candidateId = requestedTransition?.id
+  let transitionInfo = candidateId ? session.transitionMap.get(candidateId) : null
+
+  if (!transitionInfo) {
+    const requestedVedge =
+      requestedTransition?.vedge || requestedTransition?.edgeData?.attributes?.vedge
+    const requestedTargetVloc =
+      requestedTransition?.targetVloc || requestedTransition?.edgeData?.attributes?.targetVloc
+
+    for (const [, info] of session.transitionMap.entries()) {
+      if (requestedVedge && info.vedge === requestedVedge) {
+        if (!requestedTargetVloc || requestedTargetVloc === info.targetVloc) {
+          transitionInfo = info
+          break
+        }
+      }
+      if (!transitionInfo && !requestedVedge) {
+        transitionInfo = info
+      }
+    }
+  }
+
+  if (!transitionInfo) {
+    return {
+      success: false,
+      error: `Cannot find transition with id ${requestedTransition?.id || '<unknown>'}`
+    }
+  }
 
   try {
-    // 1. 生成TCK文件
-    const tckContent = generateTckFromJSON(modelJson)
-    await fsPromises.writeFile(tempTckFile, tckContent, 'utf8')
-
-    const depthAttempts = [20, 200, 1000]
-    let parsedJson = null
-    let currentStateNode = null
-    let usedDepth = null
-
-    const currentStateVloc = currentState?.attributes?.vloc || ''
-    console.log('Looking for current state vloc:', currentStateVloc)
-
-    for (const depth of depthAttempts) {
-      parsedJson = await simulateAndParse(tempTckFile, tempDotFile, depth)
-      console.log('All available transitions in DOT:', parsedJson.edges?.length || 0)
-
-      currentStateNode = parsedJson.nodes?.find((node) => {
-        const nodeVloc = node.attributes?.vloc || ''
-        console.log('Comparing with node vloc:', nodeVloc)
-        return nodeVloc === currentStateVloc
-      })
-
-      if (currentStateNode) {
-        usedDepth = depth
-        break
-      }
-
-      console.warn(
-        `Current state ${currentStateVloc} not found with depth ${depth}, retrying with higher depth...`
-      )
-    }
-
-    if (!currentStateNode) {
-      console.error('Critical error: Could not find current state node')
-      console.log('Current state vloc:', currentStateVloc)
-      console.log(
-        'Available nodes:',
-        parsedJson.nodes?.map((n) => ({ id: n.id, vloc: n.attributes?.vloc }))
-      )
-
-      // 更严格的错误处理 - 不使用fallback逻辑，而是报错
-      return {
-        success: false,
-        error: `Cannot find current state node with vloc: ${currentStateVloc}. This indicates a state synchronization issue.`
-      }
-    }
-
-    const zoneMatrixMap = await buildZoneMatrixMap(
-      tempTckFile,
-      usedDepth || depthAttempts[depthAttempts.length - 1]
-    )
-
-    // 5. 根据transitionId找到对应的边（从当前状态出发的边）
-    const availableEdges =
-      parsedJson.edges?.filter((edge) => edge.source === currentStateNode?.id) || []
-    console.log('Available edges from current state:', availableEdges.length)
-
-    const targetEdge = availableEdges.find((edge) => {
-      const vedge = edge.attributes?.vedge || ''
-      const cleanVedge = vedge.replace(/[<>]/g, '')
-      const requestedVedge = (requestedTransition?.vedge || '').replace(/[<>]/g, '')
-      const sameVedge = requestedVedge && cleanVedge === requestedVedge
-      const sameId = requestedTransition?.id && edge.id && edge.id === requestedTransition.id
-      const sameSourceTarget =
-        requestedTransition?.sourceLocation === edge.source &&
-        requestedTransition?.targetLocation === edge.target
-      const sameTargetVloc =
-        requestedTransition?.targetVloc &&
-        requestedTransition.targetVloc === edge.attributes?.targetVloc
-
-      console.log('Checking edge candidate:', {
-        source: edge.source,
-        target: edge.target,
-        vedge: cleanVedge,
-        targetVloc: edge.attributes?.targetVloc || ''
-      })
-
-      return sameVedge || sameId || sameSourceTarget || sameTargetVloc
-    })
-
-    // 如果找不到精确匹配，使用第一个可用的边
-    const selectedEdge = targetEdge || availableEdges[0]
-
-    if (!selectedEdge) {
-      console.log('No edges available from current state')
-      return {
-        success: false,
-        error: 'No transitions available from current state'
-      }
-    }
-
-    const newStateRaw = parsedJson.nodes?.find((node) => node.id === selectedEdge.target)
-    const nextTransitions =
-      parsedJson.edges?.filter((edge) => edge.source === newStateRaw?.id) || []
-    const newState = {
-      ...newStateRaw,
-      zoneMatrix:
-        zoneMatrixMap.get(normalizeZoneExpression(newStateRaw?.attributes?.zone || '')) ||
-        computeZoneMatrix(newStateRaw?.attributes?.zone || '', modelJson.clocks || [])
-    }
-
-    console.log('Selected edge:', selectedEdge.attributes?.vedge)
-    console.log('New state:', newState?.attributes?.vloc)
-    console.log('Next available transitions:', nextTransitions.length)
-
-    return {
-      success: true,
-      newState,
-      availableTransitions: nextTransitions
-    }
+    session.child.stdin.write(`${transitionInfo.index}\n`)
   } catch (error) {
-    console.error('executeTransition error:', error)
+    console.error('Failed to write transition selection to tck-simulate:', error)
+    await cleanupActiveSession()
     return {
       success: false,
       error: error.message
     }
-  } finally {
-    // 清理临时文件
-    try {
-      await fsPromises.unlink(tempTckFile)
-      await fsPromises.unlink(tempDotFile)
-    } catch (err) {
-      if (err.code !== 'ENOENT') {
-        console.error('Error cleaning up temporary files:', err)
-      }
+  }
+
+  try {
+    const stepOutput = await waitForPrompt(session)
+    const { currentState: newState, transitions } = parseInteractiveStep(session, stepOutput)
+    session.currentState = newState
+
+    console.log('New state vloc:', newState.attributes?.vloc)
+    console.log('New transitions count:', transitions.length)
+
+    return {
+      success: true,
+      newState,
+      availableTransitions: transitions
+    }
+  } catch (error) {
+    console.error('executeTransition error:', error)
+    await cleanupActiveSession()
+    return {
+      success: false,
+      error: error.message
     }
   }
 }
