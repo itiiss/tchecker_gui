@@ -8,7 +8,6 @@ import {
   ListItemText,
   ListItemButton,
   Button,
-  Slider,
   Stack,
   Collapse,
   IconButton,
@@ -22,7 +21,6 @@ import {
 import {
   PlayArrow as NextIcon,
   Refresh as ResetIcon,
-  NavigateBefore as PrevIcon,
   Shuffle as RandomIcon,
   PlayArrow as AutoPlayIcon,
   Pause as PauseIcon,
@@ -222,7 +220,7 @@ const SimulatorView = () => {
 
   // [A] Enabled Transitions List
   const renderEnabledTransitions = () => (
-    <Paper sx={{ height: '30%', display: 'flex', flexDirection: 'column', mb: 2 }}>
+    <Paper sx={{ flexBasis: 260, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
         <Typography variant="subtitle1">Enabled Transitions</Typography>
       </Box>
@@ -277,7 +275,7 @@ const SimulatorView = () => {
 
   // [B] Process Visualizations with Cytoscape
   const renderProcessVisualizations = () => (
-    <Paper sx={{ height: '70%', display: 'flex', flexDirection: 'column', mb: 2 }}>
+    <Paper sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
         <Typography variant="subtitle1">Process Visualizations</Typography>
       </Box>
@@ -285,18 +283,19 @@ const SimulatorView = () => {
         sx={{
           flexGrow: 1,
           p: 2,
-          overflow: 'auto',
+          overflowY: 'auto',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: 2,
-          alignContent: 'start'
+          alignContent: 'start',
+          minHeight: 0
         }}
       >
         {visualizationData.map((processViz) => (
           <Box
             key={processViz.processName}
             sx={{
-              height: '250px',
+              height: 250,
               width: '100%',
               border: '1px solid #e0e0e0',
               borderRadius: 1,
@@ -322,6 +321,8 @@ const SimulatorView = () => {
               key={`simulator-${processViz.processName}`} // Stable key to prevent recreation
               nodes={processViz.nodes}
               edges={processViz.edges}
+              autoCenter
+              showToolbar={false}
               onNodeUpdate={() => {}} // Read-only in simulator
               onEdgeUpdate={() => {}} // Read-only in simulator
               onEdgeCreate={() => {}} // Read-only in simulator
@@ -426,7 +427,7 @@ const SimulatorView = () => {
     )
 
     return (
-      <Paper sx={{ height: '30%', display: 'flex', flexDirection: 'column' }}>
+      <Paper sx={{ flexBasis: 320, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
           <Typography variant="subtitle1">Variables & Clocks</Typography>
         </Box>
@@ -520,7 +521,7 @@ const SimulatorView = () => {
 
   // [D] Simulation Trace & [E] Control Panel
   const renderTraceAndControls = () => (
-    <Paper sx={{ height: '70%', display: 'flex', flexDirection: 'column' }}>
+    <Paper sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
       <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
         <Typography variant="subtitle1">Simulation Trace & Controls</Typography>
       </Box>
@@ -560,15 +561,6 @@ const SimulatorView = () => {
       {/* Control Panel */}
       <Box sx={{ p: 1.5, borderTop: '1px solid #e0e0e0' }}>
         <Stack direction="row" spacing={1} sx={{ mb: 1, flexWrap: 'wrap' }}>
-          <Button
-            size="small"
-            variant="outlined"
-            startIcon={<PrevIcon />}
-            disabled={tracePosition <= 0}
-            onClick={stepBackward}
-          >
-            Prev
-          </Button>
           <Button
             size="small"
             variant="contained"
@@ -637,40 +629,24 @@ const SimulatorView = () => {
           </Button>
         </Stack>
 
-        {/* Speed Control */}
-        <Box>
-          <Typography variant="body2" gutterBottom sx={{ fontSize: '0.8rem' }}>
-            Speed: Slow ← → Fast
-          </Typography>
-          <Slider
-            size="small"
-            value={2000 - playSpeed}
-            min={200}
-            max={1800}
-            step={200}
-            onChange={(e, value) => setPlaySpeed(2000 - value)}
-            sx={{ width: '100%' }}
-          />
-        </Box>
+        <Typography variant="caption" color="text.secondary">
+          Trace length: {simulationTrace.length}
+        </Typography>
       </Box>
     </Paper>
   )
 
   return (
-    <Box sx={{ height: '100%', p: 2, display: 'flex', gap: 2 }}>
-      {/* Left Column: 30% width */}
-      <Box sx={{ width: '30%', display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {/* Top: Enabled Transitions (30% height) */}
+    <Box sx={{ height: '100%', p: 2, display: 'flex', gap: 2, minHeight: 0 }}>
+      {/* Left Column */}
+      <Box sx={{ width: 320, minWidth: 280, display: 'flex', flexDirection: 'column', gap: 2, flexShrink: 0 }}>
         {renderEnabledTransitions()}
-        {/* Bottom: Simulation Trace & Controls (70% height) */}
         {renderTraceAndControls()}
       </Box>
 
-      {/* Right Column: 70% width */}
-      <Box sx={{ width: '70%', display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {/* Top: Process Visualizations (70% height) */}
+      {/* Right Column */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, minHeight: 0 }}>
         {renderProcessVisualizations()}
-        {/* Bottom: Variables & Clocks (30% height) */}
         {renderVariablesAndClocks()}
       </Box>
     </Box>

@@ -234,6 +234,8 @@ const CytoscapeAutomaton = ({
   nodes = [],
   edges = [],
   mode = 'select',
+  autoCenter = false,
+  showToolbar = true,
   onNodeUpdate,
   onEdgeUpdate,
   onEdgeCreate,
@@ -500,6 +502,12 @@ const CytoscapeAutomaton = ({
       .call(zoomBehaviorRef.current.transform, zoomIdentity.translate(tx, ty).scale(k))
   }, [dimensions.height, dimensions.width, normalizedNodes])
 
+  useEffect(() => {
+    if (autoCenter && normalizedNodes.length > 0) {
+      handleCenter()
+    }
+  }, [autoCenter, normalizedNodes, handleCenter])
+
   const handleLayout = useCallback(() => {
     if (!normalizedNodes.length || !onNodeUpdate) return
     const width = dimensions.width || 400
@@ -649,19 +657,20 @@ const CytoscapeAutomaton = ({
 
   return (
     <Box ref={containerRef} sx={{ width: '100%', height: '100%', position: 'relative' }}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          zIndex: 10,
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-          boxShadow: 2,
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
+      {showToolbar && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            zIndex: 10,
+            bgcolor: 'background.paper',
+            borderRadius: 1,
+            boxShadow: 2,
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
         <Tooltip title="放大">
           <IconButton onClick={handleZoomIn} size="small">
             <ZoomInIcon />
@@ -727,7 +736,8 @@ const CytoscapeAutomaton = ({
             <TimelineIcon />
           </IconButton>
         </Tooltip>
-      </Box>
+        </Box>
+      )}
 
       <svg
         ref={svgRef}

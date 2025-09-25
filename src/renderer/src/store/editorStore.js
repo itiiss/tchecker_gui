@@ -1,388 +1,164 @@
 import { create } from 'zustand'
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
 
-const useEditorStore = create((set, get) => ({
-  systemName: 'fischer_3_10',
-  clocks: [
-    { name: 'x1', size: 1 }, // Process P1 clock
-    { name: 'x2', size: 1 }, // Process P2 clock
-    { name: 'x3', size: 1 } // Process P3 clock
-  ],
-  intVars: [
-    { name: 'id', size: 1, min: 0, max: 10, initial: 0 } // Shared variable for mutual exclusion
-  ],
-  events: [
-    { name: 'tau' } // Internal transition event
-  ],
-  synchronizations: [],
-  processes: {
-    P1: {
-      nodes: [
-        {
-          id: 'P1.A',
-          type: 'timedAutomatonNode',
-          position: { x: 100, y: 100 },
-          data: {
-            processName: 'P1',
-            locationName: 'A',
-            isInitial: true,
-            invariant: '',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P1.req',
-          type: 'timedAutomatonNode',
-          position: { x: 300, y: 100 },
-          data: {
-            processName: 'P1',
-            locationName: 'req',
-            isInitial: false,
-            invariant: 'x1<=10',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P1.wait',
-          type: 'timedAutomatonNode',
-          position: { x: 500, y: 100 },
-          data: {
-            processName: 'P1',
-            locationName: 'wait',
-            isInitial: false,
-            invariant: '',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P1.cs',
-          type: 'timedAutomatonNode',
-          position: { x: 300, y: 250 },
-          data: {
-            processName: 'P1',
-            locationName: 'cs',
-            isInitial: false,
-            invariant: '',
-            labels: ['cs1'],
-            isCommitted: false,
-            isUrgent: false
-          }
-        }
-      ],
-      edges: [
-        {
-          id: 'e_P1_1',
-          source: 'P1.A',
-          target: 'P1.req',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P1',
-            event: 'tau',
-            guard: 'id==0',
-            action: 'x1=0'
-          }
-        },
-        {
-          id: 'e_P1_2',
-          source: 'P1.req',
-          target: 'P1.wait',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P1',
-            event: 'tau',
-            guard: 'x1<=10',
-            action: 'x1=0;id=1'
-          }
-        },
-        {
-          id: 'e_P1_3',
-          source: 'P1.wait',
-          target: 'P1.req',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P1',
-            event: 'tau',
-            guard: 'id==0',
-            action: 'x1=0'
-          }
-        },
-        {
-          id: 'e_P1_4',
-          source: 'P1.wait',
-          target: 'P1.cs',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P1',
-            event: 'tau',
-            guard: 'x1>10&&id==1',
-            action: ''
-          }
-        },
-        {
-          id: 'e_P1_5',
-          source: 'P1.cs',
-          target: 'P1.A',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P1',
-            event: 'tau',
-            guard: '',
-            action: 'id=0'
-          }
-        }
-      ]
+const PROCESS_COUNT = 10
+const COLUMN_COUNT = 3
+const COLUMN_WIDTH = 620
+const ROW_HEIGHT = 240
+
+const buildProcessData = (index) => {
+  const processName = `P${index}`
+  const clockName = `x${index}`
+  const row = Math.floor((index - 1) / COLUMN_COUNT)
+  const col = (index - 1) % COLUMN_COUNT
+  const xOffset = col * COLUMN_WIDTH
+  const yBase = 120 + row * ROW_HEIGHT
+
+  const nodes = [
+    {
+      id: `${processName}.A`,
+      type: 'timedAutomatonNode',
+      position: { x: 100 + xOffset, y: yBase },
+      data: {
+        processName,
+        locationName: 'A',
+        isInitial: true,
+        invariant: '',
+        labels: [],
+        isCommitted: false,
+        isUrgent: false
+      }
     },
-    P2: {
-      nodes: [
-        {
-          id: 'P2.A',
-          type: 'timedAutomatonNode',
-          position: { x: 100, y: 100 },
-          data: {
-            processName: 'P2',
-            locationName: 'A',
-            isInitial: true,
-            invariant: '',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P2.req',
-          type: 'timedAutomatonNode',
-          position: { x: 300, y: 100 },
-          data: {
-            processName: 'P2',
-            locationName: 'req',
-            isInitial: false,
-            invariant: 'x2<=10',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P2.wait',
-          type: 'timedAutomatonNode',
-          position: { x: 500, y: 100 },
-          data: {
-            processName: 'P2',
-            locationName: 'wait',
-            isInitial: false,
-            invariant: '',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P2.cs',
-          type: 'timedAutomatonNode',
-          position: { x: 300, y: 250 },
-          data: {
-            processName: 'P2',
-            locationName: 'cs',
-            isInitial: false,
-            invariant: '',
-            labels: ['cs2'],
-            isCommitted: false,
-            isUrgent: false
-          }
-        }
-      ],
-      edges: [
-        {
-          id: 'e_P2_1',
-          source: 'P2.A',
-          target: 'P2.req',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P2',
-            event: 'tau',
-            guard: 'id==0',
-            action: 'x2=0'
-          }
-        },
-        {
-          id: 'e_P2_2',
-          source: 'P2.req',
-          target: 'P2.wait',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P2',
-            event: 'tau',
-            guard: 'x2<=10',
-            action: 'x2=0;id=2'
-          }
-        },
-        {
-          id: 'e_P2_3',
-          source: 'P2.wait',
-          target: 'P2.req',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P2',
-            event: 'tau',
-            guard: 'id==0',
-            action: 'x2=0'
-          }
-        },
-        {
-          id: 'e_P2_4',
-          source: 'P2.wait',
-          target: 'P2.cs',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P2',
-            event: 'tau',
-            guard: 'x2>10&&id==2',
-            action: ''
-          }
-        },
-        {
-          id: 'e_P2_5',
-          source: 'P2.cs',
-          target: 'P2.A',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P2',
-            event: 'tau',
-            guard: '',
-            action: 'id=0'
-          }
-        }
-      ]
+    {
+      id: `${processName}.req`,
+      type: 'timedAutomatonNode',
+      position: { x: 300 + xOffset, y: yBase },
+      data: {
+        processName,
+        locationName: 'req',
+        isInitial: false,
+        invariant: `${clockName}<=10`,
+        labels: [],
+        isCommitted: false,
+        isUrgent: false
+      }
     },
-    P3: {
-      nodes: [
-        {
-          id: 'P3.A',
-          type: 'timedAutomatonNode',
-          position: { x: 100, y: 100 },
-          data: {
-            processName: 'P3',
-            locationName: 'A',
-            isInitial: true,
-            invariant: '',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P3.req',
-          type: 'timedAutomatonNode',
-          position: { x: 300, y: 100 },
-          data: {
-            processName: 'P3',
-            locationName: 'req',
-            isInitial: false,
-            invariant: 'x3<=10',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P3.wait',
-          type: 'timedAutomatonNode',
-          position: { x: 500, y: 100 },
-          data: {
-            processName: 'P3',
-            locationName: 'wait',
-            isInitial: false,
-            invariant: '',
-            labels: [],
-            isCommitted: false,
-            isUrgent: false
-          }
-        },
-        {
-          id: 'P3.cs',
-          type: 'timedAutomatonNode',
-          position: { x: 300, y: 250 },
-          data: {
-            processName: 'P3',
-            locationName: 'cs',
-            isInitial: false,
-            invariant: '',
-            labels: ['cs3'],
-            isCommitted: false,
-            isUrgent: false
-          }
-        }
-      ],
-      edges: [
-        {
-          id: 'e_P3_1',
-          source: 'P3.A',
-          target: 'P3.req',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P3',
-            event: 'tau',
-            guard: 'id==0',
-            action: 'x3=0'
-          }
-        },
-        {
-          id: 'e_P3_2',
-          source: 'P3.req',
-          target: 'P3.wait',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P3',
-            event: 'tau',
-            guard: 'x3<=10',
-            action: 'x3=0;id=3'
-          }
-        },
-        {
-          id: 'e_P3_3',
-          source: 'P3.wait',
-          target: 'P3.req',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P3',
-            event: 'tau',
-            guard: 'id==0',
-            action: 'x3=0'
-          }
-        },
-        {
-          id: 'e_P3_4',
-          source: 'P3.wait',
-          target: 'P3.cs',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P3',
-            event: 'tau',
-            guard: 'x3>10&&id==3',
-            action: ''
-          }
-        },
-        {
-          id: 'e_P3_5',
-          source: 'P3.cs',
-          target: 'P3.A',
-          type: 'timedAutomatonEdge',
-          data: {
-            processName: 'P3',
-            event: 'tau',
-            guard: '',
-            action: 'id=0'
-          }
-        }
-      ]
+    {
+      id: `${processName}.wait`,
+      type: 'timedAutomatonNode',
+      position: { x: 500 + xOffset, y: yBase },
+      data: {
+        processName,
+        locationName: 'wait',
+        isInitial: false,
+        invariant: '',
+        labels: [],
+        isCommitted: false,
+        isUrgent: false
+      }
+    },
+    {
+      id: `${processName}.cs`,
+      type: 'timedAutomatonNode',
+      position: { x: 300 + xOffset, y: yBase + 150 },
+      data: {
+        processName,
+        locationName: 'cs',
+        isInitial: false,
+        invariant: '',
+        labels: [`cs${index}`],
+        isCommitted: false,
+        isUrgent: false
+      }
     }
-  },
+  ]
+
+  const edges = [
+    {
+      id: `e_${processName}_1`,
+      source: `${processName}.A`,
+      target: `${processName}.req`,
+      type: 'timedAutomatonEdge',
+      data: {
+        processName,
+        event: 'tau',
+        guard: 'id==0',
+        action: `${clockName}=0`
+      }
+    },
+    {
+      id: `e_${processName}_2`,
+      source: `${processName}.req`,
+      target: `${processName}.wait`,
+      type: 'timedAutomatonEdge',
+      data: {
+        processName,
+        event: 'tau',
+        guard: `${clockName}<=10`,
+        action: `${clockName}=0;id=${index}`
+      }
+    },
+    {
+      id: `e_${processName}_3`,
+      source: `${processName}.wait`,
+      target: `${processName}.req`,
+      type: 'timedAutomatonEdge',
+      data: {
+        processName,
+        event: 'tau',
+        guard: 'id==0',
+        action: `${clockName}=0`
+      }
+    },
+    {
+      id: `e_${processName}_4`,
+      source: `${processName}.wait`,
+      target: `${processName}.cs`,
+      type: 'timedAutomatonEdge',
+      data: {
+        processName,
+        event: 'tau',
+        guard: `${clockName}>10&&id==${index}`,
+        action: ''
+      }
+    },
+    {
+      id: `e_${processName}_5`,
+      source: `${processName}.cs`,
+      target: `${processName}.A`,
+      type: 'timedAutomatonEdge',
+      data: {
+        processName,
+        event: 'tau',
+        guard: '',
+        action: 'id=0'
+      }
+    }
+  ]
+
+  return { nodes, edges }
+}
+
+const buildInitialProcesses = () => {
+  const processes = {}
+  for (let index = 1; index <= PROCESS_COUNT; index += 1) {
+    processes[`P${index}`] = buildProcessData(index)
+  }
+  return processes
+}
+
+const defaultProcesses = buildInitialProcesses()
+const defaultClocks = Array.from({ length: PROCESS_COUNT }, (_, idx) => ({ name: `x${idx + 1}`, size: 1 }))
+
+const useEditorStore = create((set, get) => ({
+  systemName: 'fischer_9',
+  clocks: defaultClocks,
+  intVars: [
+    { name: 'id', size: 1, min: 0, max: PROCESS_COUNT, initial: 0 }
+  ],
+  events: [{ name: 'tau' }],
+  synchronizations: [],
+  processes: defaultProcesses,
   activeProcess: 'P1',
   mode: 'select',
   simulationResult: null,
