@@ -80,13 +80,13 @@ const PreviewDialog = ({ open, onClose, tckContent, loading, error, syntaxResult
       <Box sx={{ mb: 2 }}>
         <Alert severity={severity}>
           <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-            {syntaxResult.passed ? '语法检查通过' : '语法检查失败'}
+            {syntaxResult.passed ? 'Grammar check passed' : 'Grammar check failed'}
           </Typography>
-          {syntaxResult.command && (
+          {/* {syntaxResult.command && (
             <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 0.5 }}>
-              命令: {syntaxResult.command}
+              Command: {syntaxResult.command}
             </Typography>
-          )}
+          )} */}
           {syntaxResult.error && (
             <Typography variant="body2" sx={{ mt: 1 }}>
               {syntaxResult.error}
@@ -172,7 +172,7 @@ const PreviewDialog = ({ open, onClose, tckContent, loading, error, syntaxResult
               boxShadow: 1,
               '&:hover': { bgcolor: 'background.default' }
             }}
-            title="复制到剪贴板"
+            title="Copy to Clipboard"
           >
             <ContentCopyIcon fontSize="small" />
           </IconButton>
@@ -184,7 +184,7 @@ const PreviewDialog = ({ open, onClose, tckContent, loading, error, syntaxResult
               boxShadow: 1,
               '&:hover': { bgcolor: 'background.default' }
             }}
-            title="下载TCK文件"
+            title="Download TCK File"
           >
             <DownloadIcon fontSize="small" />
           </IconButton>
@@ -233,16 +233,13 @@ const PreviewDialog = ({ open, onClose, tckContent, loading, error, syntaxResult
           alignItems: 'center',
           pb: 1
         }}>
-          <Typography variant="h6">TCK文件预览</Typography>
+          <Typography variant="h6">TCK file preview</Typography>
           <IconButton onClick={onClose} size="small">
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         
         <DialogContent sx={{ pt: 1, pb: 2 }}>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            这是根据当前编辑器模型生成的TChecker (.tck) 文件预览
-          </Typography>
           {renderSyntaxResult()}
           {renderContent()}
         </DialogContent>

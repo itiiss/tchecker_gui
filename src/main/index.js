@@ -40,9 +40,9 @@ ipcMain.handle('save-model', async (event, modelData) => {
   try {
     const { filePath, canceled } = await dialog.showSaveDialog({
       title: 'Save Model',
-      defaultPath: `${modelData.systemName || 'model'}.json`,
+      defaultPath: `${modelData.systemName || 'model'}.tck`,
       filters: [
-        { name: 'JSON Files', extensions: ['json'] },
+        { name: 'TCK Files', extensions: ['tck'] },
         { name: 'All Files', extensions: ['*'] }
       ]
     })
@@ -51,8 +51,11 @@ ipcMain.handle('save-model', async (event, modelData) => {
       return { success: false, error: 'Save canceled by user' }
     }
 
-    const jsonData = JSON.stringify(modelData, null, 2)
-    writeFileSync(filePath, jsonData, 'utf8')
+    const appPath = app.getAppPath()
+    const tckGeneratorPath = join(appPath, 'src/main/utils/tck-generator.js')
+    const { generateTckFromJSON } = require(tckGeneratorPath)
+    const tckContent = generateTckFromJSON(modelData)
+    writeFileSync(filePath, tckContent, 'utf8')
 
     return { success: true, filePath }
   } catch (error) {
@@ -67,6 +70,7 @@ ipcMain.handle('load-model', async () => {
     const { filePaths, canceled } = await dialog.showOpenDialog({
       title: 'Load Model',
       filters: [
+        { name: 'TCK Files', extensions: ['tck'] },
         { name: 'JSON Files', extensions: ['json'] },
         { name: 'All Files', extensions: ['*'] }
       ],
@@ -78,8 +82,21 @@ ipcMain.handle('load-model', async () => {
     }
 
     const filePath = filePaths[0]
-    const jsonData = readFileSync(filePath, 'utf8')
-    const modelData = JSON.parse(jsonData)
+    const fileContent = readFileSync(filePath, 'utf8')
+    let modelData
+
+    if (filePath.toLowerCase().endsWith('.tck')) {
+      const appPath = app.getAppPath()
+      const parserPath = join(appPath, 'src/main/utils/tck-parser.js')
+      const { parseTckToModel } = require(parserPath)
+      modelData = parseTckToModel(fileContent)
+    } else {
+      try {
+        modelData = JSON.parse(fileContent)
+      } catch (jsonError) {
+        throw new Error('Unsupported file format. Please select a .tck model file.')
+      }
+    }
 
     return { success: true, filePath, modelData }
   } catch (error) {

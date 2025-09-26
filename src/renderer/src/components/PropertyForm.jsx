@@ -89,8 +89,8 @@ const PropertyForm = ({ open, property, availableLabels, onSave, onClose }) => {
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>{property ? 'Edit Property' : 'Add Property'}</DialogTitle>
 
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3, pt: 2 }}>
-        <FormControl fullWidth required>
+      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3, pt: 2}}>
+        <FormControl fullWidth required sx={{ mt:1}}>
           <InputLabel>Property Type</InputLabel>
           <Select value={formData.type} onChange={handleChange('type')} label="Property Type">
             <MenuItem value="reachability">Reachability</MenuItem>

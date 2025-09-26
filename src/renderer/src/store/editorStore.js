@@ -1,165 +1,269 @@
 import { create } from 'zustand'
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
 
-const PROCESS_COUNT = 10
 const COLUMN_COUNT = 3
 const COLUMN_WIDTH = 620
 const ROW_HEIGHT = 240
 
-const buildProcessData = (index) => {
-  const processName = `P${index}`
-  const clockName = `x${index}`
-  const row = Math.floor((index - 1) / COLUMN_COUNT)
-  const col = (index - 1) % COLUMN_COUNT
-  const xOffset = col * COLUMN_WIDTH
-  const yBase = 120 + row * ROW_HEIGHT
+const layoutLocationsForProcess = (processIndex, locationNames) => {
+  const row = Math.floor((processIndex - 1) / COLUMN_COUNT)
+  const col = (processIndex - 1) % COLUMN_COUNT
+  const centerX = 300 + col * COLUMN_WIDTH
+  const centerY = 160 + row * ROW_HEIGHT
+  const count = locationNames.length || 1
+  const radius = Math.max(140, Math.min(220, 100 + count * 20))
 
-  const nodes = [
-    {
-      id: `${processName}.A`,
-      type: 'timedAutomatonNode',
-      position: { x: 100 + xOffset, y: yBase },
-      data: {
-        processName,
-        locationName: 'A',
-        isInitial: true,
-        invariant: '',
-        labels: [],
-        isCommitted: false,
-        isUrgent: false
-      }
-    },
-    {
-      id: `${processName}.req`,
-      type: 'timedAutomatonNode',
-      position: { x: 300 + xOffset, y: yBase },
-      data: {
-        processName,
-        locationName: 'req',
-        isInitial: false,
-        invariant: `${clockName}<=10`,
-        labels: [],
-        isCommitted: false,
-        isUrgent: false
-      }
-    },
-    {
-      id: `${processName}.wait`,
-      type: 'timedAutomatonNode',
-      position: { x: 500 + xOffset, y: yBase },
-      data: {
-        processName,
-        locationName: 'wait',
-        isInitial: false,
-        invariant: '',
-        labels: [],
-        isCommitted: false,
-        isUrgent: false
-      }
-    },
-    {
-      id: `${processName}.cs`,
-      type: 'timedAutomatonNode',
-      position: { x: 300 + xOffset, y: yBase + 150 },
-      data: {
-        processName,
-        locationName: 'cs',
-        isInitial: false,
-        invariant: '',
-        labels: [`cs${index}`],
-        isCommitted: false,
-        isUrgent: false
-      }
+  return locationNames.map((_, idx) => {
+    if (count === 1) {
+      return { x: centerX, y: centerY }
     }
-  ]
-
-  const edges = [
-    {
-      id: `e_${processName}_1`,
-      source: `${processName}.A`,
-      target: `${processName}.req`,
-      type: 'timedAutomatonEdge',
-      data: {
-        processName,
-        event: 'tau',
-        guard: 'id==0',
-        action: `${clockName}=0`
-      }
-    },
-    {
-      id: `e_${processName}_2`,
-      source: `${processName}.req`,
-      target: `${processName}.wait`,
-      type: 'timedAutomatonEdge',
-      data: {
-        processName,
-        event: 'tau',
-        guard: `${clockName}<=10`,
-        action: `${clockName}=0;id=${index}`
-      }
-    },
-    {
-      id: `e_${processName}_3`,
-      source: `${processName}.wait`,
-      target: `${processName}.req`,
-      type: 'timedAutomatonEdge',
-      data: {
-        processName,
-        event: 'tau',
-        guard: 'id==0',
-        action: `${clockName}=0`
-      }
-    },
-    {
-      id: `e_${processName}_4`,
-      source: `${processName}.wait`,
-      target: `${processName}.cs`,
-      type: 'timedAutomatonEdge',
-      data: {
-        processName,
-        event: 'tau',
-        guard: `${clockName}>10&&id==${index}`,
-        action: ''
-      }
-    },
-    {
-      id: `e_${processName}_5`,
-      source: `${processName}.cs`,
-      target: `${processName}.A`,
-      type: 'timedAutomatonEdge',
-      data: {
-        processName,
-        event: 'tau',
-        guard: '',
-        action: 'id=0'
-      }
+    const angle = (2 * Math.PI * idx) / count - Math.PI / 2
+    return {
+      x: centerX + radius * Math.cos(angle),
+      y: centerY + radius * Math.sin(angle)
     }
-  ]
-
-  return { nodes, edges }
+  })
 }
 
-const buildInitialProcesses = () => {
-  const processes = {}
-  for (let index = 1; index <= PROCESS_COUNT; index += 1) {
-    processes[`P${index}`] = buildProcessData(index)
+const normalizeEvents = (events = []) =>
+  events
+    .map((event) => (typeof event === 'string' ? { name: event } : event))
+    .filter((event) => event?.name)
+
+const toNumber = (value, fallback = 0) => {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : fallback
+}
+
+const convertBackendModelToEditorModel = (backendModel) => {
+  if (!backendModel || typeof backendModel !== 'object') {
+    return backendModel
   }
-  return processes
+
+  const firstProcess = backendModel.processes
+    ? Object.values(backendModel.processes)[0]
+    : null
+
+  if (firstProcess && Array.isArray(firstProcess.nodes) && Array.isArray(firstProcess.edges)) {
+    return {
+      systemName: backendModel.systemName || 'Untitled System',
+      clocks: (backendModel.clocks || []).map((clock) =>
+        typeof clock === 'string' ? { name: clock, size: 1 } : clock
+      ),
+      intVars: backendModel.intVars || [],
+      events: normalizeEvents(backendModel.events),
+      synchronizations: backendModel.synchronizations || [],
+      processes: backendModel.processes || {}
+    }
+  }
+
+  const processes = {}
+  const processNames = Object.keys(backendModel.processes || {})
+
+  processNames.forEach((procName, index) => {
+    const processBackend = backendModel.processes[procName] || {}
+    const locationEntries = Object.entries(processBackend.locations || {})
+    const locationNames = locationEntries.map(([name]) => name)
+    const positions = layoutLocationsForProcess(index + 1, locationNames)
+
+    const nodes = locationEntries.map(([locationName, locationData], locIdx) => {
+      const position = positions[locIdx] || { x: 200 + locIdx * 160, y: 160 + index * 180 }
+      return {
+        id: `${procName}.${locationName}`,
+        type: 'timedAutomatonNode',
+        position,
+        data: {
+          processName: procName,
+          locationName,
+          isInitial: !!locationData.isInitial,
+          invariant: locationData.invariant || '',
+          labels: Array.isArray(locationData.labels) ? locationData.labels : [],
+          isCommitted: !!locationData.isCommitted,
+          isUrgent: !!locationData.isUrgent
+        }
+      }
+    })
+
+    const edges = (processBackend.edges || []).map((edge, edgeIdx) => ({
+      id: edge.id || `e_${procName}_${edgeIdx + 1}`,
+      source: `${procName}.${edge.source}`,
+      target: `${procName}.${edge.target}`,
+      type: 'timedAutomatonEdge',
+      data: {
+        processName: procName,
+        event: edge.event || 'tau',
+        guard: edge.guard || '',
+        action: edge.action || ''
+      }
+    }))
+
+    processes[procName] = { nodes, edges }
+  })
+
+  return {
+    systemName: backendModel.systemName || 'Untitled System',
+    clocks: (backendModel.clocks || []).map((clock) => {
+      if (typeof clock === 'string') {
+        return { name: clock, size: 1 }
+      }
+      return { name: clock.name, size: toNumber(clock.size, 1) }
+    }),
+    intVars: (backendModel.intVars || []).map((intVar) => ({
+      name: intVar.name,
+      size: toNumber(intVar.size, 1),
+      min: toNumber(intVar.min, 0),
+      max: toNumber(intVar.max, 0),
+      initial: toNumber(intVar.initial, 0)
+    })),
+    events: normalizeEvents(backendModel.events),
+    synchronizations: backendModel.synchronizations || [],
+    processes
+  }
 }
 
-const defaultProcesses = buildInitialProcesses()
-const defaultClocks = Array.from({ length: PROCESS_COUNT }, (_, idx) => ({ name: `x${idx + 1}`, size: 1 }))
+const defaultBackendModel = {
+  systemName: 'fischer_async_3_10',
+  clocks: [
+    { name: 'x1', size: 1 },
+    { name: 'x2', size: 1 },
+    { name: 'x3', size: 1 }
+  ],
+  intVars: [{ name: 'id', size: 1, min: 0, max: 3, initial: 0 }],
+  events: [
+    'id_is_0',
+    'id_to_0',
+    'id_is_1',
+    'id_to_1',
+    'id_is_2',
+    'id_to_2',
+    'id_is_3',
+    'id_to_3',
+    'tau'
+  ],
+  synchronizations: [
+    { constraints: ['P1@id_is_0', 'ID@id_is_0'] },
+    { constraints: ['P1@id_to_0', 'ID@id_to_0'] },
+    { constraints: ['P1@id_is_1', 'ID@id_is_1'] },
+    { constraints: ['P1@id_to_1', 'ID@id_to_1'] },
+    { constraints: ['P2@id_is_0', 'ID@id_is_0'] },
+    { constraints: ['P2@id_to_0', 'ID@id_to_0'] },
+    { constraints: ['P2@id_is_2', 'ID@id_is_2'] },
+    { constraints: ['P2@id_to_2', 'ID@id_to_2'] },
+    { constraints: ['P3@id_is_0', 'ID@id_is_0'] },
+    { constraints: ['P3@id_to_0', 'ID@id_to_0'] },
+    { constraints: ['P3@id_is_3', 'ID@id_is_3'] },
+    { constraints: ['P3@id_to_3', 'ID@id_to_3'] }
+  ],
+  processes: {
+    P1: {
+      locations: {
+        A: { isInitial: true, invariant: '', labels: [], isCommitted: false, isUrgent: false },
+        req: {
+          isInitial: false,
+          invariant: 'x1<=10',
+          labels: [],
+          isCommitted: false,
+          isUrgent: false
+        },
+        wait: { isInitial: false, invariant: '', labels: [], isCommitted: false, isUrgent: false },
+        cs: {
+          isInitial: false,
+          invariant: '',
+          labels: ['cs1'],
+          isCommitted: false,
+          isUrgent: false
+        }
+      },
+      edges: [
+        { source: 'A', target: 'req', event: 'id_is_0', guard: '', action: 'x1=0' },
+        { source: 'req', target: 'wait', event: 'id_to_1', guard: 'x1<=10', action: 'x1=0' },
+        { source: 'wait', target: 'req', event: 'id_is_0', guard: '', action: 'x1=0' },
+        { source: 'wait', target: 'cs', event: 'id_is_1', guard: 'x1>10', action: '' },
+        { source: 'cs', target: 'A', event: 'id_to_0', guard: '', action: '' }
+      ]
+    },
+    P2: {
+      locations: {
+        A: { isInitial: true, invariant: '', labels: [], isCommitted: false, isUrgent: false },
+        req: {
+          isInitial: false,
+          invariant: 'x2<=10',
+          labels: [],
+          isCommitted: false,
+          isUrgent: false
+        },
+        wait: { isInitial: false, invariant: '', labels: [], isCommitted: false, isUrgent: false },
+        cs: {
+          isInitial: false,
+          invariant: '',
+          labels: ['cs2'],
+          isCommitted: false,
+          isUrgent: false
+        }
+      },
+      edges: [
+        { source: 'A', target: 'req', event: 'id_is_0', guard: '', action: 'x2=0' },
+        { source: 'req', target: 'wait', event: 'id_to_2', guard: 'x2<=10', action: 'x2=0' },
+        { source: 'wait', target: 'req', event: 'id_is_0', guard: '', action: 'x2=0' },
+        { source: 'wait', target: 'cs', event: 'id_is_2', guard: 'x2>10', action: '' },
+        { source: 'cs', target: 'A', event: 'id_to_0', guard: '', action: '' }
+      ]
+    },
+    P3: {
+      locations: {
+        A: { isInitial: true, invariant: '', labels: [], isCommitted: false, isUrgent: false },
+        req: {
+          isInitial: false,
+          invariant: 'x3<=10',
+          labels: [],
+          isCommitted: false,
+          isUrgent: false
+        },
+        wait: { isInitial: false, invariant: '', labels: [], isCommitted: false, isUrgent: false },
+        cs: {
+          isInitial: false,
+          invariant: '',
+          labels: ['cs3'],
+          isCommitted: false,
+          isUrgent: false
+        }
+      },
+      edges: [
+        { source: 'A', target: 'req', event: 'id_is_0', guard: '', action: 'x3=0' },
+        { source: 'req', target: 'wait', event: 'id_to_3', guard: 'x3<=10', action: 'x3=0' },
+        { source: 'wait', target: 'req', event: 'id_is_0', guard: '', action: 'x3=0' },
+        { source: 'wait', target: 'cs', event: 'id_is_3', guard: 'x3>10', action: '' },
+        { source: 'cs', target: 'A', event: 'id_to_0', guard: '', action: '' }
+      ]
+    },
+    ID: {
+      locations: {
+        l: { isInitial: true, invariant: '', labels: [], isCommitted: false, isUrgent: false }
+      },
+      edges: [
+        { source: 'l', target: 'l', event: 'id_is_0', guard: 'id==0', action: '' },
+        { source: 'l', target: 'l', event: 'id_to_0', guard: '', action: 'id=0' },
+        { source: 'l', target: 'l', event: 'id_is_1', guard: 'id==1', action: '' },
+        { source: 'l', target: 'l', event: 'id_to_1', guard: '', action: 'id=1' },
+        { source: 'l', target: 'l', event: 'id_is_2', guard: 'id==2', action: '' },
+        { source: 'l', target: 'l', event: 'id_to_2', guard: '', action: 'id=2' },
+        { source: 'l', target: 'l', event: 'id_is_3', guard: 'id==3', action: '' },
+        { source: 'l', target: 'l', event: 'id_to_3', guard: '', action: 'id=3' }
+      ]
+    }
+  }
+}
+
+const defaultModel = convertBackendModelToEditorModel(defaultBackendModel)
 
 const useEditorStore = create((set, get) => ({
-  systemName: 'fischer_9',
-  clocks: defaultClocks,
-  intVars: [
-    { name: 'id', size: 1, min: 0, max: PROCESS_COUNT, initial: 0 }
-  ],
-  events: [{ name: 'tau' }],
-  synchronizations: [],
-  processes: defaultProcesses,
-  activeProcess: 'P1',
+  systemName: defaultModel.systemName,
+  clocks: defaultModel.clocks,
+  intVars: defaultModel.intVars,
+  events: defaultModel.events,
+  synchronizations: defaultModel.synchronizations,
+  processes: defaultModel.processes,
+  activeProcess: Object.keys(defaultModel.processes)[0] || null,
   mode: 'select',
   simulationResult: null,
   simulationLoading: false,
@@ -613,14 +717,7 @@ const useEditorStore = create((set, get) => ({
   // Model save/load functionality
   saveModel: async () => {
     const state = get()
-    const modelData = {
-      systemName: state.systemName,
-      clocks: state.clocks,
-      intVars: state.intVars,
-      events: state.events,
-      synchronizations: state.synchronizations,
-      processes: state.processes
-    }
+    const modelData = state.convertModelDataForBackend()
 
     try {
       const { ipcRenderer } = window.require('electron')
@@ -644,7 +741,7 @@ const useEditorStore = create((set, get) => ({
       const result = await ipcRenderer.invoke('load-model')
 
       if (result.success && result.modelData) {
-        const modelData = result.modelData
+        const modelData = convertBackendModelToEditorModel(result.modelData)
         set({
           systemName: modelData.systemName || 'Untitled System',
           clocks: modelData.clocks || [],
@@ -724,11 +821,12 @@ const useEditorStore = create((set, get) => ({
         procData.edges.forEach((edge) => {
           const sourceLocation = edge.source.split('.').pop()
           const targetLocation = edge.target.split('.').pop()
-          const eventName = edge.data.event || ''
+          const rawEvent = typeof edge.data.event === 'string' ? edge.data.event.trim() : ''
+          const eventName = rawEvent || 'tau'
 
-          // Collect non-empty event names
-          if (eventName && eventName.trim()) {
-            allEvents.add(eventName.trim())
+          // Collect the normalized event name so declarations stay in sync with edges
+          if (eventName) {
+            allEvents.add(eventName)
           }
 
           edges.push({

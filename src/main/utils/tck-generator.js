@@ -98,11 +98,15 @@ function generateTckFromJSON(model) {
 
     // 边
     for (const edge of procDetails.edges) {
+      const eventName = edge.event && typeof edge.event === 'string' && edge.event.trim()
+        ? edge.event.trim()
+        : 'tau'
+
       const attributes = formatAttributes({
         guard: edge.guard,
         action: edge.action
       })
-      tckLines.push(`edge:${procName}:${edge.source}:${edge.target}:${edge.event}${attributes}`)
+      tckLines.push(`edge:${procName}:${edge.source}:${edge.target}:${eventName}${attributes}`)
     }
   }
   tckLines.push('')

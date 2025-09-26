@@ -61,7 +61,10 @@ const DeclarationsView = () => {
 
   const handleSynchronizationChange = (index, value) => {
     const newSynchronizations = [...synchronizations]
-    newSynchronizations[index].constraints = value.split(',').map((s) => s.trim())
+    newSynchronizations[index].constraints = value
+      .split(/[:，,]/)
+      .map((s) => s.trim())
+      .filter(Boolean)
     setSynchronizations(newSynchronizations)
   }
 
@@ -154,11 +157,11 @@ const DeclarationsView = () => {
           title={
             <>
               <Typography variant="caption" component="span">
-                Example: P1!alpha, P2?alpha
+                Example: P1@alpha:ID@alpha
               </Typography>
               <br />
               <Typography variant="caption" component="span">
-                Use commas to separate multiple process constraints
+                Use ':' (or commas) to separate process constraints
               </Typography>
             </>
           }
@@ -171,7 +174,7 @@ const DeclarationsView = () => {
           <ListItem key={index}>
             <TextField
               label="Constraints"
-              value={sync.constraints.join(', ')}
+              value={sync.constraints.join(':')}
               onChange={(e) => handleSynchronizationChange(index, e.target.value)}
               fullWidth
               sx={{ mr: 1 }}

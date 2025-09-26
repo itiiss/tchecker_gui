@@ -124,15 +124,32 @@ function computeEdgeGeometry(edge, meta, positionsMap) {
   }
 
   if (meta?.isSelfLoop) {
-    const startX = source.x + NODE_RADIUS
-    const startY = source.y
-    const endX = source.x
-    const endY = source.y - NODE_RADIUS
-    const path = `M ${startX} ${startY} A ${LOOP_RADIUS} ${LOOP_RADIUS} 0 1 1 ${endX} ${endY}`
+    const sameDirectionCount = meta?.sameDirectionCount || 1
+    const sameDirectionIndex = meta?.sameDirectionIndex || 0
+    const offsetIndex = sameDirectionIndex - (sameDirectionCount - 1) / 2
+    const loopRadius = LOOP_RADIUS + Math.abs(offsetIndex) * (EDGE_OFFSET_STEP * 0.45)
+    const angleSpread = Math.PI * 0.6
+    const angleOffset = offsetIndex * 0.25
+
+    const startAngle = -Math.PI / 2 + angleSpread / 2 + angleOffset
+    const endAngle = -Math.PI / 2 - angleSpread / 2 + angleOffset
+
+    const startX = source.x + Math.cos(startAngle) * NODE_RADIUS
+    const startY = source.y + Math.sin(startAngle) * NODE_RADIUS
+    const endX = source.x + Math.cos(endAngle) * NODE_RADIUS
+    const endY = source.y + Math.sin(endAngle) * NODE_RADIUS
+
+    const verticalLift = NODE_RADIUS + loopRadius + Math.abs(offsetIndex) * 12
+    const controlY = source.y - verticalLift
+    const control1X = source.x + Math.cos(startAngle) * loopRadius
+    const control2X = source.x + Math.cos(endAngle) * loopRadius
+
+    const path = `M ${startX} ${startY} C ${control1X} ${controlY} ${control2X} ${controlY} ${endX} ${endY}`
+
     return {
       path,
-      labelX: source.x + LOOP_RADIUS * 0.2,
-      labelY: source.y - LOOP_RADIUS - 12,
+      labelX: source.x + offsetIndex * 24,
+      labelY: controlY - 14,
       label
     }
   }
@@ -308,16 +325,18 @@ const CytoscapeAutomaton = ({
   const edgeMetaMap = useMemo(() => buildEdgeMeta(edges), [edges])
   const nodesById = useMemo(() => buildPositionMap(normalizedNodes), [normalizedNodes])
 
-  const edgesToRender = useMemo(() => {
-    return edges.map((edge) => {
-      const meta = edgeMetaMap.get(edge.id)
-      const geometry = computeEdgeGeometry(edge, meta, nodesById)
-      return {
-        edge,
-        geometry
-      }
-    })
-  }, [edges, edgeMetaMap, nodesById])
+  const edgesToRender = useMemo(
+    () =>
+      edges.map((edge) => {
+        const meta = edgeMetaMap.get(edge.id)
+        const geometry = computeEdgeGeometry(edge, meta, nodesById)
+        return {
+          edge,
+          geometry
+        }
+      }),
+    [edges, edgeMetaMap, nodesById]
+  )
 
   useEffect(() => {
     if (!containerRef.current) return
