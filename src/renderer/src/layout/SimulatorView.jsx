@@ -427,18 +427,16 @@ const SimulatorView = () => {
     )
 
     return (
-      <Paper sx={{ flexBasis: 320, flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ p: 1.5, borderBottom: '1px solid #e0e0e0' }}>
-          <Typography variant="subtitle1">Variables & Clocks</Typography>
-        </Box>
-        <Box sx={{ p: 2, flexGrow: 1, overflow: 'auto' }}>
-          {/* Variables Section */}
+      <Paper
+        sx={{ flexBasis: 260, flexShrink: 0, display: 'flex', flexDirection: 'column', p: 1.5 }}
+      >
+        <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
           <Typography variant="subtitle2" gutterBottom>
             Variables:
           </Typography>
           <Box sx={{ mb: 2 }}>
             {intVars.length === 0 && extraIntVars.length === 0 ? (
-              <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.8rem' }}>
+              <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
                 No integer variables defined
               </Typography>
             ) : (
@@ -455,7 +453,7 @@ const SimulatorView = () => {
                     <Typography
                       key={intVar.name}
                       variant="body2"
-                      sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
+                      sx={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
                     >
                       {intVar.name} = {value ?? fallbackInitial}
                     </Typography>
@@ -465,7 +463,7 @@ const SimulatorView = () => {
                   <Typography
                     key={name}
                     variant="body2"
-                    sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
+                    sx={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
                   >
                     {name} = {intValuations[name]}
                   </Typography>
@@ -474,46 +472,12 @@ const SimulatorView = () => {
             )}
           </Box>
 
-          {/* Clocks Section */}
           <Typography variant="subtitle2" gutterBottom>
-            Clocks:
+            Zone Matrix (DBM):
           </Typography>
-          <Box sx={{ mb: 2 }}>
-            {allClockNames.length === 0 ? (
-              <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.8rem' }}>
-                No clocks defined
-              </Typography>
-            ) : (
-              allClockNames.map((clockName) => (
-                <Typography
-                  key={clockName}
-                  variant="body2"
-                  sx={{ fontFamily: 'monospace', fontSize: '0.8rem' }}
-                >
-                  {formatClockRange(clockName, clockRanges[clockName])}
-                </Typography>
-              ))
-            )}
+          <Box sx={{ border: '1px solid #e0e0e0', borderRadius: 1, p: 1, bgcolor: '#fafafa' }}>
+            {renderZoneMatrixTable(zoneMatrix)}
           </Box>
-
-          {/* Zone Matrix Section */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="subtitle2">Zone Matrix (DBM):</Typography>
-            <IconButton
-              size="small"
-              onClick={() => setZoneMatrixOpen((prev) => !prev)}
-              aria-label="Toggle zone matrix"
-            >
-              {zoneMatrixOpen ? (
-                <ExpandLessIcon fontSize="small" />
-              ) : (
-                <ExpandMoreIcon fontSize="small" />
-              )}
-            </IconButton>
-          </Box>
-          <Collapse in={zoneMatrixOpen} timeout="auto" unmountOnExit>
-            <Box sx={{ mt: 1 }}>{renderZoneMatrixTable(zoneMatrix)}</Box>
-          </Collapse>
         </Box>
       </Paper>
     )
@@ -550,7 +514,7 @@ const SimulatorView = () => {
                   .map(([, loc]) => loc)
                   .join(', ')})`
               : entry.transition
-                ? `Sync: ${entry.transition.processName}@${entry.transition.event }`
+                ? `Sync: ${entry.transition.processName}@${entry.transition.event}`
                 : `State: (${Object.entries(entry.state)
                     .map(([, loc]) => loc)
                     .join(', ')})`}
@@ -639,7 +603,16 @@ const SimulatorView = () => {
   return (
     <Box sx={{ height: '100%', p: 2, display: 'flex', gap: 2, minHeight: 0 }}>
       {/* Left Column */}
-      <Box sx={{ width: 320, minWidth: 280, display: 'flex', flexDirection: 'column', gap: 2, flexShrink: 0 }}>
+      <Box
+        sx={{
+          width: 320,
+          minWidth: 280,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          flexShrink: 0
+        }}
+      >
         {renderEnabledTransitions()}
         {renderTraceAndControls()}
       </Box>

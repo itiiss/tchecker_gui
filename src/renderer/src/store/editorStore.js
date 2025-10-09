@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react'
+import { extractZoneMatrix } from '../utils/zoneMatrix'
 
 const COLUMN_COUNT = 3
 const COLUMN_WIDTH = 620
@@ -455,7 +456,8 @@ const useEditorStore = create((set, get) => ({
 
     try {
       // Convert ReactFlow format to TCK generator format
-      const modelData = get().convertModelDataForBackend()
+      const stateSnapshot = get()
+      const modelData = stateSnapshot.convertModelDataForBackend()
       console.log('Converted model data:', JSON.stringify(modelData, null, 2))
 
       // Call backend to initialize simulator
@@ -468,14 +470,14 @@ const useEditorStore = create((set, get) => ({
         // Parse the result from tck-simulate
         const initialStateData = result.initialState
         const availableTransitions = result.availableTransitions
-        const initialZoneMatrix = initialStateData?.zoneMatrix || null
+        const initialZoneMatrix = extractZoneMatrix(initialStateData, stateSnapshot.clocks)
 
         console.log('Initial state data from backend:', initialStateData)
         console.log('Available transitions from backend:', availableTransitions)
 
         // Convert backend state format to frontend format
-        const currentState = get().parseBackendState(initialStateData)
-        const enabledTransitions = get().parseBackendTransitions(availableTransitions)
+        const currentState = stateSnapshot.parseBackendState(initialStateData)
+        const enabledTransitions = stateSnapshot.parseBackendTransitions(availableTransitions)
 
         console.log('Parsed current state:', currentState)
         console.log('Parsed enabled transitions:', enabledTransitions)
@@ -567,7 +569,7 @@ const useEditorStore = create((set, get) => ({
         // Parse the new state and transitions
         const newState = get().parseBackendState(result.newState)
         const newEnabledTransitions = get().parseBackendTransitions(result.availableTransitions)
-        const zoneMatrix = result.newState?.zoneMatrix || null
+        const zoneMatrix = extractZoneMatrix(result.newState, state.clocks)
 
         console.log(
           'Transition executed successfully. New state:',
@@ -625,6 +627,8 @@ const useEditorStore = create((set, get) => ({
     if (state.tracePosition > 0) {
       const newPosition = state.tracePosition - 1
       const traceEntry = state.simulationTrace[newPosition]
+      const computedZoneMatrix =
+        extractZoneMatrix(traceEntry?.backendState, state.clocks) || traceEntry.zoneMatrix || null
 
       console.log('Step backward to position:', newPosition)
       console.log('Trace entry at position:', traceEntry)
@@ -633,8 +637,8 @@ const useEditorStore = create((set, get) => ({
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
         currentState: traceEntry.state,
-        clockValues: traceEntry.clocks,
-        currentZoneMatrix: traceEntry.zoneMatrix ?? state.currentZoneMatrix ?? null,
+        clockValues: traceEntry.clocks || {},
+        currentZoneMatrix: computedZoneMatrix,
         enabledTransitions: traceEntry.enabledTransitions || [], // 使用缓存的转换
         tracePosition: newPosition
       })
@@ -646,6 +650,8 @@ const useEditorStore = create((set, get) => ({
     if (state.tracePosition < state.simulationTrace.length - 1) {
       const newPosition = state.tracePosition + 1
       const traceEntry = state.simulationTrace[newPosition]
+      const computedZoneMatrix =
+        extractZoneMatrix(traceEntry?.backendState, state.clocks) || traceEntry.zoneMatrix || null
 
       console.log('Step forward to position:', newPosition)
       console.log('Trace entry at position:', traceEntry)
@@ -654,8 +660,8 @@ const useEditorStore = create((set, get) => ({
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
         currentState: traceEntry.state,
-        clockValues: traceEntry.clocks,
-        currentZoneMatrix: traceEntry.zoneMatrix ?? state.currentZoneMatrix ?? null,
+        clockValues: traceEntry.clocks || {},
+        currentZoneMatrix: computedZoneMatrix,
         enabledTransitions: traceEntry.enabledTransitions || [], // 使用缓存的转换
         tracePosition: newPosition
       })
@@ -675,12 +681,14 @@ const useEditorStore = create((set, get) => ({
     const state = get()
     if (position >= 0 && position < state.simulationTrace.length) {
       const traceEntry = state.simulationTrace[position]
+      const computedZoneMatrix =
+        extractZoneMatrix(traceEntry?.backendState, state.clocks) || traceEntry.zoneMatrix || null
 
       // 使用缓存的转换（来自tck-simulate的结果），不进行前端计算
       set({
         currentState: traceEntry.state,
-        clockValues: traceEntry.clocks,
-        currentZoneMatrix: traceEntry.zoneMatrix ?? state.currentZoneMatrix ?? null,
+        clockValues: traceEntry.clocks || {},
+        currentZoneMatrix: computedZoneMatrix,
         enabledTransitions: traceEntry.enabledTransitions || [], // 使用缓存的转换
         tracePosition: position
       })

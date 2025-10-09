@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Box,
   Typography,
@@ -13,7 +13,12 @@ import {
   CircularProgress,
   Chip
 } from '@mui/material'
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, PlayArrow as PlayArrowIcon } from '@mui/icons-material'
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  PlayArrow as PlayArrowIcon
+} from '@mui/icons-material'
 import useEditorStore from '../store/editorStore'
 import PropertyForm from './PropertyForm'
 import VerificationGraph from './VerificationGraph'
@@ -47,13 +52,26 @@ const VerifierTab = () => {
   const typeSuffixMap = {
     reachability: 'Reachability',
     safety: 'Safety',
-    'deadlock-free': 'DeadlockFree'
+    'deadlock-free': 'DeadlockFree',
+    'mutual-exclusion': 'Mutex',
+    'logic-formula': 'Formula'
   }
 
-  const buildPropertyName = (type, targetLabel) => {
+  const buildPropertyName = ({ type, targetLabel, secondaryLabel, formula }) => {
     const suffix = typeSuffixMap[type] || 'Property'
     if (type === 'deadlock-free') {
       return suffix
+    }
+    if (type === 'mutual-exclusion') {
+      const labelA = targetLabel && targetLabel.trim() ? targetLabel.trim() : 'LabelA'
+      const labelB = secondaryLabel && secondaryLabel.trim() ? secondaryLabel.trim() : 'LabelB'
+      return `${labelA}_${labelB}_${suffix}`
+    }
+    if (type === 'logic-formula') {
+      const simplified = (formula || 'Formula').replace(/\s+/g, ' ').trim()
+      const truncated =
+        simplified.length > 32 ? `${simplified.slice(0, 29)}...` : simplified || 'Formula'
+      return `${truncated}_${suffix}`
     }
     const baseLabel = targetLabel && targetLabel.trim() ? targetLabel.trim() : 'Property'
     return `${baseLabel}_${suffix}`
@@ -90,21 +108,46 @@ const VerifierTab = () => {
     }
   }
 
-  const handleSaveProperty = ({ type, targetLabel }) => {
-    const baseName = buildPropertyName(type, targetLabel)
+  const handleSaveProperty = (formValues) => {
+    const {
+      type,
+      targetLabel,
+      secondaryLabel,
+      formula,
+      formulaMode,
+      formulaLabels = []
+    } = formValues
+
+    const baseName = buildPropertyName(formValues)
     const name = ensureUniqueName(baseName, editingProperty?.id || null)
+
+    const labels = (() => {
+      if (type === 'logic-formula') {
+        return formulaLabels
+      }
+      const collected = []
+      if (targetLabel) {
+        collected.push(targetLabel)
+      }
+      if (type === 'mutual-exclusion' && secondaryLabel) {
+        collected.push(secondaryLabel)
+      }
+      return collected
+    })()
 
     if (editingProperty) {
       const updatedProperty = {
         ...editingProperty,
         type,
-        targetLabel,
+        targetLabel: type === 'logic-formula' ? '' : targetLabel,
+        secondaryLabel: type === 'mutual-exclusion' ? secondaryLabel : '',
+        formula: type === 'logic-formula' ? formula : '',
+        formulaMode: type === 'logic-formula' ? formulaMode : undefined,
+        labels,
         name
       }
 
-      setProperties((prev) =>
-        prev.map((p) => (p.id === editingProperty.id ? updatedProperty : p))
-      )
+      setProperties((prev) => prev.map((p) => (p.id === editingProperty.id ? updatedProperty : p)))
 
       if (selectedProperty?.id === editingProperty.id) {
         setSelectedProperty(updatedProperty)
@@ -113,7 +156,11 @@ const VerifierTab = () => {
       const newProperty = {
         id: Date.now().toString(),
         type,
-        targetLabel,
+        targetLabel: type === 'logic-formula' ? '' : targetLabel,
+        secondaryLabel: type === 'mutual-exclusion' ? secondaryLabel : '',
+        formula: type === 'logic-formula' ? formula : '',
+        formulaMode: type === 'logic-formula' ? formulaMode : undefined,
+        labels,
         name
       }
       setProperties((prev) => [...prev, newProperty])
@@ -149,7 +196,9 @@ const VerifierTab = () => {
       } else {
         // Handle different types of errors
         if (result.isModelError) {
-          setVerificationError(`Model Error: ${result.modelErrorDetails}\n\nThis usually occurs due to:\n• Variable values exceeding defined ranges\n• Syntax errors in the model\n• Inappropriate clock constraints\n\nPlease check the model definition, especially variable ranges and transition actions.`)
+          setVerificationError(
+            `Model Error: ${result.modelErrorDetails}\n\nThis usually occurs due to:\n• Variable values exceeding defined ranges\n• Syntax errors in the model\n• Inappropriate clock constraints\n\nPlease check the model definition, especially variable ranges and transition actions.`
+          )
         } else {
           setVerificationError(result.error)
         }
@@ -163,10 +212,18 @@ const VerifierTab = () => {
 
   const getPropertyTypeText = (type) => {
     switch (type) {
-      case 'reachability': return 'Reachability'
-      case 'safety': return 'Safety'
-      case 'deadlock-free': return 'Deadlock-free'
-      default: return type
+      case 'reachability':
+        return 'Reachability'
+      case 'safety':
+        return 'Safety'
+      case 'deadlock-free':
+        return 'Deadlock-free'
+      case 'mutual-exclusion':
+        return 'Mutual Exclusion'
+      case 'logic-formula':
+        return 'Logical Formula'
+      default:
+        return type
     }
   }
 
@@ -177,29 +234,42 @@ const VerifierTab = () => {
 
   const getVerificationStatusText = (result) => {
     if (!result) return ''
-    
+
     switch (selectedProperty.type) {
       case 'reachability':
         return result.satisfied ? 'Property Reachable' : 'Property Unreachable'
       case 'safety':
-        return result.satisfied ? 'Property Safe (Never Reached)' : 'Property Unsafe (Can Be Reached)'
+        return result.satisfied
+          ? 'Property Safe (Never Reached)'
+          : 'Property Unsafe (Can Be Reached)'
       case 'deadlock-free':
         return result.satisfied ? 'No Deadlock' : 'Deadlock Exists'
+      case 'mutual-exclusion':
+        return result.satisfied ? 'Mutual Exclusion Holds' : 'Mutual Exclusion Violated'
+      case 'logic-formula':
+        if (selectedProperty.formulaMode === 'exists') {
+          return result.satisfied ? 'Formula Reachable' : 'Formula Unreachable'
+        }
+        return result.satisfied ? 'Formula Forbidden (Safe)' : 'Formula Reached (Violation)'
       default:
         return result.satisfied ? 'Property Satisfied' : 'Property Not Satisfied'
     }
   }
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 2, overflow: 'hidden' }}>
+    <Box
+      sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 2, overflow: 'hidden' }}
+    >
       <Typography variant="h5" gutterBottom>
         Formal Verification
       </Typography>
-      
+
       <Box sx={{ display: 'flex', gap: 2, flex: 1, minHeight: 0, overflow: 'hidden' }}>
         {/* Left: Property List */}
         <Paper sx={{ width: '40%', p: 2, display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}
+          >
             <Typography variant="h6">Verification Properties</Typography>
             <Button
               startIcon={<AddIcon />}
@@ -210,7 +280,7 @@ const VerifierTab = () => {
               Add Property
             </Button>
           </Box>
-          
+
           <List sx={{ flex: 1, overflow: 'auto' }}>
             {properties.map((property) => (
               <ListItem
@@ -235,8 +305,24 @@ const VerifierTab = () => {
                       </Typography>
                       {property.targetLabel && (
                         <Typography variant="body2" color="textSecondary">
-                          Target Label: {property.targetLabel}
+                          Primary Label: {property.targetLabel}
                         </Typography>
+                      )}
+                      {property.type === 'mutual-exclusion' && property.secondaryLabel && (
+                        <Typography variant="body2" color="textSecondary">
+                          Second Label: {property.secondaryLabel}
+                        </Typography>
+                      )}
+                      {property.type === 'logic-formula' && (
+                        <>
+                          <Typography variant="body2" color="textSecondary">
+                            Formula: {property.formula || 'N/A'}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            Mode:{' '}
+                            {property.formulaMode === 'exists' ? 'Reachable (∃)' : 'Forbidden (¬∃)'}
+                          </Typography>
+                        </>
                       )}
                     </>
                   }
@@ -268,7 +354,9 @@ const VerifierTab = () => {
             {properties.length === 0 && (
               <Box sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}>
                 <Typography>No properties added yet</Typography>
-                <Typography variant="body2">Click "Add Property" to get started</Typography>
+                <Typography variant="body2">
+                  Click &quot;Add Property&quot; to get started
+                </Typography>
               </Box>
             )}
           </List>
@@ -288,13 +376,7 @@ const VerifierTab = () => {
                 {isVerifying ? 'Verifying...' : 'Start Verification'}
               </Button>
             ) : (
-              <Button
-                fullWidth
-                variant="outlined"
-                disabled
-                size="large"
-                sx={{ py: 1.5 }}
-              >
+              <Button fullWidth variant="outlined" disabled size="large" sx={{ py: 1.5 }}>
                 Please select a property
               </Button>
             )}
@@ -306,40 +388,48 @@ const VerifierTab = () => {
           <Typography variant="h6" gutterBottom>
             Verification Results
           </Typography>
-          
+
           {!selectedProperty && (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              flex: 1,
-              color: 'text.secondary'
-            }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                color: 'text.secondary'
+              }}
+            >
               <Typography>Please select a property to verify</Typography>
             </Box>
           )}
 
           {selectedProperty && !verificationResult && !verificationError && !isVerifying && (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              flex: 1,
-              color: 'text.secondary'
-            }}>
-              <Typography>Click "Start Verification" to check the selected property</Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                color: 'text.secondary'
+              }}
+            >
+              <Typography>
+                Click &quot;Start Verification&quot; to check the selected property
+              </Typography>
             </Box>
           )}
 
           {isVerifying && (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              flex: 1,
-              flexDirection: 'column',
-              gap: 2
-            }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                flexDirection: 'column',
+                gap: 2
+              }}
+            >
               <CircularProgress size={60} />
               <Typography>Verifying property: {selectedProperty.name}</Typography>
             </Box>
@@ -353,8 +443,13 @@ const VerifierTab = () => {
 
           {verificationResult && (
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, minHeight: 0 }}>
-              <Alert severity={getVerificationStatusColor(verificationResult)} sx={{ flexShrink: 0 }}>
-                <Typography variant="h6">{getVerificationStatusText(verificationResult)}</Typography>
+              <Alert
+                severity={getVerificationStatusColor(verificationResult)}
+                sx={{ flexShrink: 0 }}
+              >
+                <Typography variant="h6">
+                  {getVerificationStatusText(verificationResult)}
+                </Typography>
                 <Typography variant="body2">Property: {selectedProperty.name}</Typography>
               </Alert>
 
@@ -365,13 +460,39 @@ const VerifierTab = () => {
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {Object.entries(verificationResult.reachabilityInfo)
-                      .filter(([_, value]) => value !== undefined && value !== null && value !== '')
+                      .filter(([, value]) => value !== undefined && value !== null && value !== '')
                       .map(([key, value]) => (
                         <Chip key={key} label={`${key}: ${value}`} variant="outlined" />
                       ))}
                   </Box>
                 </Paper>
               )}
+
+              {selectedProperty.type === 'logic-formula' &&
+                Array.isArray(verificationResult.formulaEvaluation) && (
+                  <Paper variant="outlined" sx={{ p: 2 }}>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Formula Evaluation
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      Mode:{' '}
+                      {selectedProperty.formulaMode === 'exists'
+                        ? 'Reachable (∃)'
+                        : 'Forbidden (¬∃)'}{' '}
+                      | Evaluated clause: {verificationResult.evaluatedClause || 'N/A'}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      {verificationResult.formulaEvaluation.map((entry) => (
+                        <Chip
+                          key={`formula-clause-${entry.index}`}
+                          color={entry.satisfied ? 'success' : 'error'}
+                          label={`Clause ${entry.index + 1}: ${entry.clause && entry.clause.length > 0 ? entry.clause.join(' && ') : 'true'} | ${entry.satisfied ? 'Satisfied' : 'Not satisfied'}`}
+                          variant="outlined"
+                        />
+                      ))}
+                    </Box>
+                  </Paper>
+                )}
 
               {verificationResult.dotGraph && verificationResult.dotGraph.trim() && (
                 <Paper variant="outlined" sx={{ p: 2, minHeight: 360 }}>
@@ -402,7 +523,10 @@ const VerifierTab = () => {
                 </Paper>
               )}
 
-              <Paper variant="outlined" sx={{ p: 2, flex: verificationResult.counterExample ? '0' : 1 }}>
+              <Paper
+                variant="outlined"
+                sx={{ p: 2, flex: verificationResult.counterExample ? '0' : 1 }}
+              >
                 <Typography variant="subtitle1" gutterBottom>
                   Detailed Output
                 </Typography>
