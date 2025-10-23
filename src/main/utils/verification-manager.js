@@ -446,7 +446,7 @@ function buildVerificationPlan(property, modelData) {
         config: {
           algorithm: 'covreach',
           labels,
-          certificateType: 'concrete',
+          certificateType: 'graph',
           searchOrder: 'bfs'
         },
         propertyOverride: {
@@ -623,6 +623,97 @@ function parseVerificationResult(stdout, stderr, exitCode, property) {
   return result
 }
 
+function aggregateLogicFormulaResults(plan, clauseResults, property) {
+  if (!Array.isArray(clauseResults) || clauseResults.length === 0) {
+    throw new Error('Logic formula verification produced no clause results')
+  }
+
+  const mode = plan.formulaMode === 'exists' ? 'exists' : 'forbid'
+
+  const satisfyingClause = clauseResults.find((entry) => entry.parsedResult.satisfied)
+  const violatingClause = clauseResults.find((entry) => !entry.parsedResult.satisfied)
+
+  let representativeEntry
+  let finalSatisfied
+  let evaluatedClauseText
+
+  if (mode === 'exists') {
+    finalSatisfied = Boolean(satisfyingClause)
+    representativeEntry = satisfyingClause || clauseResults[0]
+    const labels = satisfyingClause?.config?.labels || []
+    evaluatedClauseText = finalSatisfied
+      ? (Array.isArray(labels) && labels.length > 0 ? labels.join(' && ') : 'true')
+      : 'No satisfying clause'
+  } else {
+    finalSatisfied = !violatingClause
+    representativeEntry = violatingClause || clauseResults[0]
+    const labels = violatingClause?.config?.labels || []
+    evaluatedClauseText = violatingClause
+      ? Array.isArray(labels) && labels.length > 0
+        ? labels.join(' && ')
+        : 'true'
+      : 'All Clauses Safe'
+  }
+
+  const finalResult = {
+    ...representativeEntry.parsedResult,
+    satisfied: finalSatisfied,
+    formula: property.formula,
+    formulaMode: mode,
+    evaluatedClause: evaluatedClauseText
+  }
+
+  if (!finalResult.dotGraph || !finalResult.dotGraph.trim()) {
+    const firstWithGraph = clauseResults.find(
+      (entry) => entry.parsedResult.dotGraph && entry.parsedResult.dotGraph.trim()
+    )
+    if (firstWithGraph) {
+      finalResult.dotGraph = firstWithGraph.parsedResult.dotGraph
+    }
+  }
+
+  finalResult.formulaEvaluation = clauseResults.map((entry, index) => {
+    const runIndex =
+      typeof entry.parsedResult.runId === 'number' ? entry.parsedResult.runId : index
+    return {
+      index: runIndex,
+      clause: entry.config.labels,
+      satisfied: entry.parsedResult.satisfied,
+      exitCode: entry.exitCode,
+      command: entry.commandUsed,
+      dotGraph: entry.parsedResult.dotGraph,
+      reachabilityInfo: entry.parsedResult.reachabilityInfo,
+      counterExample: entry.parsedResult.counterExample,
+      output: entry.combinedOutput
+    }
+  })
+
+  finalResult.formulaClauseGraphs = clauseResults
+    .filter((entry) => entry.parsedResult.dotGraph && entry.parsedResult.dotGraph.trim())
+    .map((entry, index) => {
+      const runIndex =
+        typeof entry.parsedResult.runId === 'number' ? entry.parsedResult.runId : index
+      return {
+        index: runIndex,
+        clause: entry.config.labels,
+        dotGraph: entry.parsedResult.dotGraph,
+        satisfied: entry.parsedResult.satisfied
+      }
+    })
+
+  finalResult.output = clauseResults
+    .map((entry, idx) => {
+      const clauseText =
+        Array.isArray(entry.config.labels) && entry.config.labels.length > 0
+          ? entry.config.labels.join(' && ')
+          : '(true)'
+      return `Run ${idx + 1} | Clause: ${clauseText} | Exit: ${entry.exitCode}\n${entry.combinedOutput}`
+    })
+    .join('\n\n---\n\n')
+
+  return finalResult
+}
+
 /**
  * Verify the specified property
  * @param {object} verificationRequest - Verification request containing property and model data
@@ -634,7 +725,7 @@ async function verifyProperty(verificationRequest) {
   console.log('Property:', JSON.stringify(property, null, 2))
 
   const tempTckFile = path.join(__dirname, `verify_${Date.now()}.tck`)
-  const tempOutputFile = path.join(__dirname, `verify_output_${Date.now()}.txt`)
+  const tempOutputFiles = []
   let lastStderrOutput = ''
 
   try {
@@ -661,6 +752,13 @@ async function verifyProperty(verificationRequest) {
         args.push('-l', config.labels.join(','))
       }
 
+      const outputFilePath = path.join(
+        __dirname,
+        `verify_output_${Date.now()}_${run.id}_${Math.random().toString(16).slice(2)}.dot`
+      )
+      tempOutputFiles.push(outputFilePath)
+
+      args.push('-o', outputFilePath)
       args.push(tempTckFile)
 
       console.log(
@@ -735,7 +833,7 @@ async function verifyProperty(verificationRequest) {
       let outputFileContent = ''
       let dotContent = ''
       try {
-        outputFileContent = await fs.readFile(tempOutputFile, 'utf8')
+        outputFileContent = await fs.readFile(outputFilePath, 'utf8')
         console.log('输出文件内容:', outputFileContent)
 
         if (outputFileContent.includes('digraph') || outputFileContent.includes('->')) {
@@ -794,62 +892,20 @@ async function verifyProperty(verificationRequest) {
 
       lastStderrOutput = stderrOutput
 
-      if (plan.type === 'logic-formula') {
-        if (plan.formulaMode === 'exists' && parsedResult.satisfied) {
-          finalResult = { ...parsedResult }
-          break
-        }
-
-        if (plan.formulaMode === 'forbid' && !parsedResult.satisfied) {
-          finalResult = { ...parsedResult }
-          break
-        }
-      } else {
+      if (plan.type !== 'logic-formula') {
         finalResult = { ...parsedResult }
         break
       }
     }
 
-    if (!finalResult && clauseResults.length > 0) {
+    if (plan.type === 'logic-formula') {
+      finalResult = aggregateLogicFormulaResults(plan, clauseResults, property)
+    } else if (!finalResult && clauseResults.length > 0) {
       finalResult = { ...clauseResults[clauseResults.length - 1].parsedResult }
     }
 
     if (!finalResult) {
       throw new Error('Verification did not produce any result')
-    }
-
-    if (plan.type === 'logic-formula') {
-      finalResult.formula = property.formula
-      finalResult.formulaMode = plan.formulaMode
-      finalResult.formulaEvaluation = clauseResults.map((entry, index) => ({
-        index,
-        clause: entry.config.labels,
-        satisfied: entry.parsedResult.satisfied,
-        exitCode: entry.exitCode,
-        command: entry.commandUsed
-      }))
-
-      if (!finalResult.evaluatedClause) {
-        if (plan.formulaMode === 'exists') {
-          const matched = clauseResults.find((entry) => entry.parsedResult.satisfied)
-          finalResult.evaluatedClause = matched ? matched.config.labels.join(' && ') : 'None'
-        } else {
-          const violated = clauseResults.find((entry) => !entry.parsedResult.satisfied)
-          finalResult.evaluatedClause = violated
-            ? violated.config.labels.join(' && ')
-            : 'All Clauses Safe'
-        }
-      }
-
-      finalResult.output = clauseResults
-        .map((entry, idx) => {
-          const clauseText =
-            entry.config.labels && entry.config.labels.length > 0
-              ? entry.config.labels.join(' && ')
-              : '(true)'
-          return `Run ${idx + 1} | Clause: ${clauseText} | Exit: ${entry.exitCode}\n${entry.combinedOutput}`
-        })
-        .join('\n\n---\n\n')
     }
 
     return {
@@ -869,14 +925,18 @@ async function verifyProperty(verificationRequest) {
     }
   } finally {
     // 7. 清理临时文件
-    try {
-      await fs.unlink(tempTckFile)
-      await fs.unlink(tempOutputFile)
-    } catch (err) {
-      if (err.code !== 'ENOENT') {
-        console.error('清理临时文件失败:', err)
-      }
-    }
+    const cleanupTargets = [tempTckFile, ...tempOutputFiles]
+    await Promise.allSettled(
+      cleanupTargets.map(async (filePath) => {
+        try {
+          await fs.unlink(filePath)
+        } catch (err) {
+          if (err.code !== 'ENOENT') {
+            console.error(`清理临时文件失败 (${filePath}):`, err)
+          }
+        }
+      })
+    )
   }
 }
 

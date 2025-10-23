@@ -1,0 +1,175 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{spruce}
+\usepackage{hyperref}
+
+\title{Bringing TChecker Timed Automata to Life}
+\author{TChecker GUI Project}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Session Overview}
+  \begin{itemize}
+    \item Motivation for a visual front-end to TChecker
+    \item Timed automata refresher and symbolic reasoning
+    \item Demonstrations: Fischer and asynchronous Fischer protocols
+    \item Supported verification and simulation workflows
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Why a GUI for TChecker?}
+  \begin{itemize}
+    \item TChecker is a command-line tool for timed automata reachability and liveness analysis that returns textual verdicts only
+    \item Timed automata are expressive yet difficult to debug from the command line
+    \item Students and engineers need immediate visual feedback on clocks, invariants, and traces
+    \item A guided interface lowers the barrier to exploring models while preserving TChecker's rigor
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Timed Automata Refresher}
+  \begin{itemize}
+    \item Following Alur--Dill, a timed automaton is a tuple \(A = (L, \ell_0, C, \Sigma, E, \mathrm{Inv})\)\footnote{\tiny G.~Behrmann, A.~David, and K.~G. Larsen, ``A Tutorial on UPPAAL,'' LNCS 3185, 2004~\cite{behrmann2004uppaal}.}
+    \item \(L\): finite set of locations with designated initial location \(\ell_0 \in L\)
+    \item \(C\): finite set of real-valued clocks evolving uniformly over time
+    \item \(E \subseteq L \times \mathcal{B}(C) \times \Sigma \times 2^C \times L\): edges with guards, events, and reset sets
+    \item \(\mathrm{Inv}: L \rightarrow \mathcal{B}(C)\): invariants constraining time at each location
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Timed Automata Dynamics}
+  \begin{itemize}
+    \item \textbf{Guards, actions, invariants}: compared with NFAs, edges carry guards and actions while locations enforce invariants that regulate time
+    \item \textbf{Delay transitions}: time may elapse arbitrarily provided the current invariant is maintained throughout the delay
+    \item \textbf{Action transitions}: when a guard becomes true, the automaton fires the edge, performs its action, resets clocks, and moves to the target location
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Infinite State Motivation}
+  \begin{itemize}
+    \item \textbf{Infinite concrete space}: clock valuations span \(\mathbb{R}_{\ge 0}\), so concrete states \((\ell, v)\) form an unbounded system
+    \item \textbf{Symbolic verification}: we map infinite valuation sets to finite representations that algorithms can manipulate soundly
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Symbolic State Exploration}
+  \begin{itemize}
+    \item TChecker relies on difference bound matrices (DBM) to represent zones\footnote{\tiny TChecker Development Team, ``Advances in Symbolic Exploration for TChecker,'' arXiv:2305.17824, 2023~\cite{herbreteau2023tchecker}.}
+    \item Verification reduces to graph search over symbolic states \((\ell, Z)\) with \(Z\) stored as a DBM
+    \item Algorithms such as coverage reachability (covreach) explore zones while preserving soundness
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Zones and Symbolic Semantics}
+  \begin{itemize}
+    \item \textbf{Zones}: conjunctions of clock constraints capturing all valuations that satisfy them, enabling finite partitioning of time
+    \item \textbf{Symbolic semantics}: states become \((\ell, Z)\); symbolic delay evolves \(Z\), symbolic action checks guards, applies resets, and advances locations
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Difference Bound Matrices}
+  \begin{itemize}
+    \item \textbf{DBM basics}: with \(n\) clocks the matrix has dimension \(n{+}1\), including the zero clock
+    \item Entry \(D_{ij}\) stores an upper bound on \(x_j - x_i\), e.g., \((<, 10)\) encodes \(x_j - x_i < 10\)
+    \item Closure operations on DBM support efficient zone intersection, extrapolation, and emptiness checks within TChecker
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Model Construction Workflow}
+  \begin{itemize}
+    \item Declare clocks, integer variables, synchronization events, and processes
+    \item Configure locations with invariants, committed/urgent flags, and semantic labels
+    \item Create transitions with guards, reset sets, and synchronization directions
+    \item Export the model to TChecker's \texttt{.tck} format for reproducibility
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Interactive Simulation Support}
+  \begin{itemize}
+    \item Step through time delays and discrete transitions with live DBM snapshots of the current zone
+    \item Inspect enabled transitions alongside predicted clock valuations before committing to a move
+    \item Replay execution histories to compare schedules and observe how invariants tighten or relax
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Verification Features}
+  \begin{itemize}
+    \item Reachability analysis: find a path to a user-selected label, returning concrete traces
+    \item Safety checking: prove that error-labelled states are unreachable or obtain counterexamples
+    \item Deadlock detection: confirm every symbolic state admits a successor
+    \item Label logic mode: evaluate boolean combinations of labels (e.g., mutual exclusion clauses) under existential or forbidding semantics
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Case Study: Fischer Mutual Exclusion}
+  \begin{itemize}
+    \item Initial step: both processes sit in \texttt{wait} with \(x=0\); after \(x \in (0,1]\) a process writes its id into \texttt{turn} and moves to \texttt{try}
+    \item Entry to \texttt{critical} requires guard \(\texttt{turn} = \texttt{pid}\) and invariant \(x \le 2\), preventing simultaneous critical-section access
+    \item Simulation view lists the enabled move for each process and displays the DBM so we can watch \(x\) reset on leaving \texttt{critical}
+    \item Verification suite runs mutual exclusion on \texttt{critical\_P1}, \texttt{critical\_P2} and a safety query ensuring the synthetic \texttt{Bad} label is unreachable
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Case Study: Asynchronous Fischer Variant}
+  \begin{itemize}
+    \item Offsets introduce distinct clocks \(x_1, x_2\); each process must wait its own guard window before claiming \texttt{turn}
+    \item The first enabled step shows only one process eligible to proceed while the other remains delayed, reflected in the DBM boundaries
+    \item Subsequent transitions highlight how asynchronous retries reshape the interleaving yet still enforce the \texttt{turn} equality before \texttt{critical}
+    \item Verification compares deadlock freedom and mutual exclusion between the synchronous and asynchronous models to quantify timing slack
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Demo Script Summary}
+  \begin{enumerate}
+    \item Import the Fischer model (\texttt{fischer.tck}) and inspect declarations
+    \item Step through the simulator to observe enabled transitions and clock constraints
+    \item Run mutual exclusion and safety verification; review returned traces
+    \item Switch to the asynchronous variant (\texttt{fischer-async.tck}) and repeat analysis
+    \item Compare results to highlight the impact of altered timing assumptions
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Key Takeaways}
+  \begin{itemize}
+    \item Timed automata modeling benefits from immediate visualization of zones and traces
+    \item Integrated simulation plus verification shortens the feedback loop for debugging
+    \item Fischer examples showcase how timing parameters influence mutual exclusion guarantees
+    \item The GUI encapsulates TChecker's verification strengths within an accessible workflow
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Next Steps}
+  \begin{itemize}
+    \item Iterate on zone-based BFS heuristics to accelerate large-model exploration
+    \item Add full support for diagonal constraints through refined DBM normalisation and pruning
+    \item Profile verification runs on benchmark suites to validate performance gains
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Questions}
+  \centering
+  Thank you for your attention!\\
+  We welcome discussion on new verification scenarios and benchmarks.
+\end{frame}
+
+\begin{frame}{References}
+  \begin{thebibliography}{9}
+    \bibitem{behrmann2004uppaal}
+      G.~Behrmann, A.~David, and K.~G. Larsen.
+      \newblock A Tutorial on UPPAAL.
+      \newblock In \emph{Formal Methods for the Design of Real-Time Systems}, LNCS~3185, 2004.
+      \newblock \url{https://www.seas.upenn.edu/~lee/09cis480/papers/by-lncs04.pdf}
+    \bibitem{herbreteau2023tchecker}
+      TChecker Development Team.
+      \newblock Advances in Symbolic Exploration for TChecker.
+      \newblock Technical report, arXiv:2305.17824, 2023.
+      \newblock \url{https://arxiv.org/pdf/2305.17824}
+  \end{thebibliography}
+\end{frame}
+
+\end{document}

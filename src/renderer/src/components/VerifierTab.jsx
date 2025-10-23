@@ -384,7 +384,15 @@ const VerifierTab = () => {
         </Paper>
 
         {/* Right: Verification Results */}
-        <Paper sx={{ flex: 1, p: 2, display: 'flex', flexDirection: 'column' }}>
+        <Paper
+          sx={{
+            flex: 1,
+            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden'
+          }}
+        >
           <Typography variant="h6" gutterBottom>
             Verification Results
           </Typography>
@@ -442,7 +450,17 @@ const VerifierTab = () => {
           )}
 
           {verificationResult && (
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2, minHeight: 0 }}>
+            <Box
+              sx={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                minHeight: 0,
+                overflowY: 'auto',
+                pr: 1
+              }}
+            >
               <Alert
                 severity={getVerificationStatusColor(verificationResult)}
                 sx={{ flexShrink: 0 }}
@@ -453,8 +471,65 @@ const VerifierTab = () => {
                 <Typography variant="body2">Property: {selectedProperty.name}</Typography>
               </Alert>
 
+              {(() => {
+                const clauseGraphs = Array.isArray(verificationResult.formulaClauseGraphs)
+                  ? verificationResult.formulaClauseGraphs
+                  : Array.isArray(verificationResult.formulaEvaluation)
+                  ? verificationResult.formulaEvaluation.filter(
+                      (entry) => entry.dotGraph && entry.dotGraph.trim()
+                    )
+                  : []
+
+                if (clauseGraphs.length === 0) {
+                  if (verificationResult.dotGraph && verificationResult.dotGraph.trim()) {
+                    return (
+                      <Paper variant="outlined" sx={{ p: 2, minHeight: 360, flexShrink: 0 }}>
+                        <Typography variant="subtitle1" gutterBottom>
+                          State Space
+                        </Typography>
+                        <VerificationGraph dotText={verificationResult.dotGraph} height={380} />
+                      </Paper>
+                    )
+                  }
+                  return null
+                }
+
+                return clauseGraphs.map((entry, idx) => {
+                  const clauseText =
+                    Array.isArray(entry.clause) && entry.clause.length > 0
+                      ? entry.clause.join(' && ')
+                      : 'true'
+                  const displayIndex =
+                    typeof entry.index === 'number' ? entry.index + 1 : idx + 1
+                  const statusLabel =
+                    selectedProperty.formulaMode === 'exists'
+                      ? entry.satisfied
+                        ? 'Reachable'
+                        : 'Unreachable'
+                      : entry.satisfied
+                      ? 'Forbidden (Safe)'
+                      : 'Reachable (Violation)'
+
+                  return (
+                    <Paper
+                      key={`formula-clause-graph-${displayIndex}`}
+                      variant="outlined"
+                      sx={{ p: 2, flexShrink: 0 }}
+                    >
+                      <Typography variant="subtitle1" gutterBottom>
+                        Clause {displayIndex}: {clauseText}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        Status: {statusLabel}
+                      </Typography>
+                      <VerificationGraph dotText={entry.dotGraph} height={360} />
+                    </Paper>
+                  )
+                })
+              })()}
+
               {verificationResult.reachabilityInfo && (
-                <Paper variant="outlined" sx={{ p: 2 }}>
+                <Paper variant="outlined" sx={{ p: 2, flexShrink: 0 }}>
                   <Typography variant="subtitle1" gutterBottom>
                     Statistics
                   </Typography>
@@ -470,7 +545,7 @@ const VerifierTab = () => {
 
               {selectedProperty.type === 'logic-formula' &&
                 Array.isArray(verificationResult.formulaEvaluation) && (
-                  <Paper variant="outlined" sx={{ p: 2 }}>
+                  <Paper variant="outlined" sx={{ p: 2, flexShrink: 0 }}>
                     <Typography variant="subtitle1" gutterBottom>
                       Formula Evaluation
                     </Typography>
@@ -482,29 +557,37 @@ const VerifierTab = () => {
                       | Evaluated clause: {verificationResult.evaluatedClause || 'N/A'}
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                      {verificationResult.formulaEvaluation.map((entry) => (
-                        <Chip
-                          key={`formula-clause-${entry.index}`}
-                          color={entry.satisfied ? 'success' : 'error'}
-                          label={`Clause ${entry.index + 1}: ${entry.clause && entry.clause.length > 0 ? entry.clause.join(' && ') : 'true'} | ${entry.satisfied ? 'Satisfied' : 'Not satisfied'}`}
-                          variant="outlined"
-                        />
-                      ))}
+                      {verificationResult.formulaEvaluation.map((entry, idx) => {
+                        const clauseText =
+                          Array.isArray(entry.clause) && entry.clause.length > 0
+                            ? entry.clause.join(' && ')
+                            : 'true'
+                        const displayIndex =
+                          typeof entry.index === 'number' ? entry.index + 1 : idx + 1
+                        const statusLabel =
+                          selectedProperty.formulaMode === 'exists'
+                            ? entry.satisfied
+                              ? 'Reachable'
+                              : 'Unreachable'
+                            : entry.satisfied
+                            ? 'Forbidden (Safe)'
+                            : 'Reachable (Violation)'
+
+                        return (
+                          <Chip
+                            key={`formula-clause-${displayIndex}`}
+                            color={entry.satisfied ? 'success' : 'error'}
+                            label={`Clause ${displayIndex}: ${clauseText} | ${statusLabel}`}
+                            variant="outlined"
+                          />
+                        )
+                      })}
                     </Box>
                   </Paper>
                 )}
 
-              {verificationResult.dotGraph && verificationResult.dotGraph.trim() && (
-                <Paper variant="outlined" sx={{ p: 2, minHeight: 360 }}>
-                  <Typography variant="subtitle1" gutterBottom>
-                    State Space
-                  </Typography>
-                  <VerificationGraph dotText={verificationResult.dotGraph} height={380} />
-                </Paper>
-              )}
-
               {verificationResult.counterExample && (
-                <Paper variant="outlined" sx={{ p: 2 }}>
+                <Paper variant="outlined" sx={{ p: 2, flexShrink: 0 }}>
                   <Typography variant="subtitle1" gutterBottom>
                     Execution Trace
                   </Typography>
@@ -523,10 +606,7 @@ const VerifierTab = () => {
                 </Paper>
               )}
 
-              <Paper
-                variant="outlined"
-                sx={{ p: 2, flex: verificationResult.counterExample ? '0' : 1 }}
-              >
+              <Paper variant="outlined" sx={{ p: 2, flexShrink: 0 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Detailed Output
                 </Typography>

@@ -1,0 +1,176 @@
+\documentclass{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{spruce}
+\usepackage[UTF8]{ctex}
+\usepackage{hyperref}
+
+\title{让 TChecker 时间自动机鲜活起来}
+\author{TChecker GUI 项目}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{分享提纲}
+  \begin{itemize}
+    \item 为什么要给 TChecker 配一个可视化界面
+    \item 时间自动机的核心定义与符号推理
+    \item Fischer 及异步 Fischer 案例演示
+    \item 已实现的验证与模拟工作流
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{为什么需要 GUI？}
+  \begin{itemize}
+    \item TChecker 是命令行工具，可对时间自动机进行可达性与活性分析，但仅返回文本判定结果
+    \item 时间自动机表达力强，但命令行调试门槛高
+    \item 课堂与工程现场都需要对时钟、不变式和轨迹的即时反馈
+    \item 友好的界面降低了模型探索难度，同时保留 TChecker 的形式化严谨
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{时间自动机回顾}
+  \begin{itemize}
+    \item 依照 Alur--Dill，时间自动机是六元组 \(A = (L, \ell_0, C, \Sigma, E, \mathrm{Inv})\)\footnote{\tiny G.~Behrmann, A.~David, K.~G. Larsen，《A Tutorial on UPPAAL》，LNCS 3185, 2004~\cite{behrmann2004uppaal-cn}.}
+    \item \(L\)：有限位置集合，\(\ell_0 \in L\) 为初始位置
+    \item \(C\)：一组以恒速增长的实数时钟
+    \item \(E \subseteq L \times \mathcal{B}(C) \times \Sigma \times 2^C \times L\)：带守卫、事件和重置集合的边
+    \item \(\mathrm{Inv}: L \rightarrow \mathcal{B}(C)\)：限制每个位置上停留时间的不变式
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{时间自动机的动态语义}
+  \begin{itemize}
+    \item \textbf{守卫、动作、不变式}：相较 NFA，转移携带守卫与动作，位置附带不变式以约束时间流逝
+    \item \textbf{时间流逝（Delay）}：只要当前位置的不变式保持成立，系统即可让时间连续推进
+    \item \textbf{动作转换}：守卫满足时触发离散边，执行动作、重置相关时钟并进入目标位置
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{无限状态与符号化动机}
+  \begin{itemize}
+    \item \textbf{无限具体空间}：时钟取值覆盖 \(\mathbb{R}_{\ge 0}\)，因此具体状态 \((\ell, v)\) 是无限集合
+    \item \textbf{符号验证}：将无限的时钟赋值集合映射为有限的可操作抽象，以便算法处理且保持正确性
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{符号状态探索}
+  \begin{itemize}
+    \item TChecker 使用差分约束矩阵（DBM）表示区域（zones）\footnote{\tiny TChecker Development Team，《Advances in Symbolic Exploration for TChecker》，arXiv:2305.17824, 2023~\cite{herbreteau2023tchecker-cn}.}
+    \item 验证问题被转化为对符号状态 \((\ell, Z)\) 的图搜索，其中 \(Z\) 由 DBM 表示
+    \item `covreach` 等算法在保持完备性的前提下进行广度式的区域探索
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{区域与符号语义}
+  \begin{itemize}
+    \item \textbf{区域（Zone）}：由时钟约束合取而成，代表满足条件的全部时钟赋值，让时间维度离散化
+    \item \textbf{符号语义}：系统状态表示为 \((\ell, Z)\)；符号延迟推进 \(Z\)，符号动作检查守卫、重置时钟并迁移到目标位置
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{DBM 基础}
+  \begin{itemize}
+    \item 对于 \(n\) 个时钟，DBM 的维度为 \(n{+}1\)，其中额外一维代表常数 0 时钟
+    \item 元素 \(D_{ij}\) 存储 \(x_j - x_i\) 的上界，例如 \((<,10)\) 表示 \(x_j - x_i < 10\)
+    \item 通过闭包运算，DBM 支持高效的区域交、扩张以及可空性判断，是 TChecker 操作 zone 的核心结构
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{建模流程}
+  \begin{itemize}
+    \item 声明时钟、整型变量、同步事件与进程
+    \item 为位置配置不变式、标签以及 committed/urgent 等语义
+    \item 为转移添加守卫、重置集合和同步方向
+    \item 将模型导出为 TChecker 的 \texttt{.tck} 文件，便于复现
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{交互式模拟}
+  \begin{itemize}
+    \item 按步骤推进时间延迟或离散跃迁，并实时查看当前区域的 DBM 快照
+    \item 在触发动作前先审阅可启用的转移与预测的时钟取值变化
+    \item 记录并回放执行历史，对比不同调度如何收紧或放宽不变式
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{验证能力}
+  \begin{itemize}
+    \item 可达性分析：寻找通向指定标签的路径，并返回具体轨迹
+    \item 安全性检查：证明错误标签不可达，或给出反例
+    \item 死锁检测：确认任意符号状态都存在后继
+    \item 标签逻辑模式：支持标签布尔公式的存在或禁止语义（例如互斥性约束）
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{案例一：Fischer 互斥协议}
+  \begin{itemize}
+    \item 初始状态：两个进程都在 \texttt{wait} 且 \(x = 0\)；当 \(x \in (0,1]\) 时，进程写入自己的编号到 \texttt{turn} 并进入 \texttt{try}
+    \item 进入 \texttt{critical} 必须满足守卫 \(\texttt{turn} = \texttt{pid}\) 与不变式 \(x \le 2\)，从根本上禁止同时进入临界区
+    \item 模拟界面列出每个进程的可行动作，并以 DBM 展示离开 \texttt{critical} 时 \(x\) 如何被重置
+    \item 验证环节运行 \texttt{critical\_P1} 与 \texttt{critical\_P2} 的互斥性质，并确保人工构造的 \texttt{Bad} 标签不可达
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{案例二：异步 Fischer 变体}
+  \begin{itemize}
+    \item 为不同进程配置偏移时钟 \(x_1, x_2\)，各自等待满足守卫窗口后才能写入 \texttt{turn}
+    \item 起始步骤通常只有一个进程满足条件，DBM 边界清晰显示另一进程仍被延迟
+    \item 后续重试揭示异步节奏如何改变调度顺序，但进入 \texttt{critical} 前仍需满足 \texttt{turn} 等式
+    \item 验证比较同步与异步模型在死锁自由和互斥性上的结果，量化时间裕度的影响
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{演示流程建议}
+  \begin{enumerate}
+    \item 导入 \texttt{fischer.tck}，查看声明与拓扑
+    \item 启动模拟，观察可用转移与时钟约束
+    \item 运行互斥与安全性验证，审阅生成的轨迹
+    \item 切换到 \texttt{fischer-async.tck} 重复分析
+    \item 对比结果，突出时间假设变化带来的影响
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{关键结论}
+  \begin{itemize}
+    \item 可视化让时钟区域与执行轨迹一目了然
+    \item 同步整合模拟与验证，可以快速定位模型问题
+    \item Fischer 系列案例直观说明时间参数对互斥的影响
+    \item GUI 将 TChecker 的验证能力打包成易用的工作流
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{后续规划}
+  \begin{itemize}
+    \item 迭代 zone 基于 BFS 的探索策略，提升大规模模型的搜索效率
+    \item 完整支持对角线约束，引入更精细的 DBM 归一化与剪枝方法
+    \item 针对基准模型进行性能剖析，验证优化对真实场景的收益
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{提问与讨论}
+  \centering
+  感谢聆听！\\
+  欢迎交流更多验证场景与基准需求。
+\end{frame}
+
+\begin{frame}{参考文献}
+  \begin{thebibliography}{9}
+    \bibitem{behrmann2004uppaal-cn}
+      G.~Behrmann, A.~David, K.~G. Larsen.
+      \newblock A Tutorial on UPPAAL.
+      \newblock 收录于《Formal Methods for the Design of Real-Time Systems》，LNCS 3185, 2004.
+      \newblock \url{https://www.seas.upenn.edu/~lee/09cis480/papers/by-lncs04.pdf}
+    \bibitem{herbreteau2023tchecker-cn}
+      TChecker Development Team.
+      \newblock Advances in Symbolic Exploration for TChecker.
+      \newblock arXiv:2305.17824, 2023.
+      \newblock \url{https://arxiv.org/pdf/2305.17824}
+  \end{thebibliography}
+\end{frame}
+
+\end{document}
