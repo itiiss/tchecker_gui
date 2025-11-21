@@ -867,17 +867,43 @@ src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/typeindex \
   /Users/zz/Documents/ta/tchecker/src/tck-reach/concur19.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/algorithms/covreach/algorithm.hh \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/algorithms/covreach/stats.hh \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/algorithms/stats.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/subsumption_graph.hh \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/set \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/allocators.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/pool.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/shared_objects.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/dbm/dbm.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/basictypes.hh \
+  /Users/zz/Documents/ta/tchecker/build/src/../include/tchecker/config.hh \
+  /opt/homebrew/include/boost/rational.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iomanip \
+  /opt/homebrew/include/boost/call_traits.hpp \
+  /opt/homebrew/include/boost/detail/call_traits.hpp \
+  /opt/homebrew/include/boost/type_traits/is_arithmetic.hpp \
+  /opt/homebrew/include/boost/type_traits/is_floating_point.hpp \
+  /opt/homebrew/include/boost/type_traits/is_pointer.hpp \
+  /opt/homebrew/include/boost/integer/common_factor_rt.hpp \
+  /opt/homebrew/include/boost/utility/enable_if.hpp \
+  /opt/homebrew/include/boost/type_traits/is_convertible.hpp \
+  /opt/homebrew/include/boost/type_traits/is_complete.hpp \
+  /opt/homebrew/include/boost/type_traits/declval.hpp \
+  /opt/homebrew/include/boost/type_traits/add_rvalue_reference.hpp \
+  /opt/homebrew/include/boost/type_traits/is_void.hpp \
+  /opt/homebrew/include/boost/type_traits/is_reference.hpp \
+  /opt/homebrew/include/boost/type_traits/is_lvalue_reference.hpp \
+  /opt/homebrew/include/boost/type_traits/is_rvalue_reference.hpp \
+  /opt/homebrew/include/boost/type_traits/remove_reference.hpp \
+  /opt/homebrew/include/boost/type_traits/is_function.hpp \
+  /opt/homebrew/include/boost/type_traits/detail/is_function_cxx_11.hpp \
+  /opt/homebrew/include/boost/type_traits/detail/yes_no_type.hpp \
+  /opt/homebrew/include/boost/type_traits/is_array.hpp \
+  /opt/homebrew/include/boost/type_traits/is_class.hpp \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/dbm/db.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/dbm/details/db_safe.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/variables/clocks.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/allocation_size.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/cover_graph.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/array.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/cache.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/hashtable.hh \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_set \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/iterator.hh \
@@ -908,52 +934,8 @@ src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.o: \
   /opt/homebrew/include/boost/iterator/detail/eval_if_default.hpp \
   /opt/homebrew/include/boost/iterator/detail/type_traits/type_identity.hpp \
   /opt/homebrew/include/boost/type_traits/type_identity.hpp \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/basictypes.hh \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
-  /Users/zz/Documents/ta/tchecker/build/src/../include/tchecker/config.hh \
-  /opt/homebrew/include/boost/rational.hpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iomanip \
-  /opt/homebrew/include/boost/call_traits.hpp \
-  /opt/homebrew/include/boost/detail/call_traits.hpp \
-  /opt/homebrew/include/boost/type_traits/is_arithmetic.hpp \
-  /opt/homebrew/include/boost/type_traits/is_floating_point.hpp \
-  /opt/homebrew/include/boost/type_traits/is_pointer.hpp \
-  /opt/homebrew/include/boost/integer/common_factor_rt.hpp \
-  /opt/homebrew/include/boost/utility/enable_if.hpp \
-  /opt/homebrew/include/boost/type_traits/is_convertible.hpp \
-  /opt/homebrew/include/boost/type_traits/is_complete.hpp \
-  /opt/homebrew/include/boost/type_traits/declval.hpp \
-  /opt/homebrew/include/boost/type_traits/add_rvalue_reference.hpp \
-  /opt/homebrew/include/boost/type_traits/is_void.hpp \
-  /opt/homebrew/include/boost/type_traits/is_reference.hpp \
-  /opt/homebrew/include/boost/type_traits/is_lvalue_reference.hpp \
-  /opt/homebrew/include/boost/type_traits/is_rvalue_reference.hpp \
-  /opt/homebrew/include/boost/type_traits/remove_reference.hpp \
-  /opt/homebrew/include/boost/type_traits/is_function.hpp \
-  /opt/homebrew/include/boost/type_traits/detail/is_function_cxx_11.hpp \
-  /opt/homebrew/include/boost/type_traits/detail/yes_no_type.hpp \
-  /opt/homebrew/include/boost/type_traits/is_array.hpp \
-  /opt/homebrew/include/boost/type_traits/is_class.hpp \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/directed_graph.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/output.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/factory.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/pqueue.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/waiting.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/queue.hh \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/deque \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/stack.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/clockbounds/cache.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/clockbounds/clockbounds.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/dbm/db.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/dbm/details/db_safe.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/syncprod/vloc.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/system.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/parsing/declaration.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/attribute.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/clock.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/variables/clocks.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/array.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/cache.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/shared_objects.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/pool.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/utils/index.hh \
   /opt/homebrew/include/boost/container/flat_map.hpp \
   /opt/homebrew/include/boost/container/detail/config_begin.hpp \
@@ -1033,6 +1015,18 @@ src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.o: \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/variables/access.hh \
   /opt/homebrew/include/boost/container/flat_set.hpp \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/variables/variables.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/subsumption_graph.hh \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/set \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/allocators.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/cover_graph.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/directed_graph.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/output.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/syncprod/vedge.hh \
+  /opt/homebrew/include/boost/iterator/filter_iterator.hpp \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/system.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/parsing/declaration.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/attribute.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/clock.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/edge.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/event.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/intvar.hh \
@@ -1040,8 +1034,16 @@ src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.o: \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/loc.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/process.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/system/synchronization.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/syncprod/vloc.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/factory.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/pqueue.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/waiting.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/queue.hh \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/deque \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/waiting/stack.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/clockbounds/cache.hh \
+  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/clockbounds/clockbounds.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/clockbounds/solver.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/dbm/dbm.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/expression/typed_expression.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/expression/expression.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/statement/typed_statement.hh \
@@ -1051,8 +1053,6 @@ src/CMakeFiles/tck-reach.dir/tck-reach/concur19.cc.o: \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/syncprod/label.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/vm/vm.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/graph/edge.hh \
-  /Users/zz/Documents/ta/tchecker/src/../include/tchecker/syncprod/vedge.hh \
-  /opt/homebrew/include/boost/iterator/filter_iterator.hpp \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/zg/zg.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/ta/ta.hh \
   /Users/zz/Documents/ta/tchecker/src/../include/tchecker/syncprod/syncprod.hh \

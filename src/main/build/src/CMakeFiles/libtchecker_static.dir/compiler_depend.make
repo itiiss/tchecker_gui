@@ -9052,6 +9052,7 @@ src/CMakeFiles/libtchecker_static.dir/clockbounds/solver.cc.o: /Users/zz/Documen
   /Users/zz/Documents/ta/tchecker/include/tchecker/system/process.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/system/synchronization.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/system/system.hh \
+  /Users/zz/Documents/ta/tchecker/include/tchecker/ta/static_analysis.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/ta/system.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/allocation_size.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/array.hh \
@@ -71643,6 +71644,7 @@ src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.o: /Users/zz/Documents
   /Users/zz/Documents/ta/tchecker/include/tchecker/system/process.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/system/synchronization.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/system/system.hh \
+  /Users/zz/Documents/ta/tchecker/include/tchecker/ta/static_analysis.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/ta/system.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/allocation_size.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/array.hh \
@@ -71650,6 +71652,7 @@ src/CMakeFiles/libtchecker_static.dir/zg/extrapolation.cc.o: /Users/zz/Documents
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/hashtable.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/index.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/iterator.hh \
+  /Users/zz/Documents/ta/tchecker/include/tchecker/utils/log.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/pool.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/utils/shared_objects.hh \
   /Users/zz/Documents/ta/tchecker/include/tchecker/variables/access.hh \
@@ -78143,8 +78146,6 @@ src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.o: /Users/zz/Documents/ta/tchec
 
 /Users/zz/Documents/ta/tchecker/src/ta/system.cc:
 
-/Users/zz/Documents/ta/tchecker/include/tchecker/ta/static_analysis.hh:
-
 /Users/zz/Documents/ta/tchecker/src/system/system.cc:
 
 /Users/zz/Documents/ta/tchecker/src/system/static_analysis.cc:
@@ -78588,6 +78589,8 @@ src/CMakeFiles/libtchecker_static.dir/zg/zone.cc.o: /Users/zz/Documents/ta/tchec
 /Users/zz/Documents/ta/tchecker/include/tchecker/utils/log.hh:
 
 /Users/zz/Documents/ta/tchecker/include/tchecker/ta/system.hh:
+
+/Users/zz/Documents/ta/tchecker/include/tchecker/ta/static_analysis.hh:
 
 /Users/zz/Documents/ta/tchecker/include/tchecker/syncprod/label.hh:
 
